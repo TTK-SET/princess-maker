@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Shaun's Princess Maker - Character.AI</title>
+<style>
+:root{--pink:#ffd6e8;--rose:#f48fb1;--lav:#e6dcff;--purple:#7e57c2;--gold:#e0b04a;--ink:#3d2a52;--bg:#fff7fb}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#fde4f2,#ece4ff 60%,#fff7fb);color:var(--ink);min-height:100vh;padding:env(safe-area-inset-top) 0 40px}
+header{text-align:center;padding:18px 12px 6px}
+h1{margin:0;font-size:30px;color:var(--purple);letter-spacing:.5px}
+h1 span{color:var(--gold)}
+.sub{font-size:14px;opacity:.75}
+main{max-width:720px;margin:0 auto;padding:0 12px}
+.card{background:#fff;border-radius:20px;box-shadow:0 4px 18px rgba(126,87,194,.13);padding:16px;margin:14px 0;border:2px solid var(--lav)}
+.card h2{margin:0 0 10px;font-size:20px;color:var(--purple)}
+details>summary{font-size:19px;font-weight:700;color:var(--purple);cursor:pointer;min-height:44px;display:flex;align-items:center;list-style:none}
+details>summary::before{content:"▸ ";margin-right:6px}details[open]>summary::before{content:"▾ "}
+label{display:block;font-weight:600;margin:12px 0 4px;font-size:15px}
+.hint{font-size:12.5px;opacity:.7;margin-top:3px}
+input[type=text],input[type=password],input[type=url],select,textarea{width:100%;font-size:16px;padding:12px;border-radius:14px;border:2px solid var(--lav);background:#fffafd;color:var(--ink);font-family:inherit}
+textarea{min-height:90px;resize:vertical;line-height:1.4}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose)}
+.chk{display:flex;align-items:center;gap:10px;font-weight:600;margin-top:12px;min-height:44px}
+.chk input{width:26px;height:26px;accent-color:var(--purple)}
+button,.btn{font-size:16px;font-weight:700;border:none;border-radius:16px;padding:12px 18px;min-height:48px;background:var(--lav);color:var(--ink);cursor:pointer;font-family:inherit}
+button:active{transform:scale(.97)}
+.primary{background:linear-gradient(135deg,var(--rose),var(--purple));color:#fff;width:100%;font-size:19px;min-height:56px;margin-top:16px}
+.primary[disabled]{opacity:.6}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1 1 auto}
+.danger{background:#ffd3d3;color:#a3213a}
+#preview{max-width:100%;max-height:320px;border-radius:16px;display:none;margin:10px auto 0;border:3px solid var(--pink)}
+.file{display:block;text-align:center;border:3px dashed var(--rose);border-radius:18px;padding:22px;background:var(--pink);font-weight:700;cursor:pointer}
+.file input{display:none}
+.err{background:#ffe3e3;color:#8c1d2f;border-radius:14px;padding:12px;white-space:pre-wrap;word-break:break-word;display:none;font-size:14px;margin-top:12px}
+.ok{background:#e3ffe9;color:#1d6b33}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.tabs button{flex:0 0 auto;min-height:44px;font-size:15px;padding:10px 14px}
+.tabs button.on{background:var(--purple);color:#fff}
+.field{margin:14px 0;border-top:1px dashed var(--lav);padding-top:10px}
+.fhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.fhead b{font-size:15px}
+.cnt{font-size:12.5px;opacity:.8;margin-left:auto;white-space:nowrap}
+.cnt.over{color:#d0021b;font-weight:700;opacity:1}
+.copy{min-height:40px;padding:8px 14px;font-size:14px;background:var(--pink)}
+.copy.done{background:#c8f7d4}
+.field textarea.over{border-color:#d0021b}
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.lib .it{background:var(--bg);border:2px solid var(--lav);border-radius:16px;padding:8px;text-align:center;position:relative}
+.lib img,.lib .noimg{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--pink);display:block}
+.lib .nm{font-weight:700;font-size:14px;margin:6px 0 2px;word-break:break-word}
+.lib .del{position:absolute;top:4px;right:4px;min-height:36px;width:36px;padding:0;border-radius:50%;background:#fff;color:#a3213a}
+.warn{background:#fff3cd;color:#7a5a00;border-radius:12px;padding:10px;margin-top:10px;font-size:14px}
+.tips li{margin:6px 0;font-size:14.5px}
+.spin{display:inline-block;width:18px;height:18px;border:3px solid #fff;border-top-color:transparent;border-radius:50%;animation:s 1s linear infinite;vertical-align:-3px;margin-right:8px}
+@keyframes s{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+.toast.show{opacity:.95}
+.note{background:var(--lav);border-radius:12px;padding:10px;font-size:14px;margin-top:6px}
+#checklist ol{padding-left:22px}#checklist li{margin:8px 0}#checklist li.dn{opacity:.5;text-decoration:line-through}#checklist li button{min-height:40px;padding:6px 12px;font-size:14px;margin-left:6px}
+</style></head>
+<body>
+<header><h1>👑 Shaun's Princess <span>Maker</span></h1><div class="sub">Character.AI edition — picture + idea → ready-to-paste princess</div></header>
+<main>
+<div class="card"><details id="setDet"><summary>⚙️ Settings</summary>
+<label for="preset">Model preset</label><select id="preset"></select>
+<div class="hint" id="presetHint">One tap fills API URL, model and the image checkbox.</div>
+<label for="orKey">OpenRouter API key</label><input type="password" id="orKey" autocomplete="off" autocapitalize="off">
+<div class="hint">Free key: sign up at openrouter.ai -&gt; Keys -&gt; Create key</div>
+<label for="thKey">TokenHarbor API key</label><input type="password" id="thKey" autocomplete="off" autocapitalize="off">
+<label class="chk"><input type="checkbox" id="twoStep"> Two-step mode: if the chosen model can't see images, use a free OpenRouter vision model to describe the image first</label>
+<label for="apiUrl">API URL</label><input type="url" id="apiUrl" autocapitalize="off" autocorrect="off">
+<div class="hint">Must end in <b>/chat/completions</b> (any OpenAI-compatible API).</div>
+<label for="apiKey">Other / custom API key</label><input type="password" id="apiKey" autocomplete="off" autocapitalize="off">
+<div class="hint">Keys are stored only on this device (localStorage). OpenRouter/TokenHarbor URLs use their own key above; this one is for other providers (or a fallback).</div>
+<label for="model">Model name</label><input type="text" id="model" placeholder="e.g. google/gemini-2.5-flash or openai/gpt-4o" autocapitalize="off" autocorrect="off">
+<label class="chk"><input type="checkbox" id="sendImg"> Send image to model (needs a vision model)</label>
+<label for="userName">Your character's name</label><input type="text" id="userName">
+<label for="world">World / setting</label><input type="text" id="world">
+<label for="cast">World characters (context)</label><textarea id="cast" rows="3"></textarea>
+<label for="lorebook">Lorebook name</label><input type="text" id="lorebook">
+<label class="chk"><input type="checkbox" id="lbFull"> This lorebook is full (128/128) — suggest a new one</label>
+<label for="lorebook2">Next lorebook name</label><input type="text" id="lorebook2">
+<div class="row" style="margin-top:12px"><button id="saveSet">💾 Save settings</button></div>
+</details></div>
+
+<div class="card"><h2>✨ Create</h2>
+<label class="file">📸 Tap to upload princess image<input type="file" id="img" accept="image/*"></label>
+<img id="preview" alt="preview">
+<div class="row" style="margin-top:8px"><button id="clrImg" style="display:none">✖ Remove image</button></div>
+<label for="look">Describe her look (optional)</label><textarea id="look" placeholder="Hair, eyes, gown colours, tiara, earrings, pendant… Used when the model can't see images, or as extra detail."></textarea>
+<label for="idea">Your idea (optional, leave blank and I'll invent one)</label><textarea id="idea" placeholder="e.g. A shy ice princess who secretly loves sweets and gets flustered easily"></textarea>
+<label for="pname">Name (optional)</label><input type="text" id="pname" maxlength="20" placeholder="Leave blank and the AI picks one">
+<label for="basedOn">Based on character (optional)</label><input type="text" id="basedOn" placeholder="Bowser, Kamek, Lakitu, Toad..." autocapitalize="words">
+<div class="hint" id="basedOnHint" style="display:none">Fill in the Mario character you want a girl version of (e.g. Bowser, Kamek, Lakitu).</div>
+<label for="premise">Premise</label>
+<select id="premise">
+<option value="kidnapper">Shaun is the kidnapper (she falls for him)</option>
+<option value="whisk">She whisks Shaun away (clingy, in control, wants to make out)</option>
+<option value="rescue">Rescue romance (Ludwig/Bowser takes her, Shaun saves her)</option>
+<option value="genderswap">Girl version of a Mario character (gender-swap, girl-variant name)</option>
+<option value="two">Two princesses in one chat</option>
+<option value="custom">Custom</option>
+</select>
+<textarea id="customPremise" placeholder="Describe your custom premise" style="display:none;margin-top:8px"></textarea>
+<button class="primary" id="gen">👑 Generate Princess</button>
+<div class="err" id="err"></div>
+</div>
+
+<div class="card" id="outCard" style="display:none"><h2 id="outTitle">Your Princess</h2>
+<div class="hint" id="basedOnLine" style="display:none;margin:0 0 8px;font-weight:600"></div>
+<div class="hint" id="ideaLine" style="display:none;margin:0 0 8px;font-weight:600"></div>
+<div class="tabs" id="tabs"></div>
+<div id="panes"></div>
+<div class="row" style="margin-top:12px">
+<button id="chkBtn">✅ Copy definition + greetings checklist</button></div>
+<div id="checklist" class="note" style="display:none"></div>
+<div class="row" style="margin-top:8px"><button id="copyAll">📋 Copy all as text</button><button id="dl">⬇️ Download .txt</button></div>
+<div class="row" style="margin-top:8px"><button id="regen">🔄 Regenerate one greeting</button>
+<select id="regenWhich" style="flex:0 1 160px"><option value="main">Main greeting</option><option value="0">Alt 1</option><option value="1">Alt 2</option><option value="2">Alt 3</option><option value="3">Alt 4</option></select></div>
+<button class="primary" id="saveLib">💖 Save to my princesses</button>
+</div>
+
+<div class="card"><h2>🏰 My Princesses</h2>
+<div class="lib" id="lib"></div>
+<div class="hint" id="libEmpty">No princesses saved yet.</div>
+<div class="row" style="margin-top:12px"><button id="exp">📤 Export library</button><label class="btn" style="text-align:center;display:flex;align-items:center;justify-content:center">📥 Import<input type="file" id="imp" accept="application/json,.json" style="display:none"></label></div>
+<div id="storage" class="hint"></div>
+</div>
+
+<div class="card tips"><h2>💡 Tips</h2><ul>
+<li>Paste order on Character.AI's create form: Name → Tagline → Description → Greeting → Alternate greetings → Advanced creation → Definition → Visibility (Private).</li>
+<li>Character.AI allows a main greeting + 4 alternate greetings. Alt greeting titles are only shown for you — Copy grabs just the text.</li>
+<li>Character.AI name max is 20 characters.</li>
+<li>The Definition goes under <b>Advanced creation</b> on Character.AI.</li>
+<li>If an avatar is rejected, try a face-only crop.</li>
+<li>A lorebook holds 128 entries max — start a second lorebook when it's full.</li>
+<li>Your API key is stored only on this device.</li>
+</ul></div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var LS_SET="pm_cai_settings",LS_LIB="pm_library";
+var OR_URL="https://openrouter.ai/api/v1/chat/completions",TH_URL="https://tokenharbor.ai/v1/chat/completions";
+var PRESETS=[
+ {id:"gemma4-31b",label:"Gemma 4 31B (free, sees images)",apiUrl:OR_URL,model:"google/gemma-4-31b-it:free",sendImg:true},
+ {id:"gemma4-26b",label:"Gemma 4 26B A4B (free, sees images)",apiUrl:OR_URL,model:"google/gemma-4-26b-a4b-it:free",sendImg:true},
+ {id:"inkling",label:"Inkling (free, sees images)",apiUrl:OR_URL,model:"thinkingmachines/inkling:free",sendImg:true},
+ {id:"nemotron-omni",label:"Nemotron 3 Nano Omni 30B (free, sees images)",apiUrl:OR_URL,model:"nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",sendImg:true},
+ {id:"th-deepseek",label:"TokenHarbor DeepSeek (free, no images)",apiUrl:TH_URL,model:"deepseek-v4.1-flash:free",sendImg:false},
+ {id:"custom",label:"Custom",custom:true}];
+var VISION_MODEL=PRESETS[0].model;
+var DEF={preset:"gemma4-31b",orKey:"",thKey:"",twoStep:true,apiUrl:OR_URL,apiKey:"",model:VISION_MODEL,sendImg:true,userName:"Shaun",world:"Mario-world Mushroom Kingdom",lorebook:"Mushroom World Chronicles",lbFull:true,lorebook2:"Mushroom World Chronicles II",cast:"Bowser (Koopa King), Bowsette (Koopa Queen), Ludwig von Koopa (eldest Koopaling, main planner of schemes), the Koopalings (Larry, Morton, Wendy, Iggy, Roy, Lemmy), Princess Peach, Princess Daisy, Rosalina"};
+var state={imgData:null,thumb:null,result:null};
+
+function toast(t){var e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){e.classList.remove("show")},1600)}
+function loadSettings(){var s={};try{s=JSON.parse(localStorage.getItem(LS_SET)||"{}")||{}}catch(e){}
+ var o={};for(var k in DEF)o[k]=(s[k]===undefined?DEF[k]:s[k]);return o}
+function applySettings(){var s=loadSettings();["preset","orKey","thKey","apiUrl","apiKey","model","userName","world","lorebook","lorebook2","cast"].forEach(function(k){$(k).value=s[k]});$("sendImg").checked=!!s.sendImg;$("lbFull").checked=!!s.lbFull;$("twoStep").checked=!!s.twoStep;
+ if(!s.model){var p0=PRESETS[0];$("apiUrl").value=p0.apiUrl;$("model").value=p0.model;$("sendImg").checked=true}syncPreset();
+ if(!keyFor(s)||!s.model)$("setDet").open=true}
+function readSettings(){return{preset:$("preset").value||"custom",orKey:$("orKey").value.trim(),thKey:$("thKey").value.trim(),twoStep:$("twoStep").checked,apiUrl:$("apiUrl").value.trim()||DEF.apiUrl,apiKey:$("apiKey").value.trim(),model:$("model").value.trim(),sendImg:$("sendImg").checked,userName:$("userName").value.trim()||"Shaun",world:$("world").value.trim()||DEF.world,lorebook:$("lorebook").value.trim()||DEF.lorebook,lbFull:$("lbFull").checked,lorebook2:$("lorebook2").value.trim()||(($("lorebook").value.trim()||DEF.lorebook)+" II"),cast:$("cast").value.trim()}}
+function provider(url){url=url||"";return /openrouter\.ai/i.test(url)?"or":/tokenharbor\.ai/i.test(url)?"th":"other"}
+function keyFor(s){var p=provider(s.apiUrl);return(p==="or"?s.orKey:p==="th"?s.thKey:"")||s.apiKey||""}
+function persist(){try{localStorage.setItem(LS_SET,JSON.stringify(readSettings()))}catch(e){}}
+function applyPreset(id){var p=PRESETS.filter(function(x){return x.id===id})[0];if(!p||p.custom){persist();return}
+ $("apiUrl").value=p.apiUrl;$("model").value=p.model;$("sendImg").checked=p.sendImg;persist();toast(p.label)}
+function syncPreset(){var u=$("apiUrl").value.trim(),m=$("model").value.trim(),c=$("sendImg").checked;var p=PRESETS.filter(function(x){return !x.custom&&x.apiUrl===u&&x.model===m&&x.sendImg===c})[0];$("preset").value=p?p.id:"custom"}
+function isVisionModel(s){return PRESETS.some(function(x){return x.sendImg&&x.model===s.model})||(s.preset==="custom"&&s.sendImg)}
+function lbTarget(s){return s.lbFull?s.lorebook2:s.lorebook}
+function lbNote(s){return s.lbFull?"\""+s.lorebook+"\" is full (128/128). Create a new lorebook named \""+s.lorebook2+"\" and add these entries there, then attach it to this character.":"Add these entries to the \""+s.lorebook+"\" lorebook and attach it to this character."}
+function saveSettings(){try{localStorage.setItem(LS_SET,JSON.stringify(readSettings()));toast("Settings saved")}catch(e){toast("Could not save settings")}}
+
+/* ---------- image ---------- */
+function downscale(file,max,q){return new Promise(function(res,rej){var r=new FileReader();r.onerror=function(){rej(new Error("Could not read image"))};
+ r.onload=function(){var im=new Image();im.onerror=function(){rej(new Error("Could not load image (try a JPEG/PNG)"))};im.onload=function(){
+  var w=im.naturalWidth,h=im.naturalHeight,sc=Math.min(1,max/Math.max(w,h));var c=document.createElement("canvas");c.width=Math.round(w*sc);c.height=Math.round(h*sc);
+  var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",q))};im.src=r.result};r.readAsDataURL(file)})}
+function thumbFrom(dataUrl){return new Promise(function(res){var im=new Image();im.onload=function(){var s=128,c=document.createElement("canvas");c.width=s;c.height=s;var x=c.getContext("2d");
+ var m=Math.min(im.width,im.height);x.drawImage(im,(im.width-m)/2,Math.max(0,(im.height-m)/4),m,m,0,0,s,s);res(c.toDataURL("image/jpeg",0.7))};im.onerror=function(){res(null)};im.src=dataUrl})}
+
+/* ---------- prompt ---------- */
+var PREMISES={kidnapper:"{{user}} is the one who whisked her away to his hideout; over time she falls for him. The MAIN greeting must show her ALONE and UNAWARE (e.g. strolling her gardens, reading on a moonlit balcony) right before he appears, so {{user}} makes the first move himself. Alt greetings can be later moments (first night in his hideout, warming up to him, admitting feelings).",
+ whisk:"She is the one who whisks {{user}} away to her castle; she is clingy, sweetly possessive, firmly in control, dotes on him and openly wants to cuddle and make out with him.",
+ rescue:"Rescue romance: Ludwig von Koopa (the planner) or Bowser has whisked her away to a Koopa castle; {{user}} is the hero who comes to save her and romance blossoms. Never write the rescue itself; set up the moment and let {{user}} act.",
+ genderswap:"She is the girl version (gender-swap) of an existing Mario character (prefer the Based on character field, else named in the idea). Give her a cute girl-variant name of that character (like Bowsette for Bowser; e.g. Mario→Maria, Luigi→Luigina, Kamek→Kamella, Wario→Wariette, Ludwig→Ludmila, Lakitu→Lakitia, Goomba→Goomina, Koopa→Koopella), keep that character's role, traits, signature colors/motifs and items, but she is a princess in a ballgown.",
+ two:"TWO princesses share this one chat. Treat the character as a duo: put both names in name (<=20 chars, no '&', use 'and' or a shared title), describe BOTH in description/definition with distinct looks and personalities, and write greetings where each speaks on her own 'Name: ...' lines. The look rules apply to each of them."};
+function libNames(){return getLib().map(function(p){var r=p.result||{};return[r.name,r.title,r.kingdom].filter(Boolean).join(" / ")}).filter(Boolean)}
+function buildSystem(s){return [
+"You are an expert roleplay character writer creating princess characters for Character.AI. Reply with ONLY one valid JSON object, no markdown, no commentary.",
+"RULES (all mandatory):",
+"1. She is an ADULT: state an age between 20 and 26. Never imply she is a minor.",
+"2. She is busty, cute and very pretty. She ALWAYS wears an off-shoulder ballgown with short puffy sleeves, bare shoulders and white gloves, plus a tiara, earrings and a pendant.",
+"3. Her look must match the provided image/description EXACTLY: hair (color, length, style), eye color, gown colors and details, tiara, earrings, pendant. Do not invent conflicting details.",
+"4. Each princess must feel DISTINCT: her own personality, voice, quirks, kingdom and castle. Use a unique girl's name, original kingdom and original castle NOT in the user's existing library list and not existing Nintendo princesses (except for a gender-swap premise).",
+"5. World: "+s.world+". Known characters for context (may appear or be mentioned, never as {{char}}): "+(s.cast||"Bowser, Bowsette, Ludwig, Koopalings, Peach, Daisy, Rosalina")+".",
+"6. Dialogue is formatted 'Name: ...' (her name and a colon) with actions in *asterisks*.",
+"7. NEVER write {{user}}'s ("+s.userName+"'s) dialogue, actions, thoughts or choices anywhere. Every greeting ends on HER line, leaving room for {{user}} to respond.",
+"8. Kidnapper premise: the main greeting shows her alone and unaware so {{user}} initiates.",
+"9. Everything must pass Character.AI's filter: flirty and romantic but NON-EXPLICIT. Kissing, cuddling, making out are fine; anything further fades to black. No explicit sexual content.",
+"10. Never use the words 'kidnap', 'kidnapped' or 'captor' in the tagline or lorebook entries (say 'whisked away' instead).",
+"11. name must be <=20 chars with NO '&' and NO apostrophes. Respect every character limit in the schema.",
+"12. Use {{char}} and {{user}} in the definition's example dialogue.",
+"JSON SCHEMA (all keys required):",
+'{"name":"<=20 chars","title":"royal title","kingdom":"","castle":"","age":21,"tagline":"<=50 chars","description":"<=500 chars","greeting":"main greeting <=1900 chars","alt_greetings":[{"title":"short title","text":"<=1900 chars"} x4 exactly],"definition":"<=3200 chars: look, personality, background, relationship to {{user}}, and 2-3 example lines using {{char}}: and {{user}}:","lorebook_entries":[{"title":"","keywords":["",""],"content":"<=400 chars"} x3 exactly: her, her kingdom, her castle],"image_prompt":"PixAI comma-separated tags: 1girl, solo, adult woman, hair color/style, eye color, big breasts, off-shoulder dress, ballgown, short puffy sleeves, bare shoulders, white gloves, gown colors, tiara, earrings, pendant, setting, masterpiece, best quality","negative_prompt":"comma-separated PixAI negative tags (e.g. lowres, bad anatomy, bad hands, extra fingers, child, loli, nsfw, nude, text, watermark)","idea_used":"(optional) one-sentence summary of the premise/personality you chose"}'
+].join("\n")}
+function buildUserText(s,inp){var p=inp.premise==="custom"?(inp.custom||"Custom premise (use the idea)"):PREMISES[inp.premise];var names=libNames();
+ var based=inp.basedOn?["BASED ON CHARACTER: She is the cute girl version (gender-swap) of \""+inp.basedOn+"\". Create a cute girl-variant NAME derived from that original (examples: Mario→Maria, Luigi→Luigina, Kamek→Kamella, Wario→Wariette, Ludwig→Ludmila, Lakitu→Lakitia, Goomba→Goomina, Koopa→Koopella). Name must be <=20 chars, with NO '&' and NO apostrophes, and not already in the library. Keep the original character's role, traits, colors/motifs and signature items (e.g. broom, cloud, piano, shell) in her personality, look accents and story, while still following every princess rule (adult, busty, cute, off-shoulder ballgown, white gloves, look matching image)."+(inp.name?" The user already chose the name \""+inp.name+"\" — use that exact name (it wins over deriving one).":"")]:[];
+ return ["User's character name: "+s.userName+" (refer to him as {{user}} in templates).","World/setting: "+s.world,"Lorebook: "+lbTarget(s),"Premise: "+p,(inp.idea?"Idea: "+inp.idea:"Idea: (left blank) Invent an original, fun premise and personality yourself, fitting the chosen premise preset"+(inp.basedOn?" and the based-on character (\""+inp.basedOn+"\") — e.g. Waluigi → a scheming, dramatic, mischievous rival girl":"")+", still distinct from library entries.")].concat(based).concat([
+ inp.name?"Use this name: "+inp.name:"Pick a fitting unique name yourself.",
+ inp.look?"Her look (description from user"+(inp.useImg?", supplementing the attached image":"")+"): "+inp.look:(inp.useImg?"Her look: describe exactly what you see in the attached image.":"No image description given; invent a lovely look consistent with the rules."),
+ "Existing library names (do NOT reuse any name, kingdom or castle): "+(names.length?names.join("; "):"(none yet)"),
+ "Return ONLY the JSON object."]).join("\n")}
+
+/* ---------- JSON extraction ---------- */
+function extractJSON(text){if(text==null)throw new Error("Empty reply from model");if(typeof text==="object")return text;
+ var t=String(text).trim();t=t.replace(/<think>[\s\S]*?<\/think>/gi,"").trim();
+ var fence=t.match(/```(?:json|JSON)?\s*([\s\S]*?)```/);if(fence&&fence[1].indexOf("{")>=0)t=fence[1].trim();
+ try{return JSON.parse(t)}catch(e){}
+ var a=t.indexOf("{"),b=t.lastIndexOf("}");if(a<0||b<=a)throw new Error("No JSON object found in reply:\n"+t.slice(0,300));
+ var sub=t.slice(a,b+1);try{return JSON.parse(sub)}catch(e){}
+ var fixed=sub.replace(/,\s*([}\]])/g,"$1").replace(/[\u201c\u201d]/g,'"');try{return JSON.parse(fixed)}catch(e){throw new Error("Could not parse JSON from reply ("+e.message+"):\n"+t.slice(0,300))}}
+
+function normalize(r){r=r||{};
+ r.alt_greetings=(Array.isArray(r.alt_greetings)?r.alt_greetings:[]).map(function(g,i){return typeof g==="string"?{title:"Alt "+(i+1),text:g}:{title:g.title||("Alt "+(i+1)),text:g.text||g.greeting||""}});
+ while(r.alt_greetings.length<4)r.alt_greetings.push({title:"Alt "+(r.alt_greetings.length+1),text:""});
+ r.lorebook_entries=(Array.isArray(r.lorebook_entries)?r.lorebook_entries:[]).map(function(e){return{title:e.title||"",keywords:Array.isArray(e.keywords)?e.keywords:String(e.keywords||"").split(/,\s*/).filter(Boolean),content:e.content||""}});
+ if(!Array.isArray(r.tags))r.tags=String(r.tags||"").split(/,\s*/).filter(Boolean);
+ if(r.name)r.name=String(r.name).replace(/[&'’]/g,"");
+ var nok=function(t){return String(t||"").replace(/\bkidnapp?ed\b/gi,"whisked away").replace(/\bkidnapp?ing\b/gi,"whisking away").replace(/\bkidnappers?\b|\bcaptors?\b/gi,"the one who whisked her away").replace(/\bkidnaps?\b/gi,"whisks away")};
+ r.tagline=nok(r.tagline);r.lorebook_entries.forEach(function(e){e.title=nok(e.title);e.content=nok(e.content)});
+ ["name","title","kingdom","castle","tagline","description","definition","greeting","image_prompt","negative_prompt"].forEach(function(k){if(r[k]==null)r[k]="";r[k]=String(r[k])});
+ if(r.idea_used!=null&&r.idea_used!=="")r.idea_used=String(r.idea_used);else delete r.idea_used;
+ r.age=r.age==null?"":String(r.age);return r}
+
+/* ---------- API ---------- */
+async function callAPI(s,messages,wantJson){
+ async function go(useFmt){var body={model:s.model,messages:messages,temperature:0.9};if(useFmt)body.response_format={type:"json_object"};
+  var res;try{res=await fetch(s.apiUrl,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+keyFor(s),"HTTP-Referer":"https://princess-maker.local","X-Title":"Princess Maker CAI"},body:JSON.stringify(body)})}
+  catch(e){throw new Error("Network error: "+e.message+"\n(Check the API URL, your connection, or CORS support.)")}
+  var txt=await res.text();return{res:res,txt:txt}}
+ var r=await go(wantJson);
+ if(!r.res.ok&&wantJson&&r.res.status>=400&&r.res.status<500&&r.res.status!==401&&r.res.status!==403&&r.res.status!==429)r=await go(false);
+ if(!r.res.ok){var m="HTTP "+r.res.status+" "+(r.res.statusText||"")+"\n"+r.txt.slice(0,300);if((r.res.status===404||r.res.status===400)&&/model|endpoint/i.test(r.txt)&&/not (a )?valid|not exist|does ?n[o']t exist|not found|no endpoints|unknown|invalid model/i.test(r.txt))m+="\n\nThis free model may have been retired; pick another preset.";throw new Error(m)}
+ var j;try{j=JSON.parse(r.txt)}catch(e){throw new Error("API returned non-JSON (HTTP "+r.res.status+"):\n"+r.txt.slice(0,300))}
+ if(j.error)throw new Error("API error: "+(j.error.message||JSON.stringify(j.error)).slice(0,300));
+ var c=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+ if(Array.isArray(c))c=c.map(function(p){return p.text||""}).join("");
+ if(!c)throw new Error("Model returned no content:\n"+r.txt.slice(0,300));return c}
+
+function getInputs(s){return{idea:$("idea").value.trim(),look:$("look").value.trim(),name:$("pname").value.trim().replace(/[&'’]/g,""),basedOn:$("basedOn").value.trim(),premise:$("premise").value,custom:$("customPremise").value.trim(),useImg:!!(s.sendImg&&state.imgData)}}
+function buildMessages(s,inp){var ut=buildUserText(s,inp);var content=inp.useImg?[{type:"text",text:ut},{type:"image_url",image_url:{url:state.imgData}}]:ut;
+ return[{role:"system",content:buildSystem(s)},{role:"user",content:content}]}
+function showErr(m,ok){var e=$("err");e.textContent=m;e.className="err"+(ok?" ok":"");e.style.display=m?"block":"none"}
+function busy(btn,on,label){btn.disabled=on;if(on){btn._l=btn.innerHTML;btn.innerHTML='<span class="spin"></span>'+label}else if(btn._l)btn.innerHTML=btn._l}
+
+async function describeImage(s){var vs={apiUrl:OR_URL,orKey:s.orKey,apiKey:"",model:VISION_MODEL};
+ var t=await callAPI(vs,[{role:"user",content:[{type:"text",text:"Describe this anime character's appearance for a character card, in one compact paragraph: hair (color, length, style), eye color, gown colors and details, gloves, tiara/crown, earrings, pendant/necklace, other accessories. Only describe what is visible; no story."},{type:"image_url",image_url:{url:state.imgData}}]}],false);
+ return String(t||"").replace(/<think>[\s\S]*?<\/think>/g,"").trim()}
+async function generate(){var s=readSettings();showErr("");
+ if(!keyFor(s)){showErr("Please add your "+({or:"OpenRouter ",th:"TokenHarbor "}[provider(s.apiUrl)]||"")+"API key in Settings.");$("setDet").open=true;return}
+ if(!s.model){showErr("Please enter a model name in Settings.");$("setDet").open=true;return}
+ if(!/\/chat\/completions\/?$/.test(s.apiUrl)){showErr("API URL should end in /chat/completions");$("setDet").open=true;return}
+ var inp=getInputs(s);if(!inp.look&&!state.imgData&&!inp.basedOn){showErr("Add an image, a look description, or a based-on character.");return}
+ try{localStorage.setItem(LS_SET,JSON.stringify(s))}catch(e){}
+ busy($("gen"),true,"Summoning your princess…");
+ try{if(s.twoStep&&state.imgData&&!isVisionModel(s)&&s.orKey){busy($("gen"),false);busy($("gen"),true,"Looking at the image…");
+   var d=await describeImage(s);if(d){$("look").value=d;inp=getInputs(s)}busy($("gen"),false);busy($("gen"),true,"Summoning your princess…")}
+  var c=await callAPI(s,buildMessages(s,inp),true);var r=normalize(extractJSON(c));if(inp.basedOn)r.basedOn=inp.basedOn;else delete r.basedOn;state.result=r;render(r);$("outCard").scrollIntoView({behavior:"smooth"})}
+ catch(e){showErr(e.message)}finally{busy($("gen"),false)}}
+
+async function regenGreeting(){var s=readSettings(),r=collect();if(!r){toast("Generate first");return}
+ var which=$("regenWhich").value;var inp=getInputs(s);
+ var sys=buildSystem(s)+"\nNOW: write ONE new greeting only. Return JSON {\"title\":\"short title\",\"text\":\"<=1900 chars\"}.";
+ var u="Character JSON:\n"+JSON.stringify({name:r.name,title:r.title,kingdom:r.kingdom,castle:r.castle,age:r.age,definition:r.definition,greeting:r.greeting})+"\nPremise: "+(inp.premise==="custom"?inp.custom:PREMISES[inp.premise])+"\nWrite a fresh, different "+(which==="main"?"MAIN greeting":"alternate greeting")+" scenario. Never write {{user}}'s actions or words; end on her line.";
+ busy($("regen"),true,"Writing…");
+ try{var g=extractJSON(await callAPI(s,[{role:"system",content:sys},{role:"user",content:u}],true));var txt=g.text||g.greeting||"";
+  if(which==="main")r.greeting=txt;else r.alt_greetings[+which]={title:g.title||r.alt_greetings[+which].title,text:txt};state.result=r;render(r);toast("Greeting regenerated")}
+ catch(e){alert(e.message)}finally{busy($("regen"),false)}}
+
+/* ---------- render ---------- */
+function F(path,label,limit,rows){return{path:path,label:label,limit:limit,rows:rows||3}}
+function sections(r){var ag=r.alt_greetings.map(function(g,i){return F("alt_greetings."+i+".text","Alternate greeting "+(i+1)+(g.title?" — "+g.title:""),1900,8)});
+ var lb=[F("_lbnote","Lorebook note",null,2),F("_lbname","Lorebook to use",null,1)];r.lorebook_entries.forEach(function(e,i){lb.push(F("lorebook_entries."+i+".title","Entry "+(i+1)+" — title",null,1));lb.push(F("lorebook_entries."+i+".keywords","Entry "+(i+1)+" — keywords (comma separated)",null,2));lb.push(F("lorebook_entries."+i+".content","Entry "+(i+1)+" — content",400,5))});
+ return[{id:"cai",name:"Character.AI",fields:[F("name","Name",20,1),F("tagline","Tagline",50,2),F("description","Description",500,5),F("greeting","Greeting",1900,8)].concat(ag,[F("definition","Definition (Advanced creation)",3200,12),F("_vis","Visibility (suggested)",null,1),F("_lbnote","Lorebook note",null,2)])},
+ {id:"lore",name:"Lorebook",fields:lb},
+ {id:"img",name:"Image prompt",fields:[F("image_prompt","Prompt",null,6),F("negative_prompt","Negative prompt",null,4)]}]}
+function getP(r,p){if(p==="_lbname")return lbTarget(readSettings());if(p==="_vis")return "Private";if(p==="_lbnote")return lbNote(readSettings());var v=p.split(".").reduce(function(o,k){return o==null?o:o[k]},r);if(Array.isArray(v))return v.join(", ");return v==null?"":String(v)}
+function setP(r,p,val){if(p.charAt(0)==="_")return;var ks=p.split("."),o=r;for(var i=0;i<ks.length-1;i++){if(o[ks[i]]==null)o[ks[i]]={};o=o[ks[i]]}var k=ks[ks.length-1];
+ if(k==="keywords"||k==="tags")val=val.split(/\s*,\s*/).filter(Boolean);o[k]=val}
+var curTab="cai";
+function render(r){var tabs=$("tabs"),panes=$("panes");tabs.innerHTML="";panes.innerHTML="";
+ $("outTitle").textContent="👑 "+(r.name||"Your Princess")+(r.title?" — "+r.title:"")+(r.age?" ("+r.age+")":"")+(r.castle?" · "+r.castle:"");$("checklist").style.display="none";
+ var bol=$("basedOnLine");if(r.basedOn){bol.textContent="Girl version of: "+r.basedOn;bol.style.display="block"}else{bol.textContent="";bol.style.display="none"};
+ var il=$("ideaLine");if(r.idea_used){il.textContent="Idea: "+r.idea_used;il.style.display="block"}else{il.textContent="";il.style.display="none"};
+ sections(r).forEach(function(sec){var b=document.createElement("button");b.textContent=sec.name;b.dataset.tab=sec.id;b.onclick=function(){showTab(sec.id)};tabs.appendChild(b);
+  var pane=document.createElement("div");pane.dataset.pane=sec.id;
+  sec.fields.forEach(function(f){var d=document.createElement("div");d.className="field";
+   var h=document.createElement("div");h.className="fhead";var lb=document.createElement("b");lb.textContent=f.label;var cn=document.createElement("span");cn.className="cnt";
+   var cp=document.createElement("button");cp.className="copy";cp.textContent="Copy";h.appendChild(lb);h.appendChild(cn);h.appendChild(cp);
+   var ta=document.createElement("textarea");ta.rows=f.rows;ta.dataset.path=f.path;ta.value=getP(r,f.path);if(f.rows===1)ta.style.minHeight="48px";
+   if(f.path.charAt(0)==="_")ta.readOnly=true;
+   function upd(){var n=ta.value.length;cn.textContent=n+(f.limit?" / "+f.limit:"");var ov=f.limit&&n>f.limit;cn.classList.toggle("over",!!ov);ta.classList.toggle("over",!!ov)}
+   ta.addEventListener("input",function(){setP(state.result,f.path,ta.value);upd()});upd();
+   cp.onclick=function(){copyText(ta.value).then(function(){cp.textContent="Copied ✓";cp.classList.add("done");setTimeout(function(){cp.textContent="Copy";cp.classList.remove("done")},1400)})};
+   d.appendChild(h);d.appendChild(ta);pane.appendChild(d)});panes.appendChild(pane)});
+ $("outCard").style.display="block";showTab(curTab)}
+function showTab(id){curTab=id;Array.prototype.forEach.call($("tabs").children,function(b){b.classList.toggle("on",b.dataset.tab===id)});Array.prototype.forEach.call($("panes").children,function(p){p.style.display=p.dataset.pane===id?"block":"none"})}
+function collect(){return state.result}
+function copyText(t){function fb(){var ta=document.createElement("textarea");ta.value=t;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.top="0";ta.style.opacity="0";ta.style.fontSize="16px";document.body.appendChild(ta);
+  var rg=document.createRange();rg.selectNodeContents(ta);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(rg);ta.setSelectionRange(0,t.length);var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(ta);if(!ok)toast("Copy failed — select & copy manually");return Promise.resolve()}
+ if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).catch(fb);return fb()}
+function allText(r){var out=[];sections(r).forEach(function(sec){out.push("==== "+sec.name.toUpperCase()+" ====");sec.fields.forEach(function(f){out.push("--- "+f.label+" ---");out.push(getP(r,f.path));out.push("")})});return out.join("\n")}
+function safeName(n){return(n||"princess").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")||"princess"}
+function download(name,text,type){var b=new Blob([text],{type:type||"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000)}
+
+function checklistSteps(r){var st=[["Name","name"],["Tagline","tagline"],["Description","description"],["Greeting","greeting"]];
+ r.alt_greetings.forEach(function(g,i){st.push(["Alternate greeting "+(i+1)+(g.title?" ("+g.title+")":""),"alt_greetings."+i+".text"])});
+ st.push(["Open Advanced creation → Definition","definition"],["Visibility: choose Private",null],["Lorebook: "+lbNote(readSettings()),null]);return st}
+function showChecklist(){var r=state.result;if(!r){toast("Generate first");return}var box=$("checklist");box.innerHTML="<b>Paste in this order on Character.AI's create form:</b>";var ol=document.createElement("ol");
+ checklistSteps(r).forEach(function(s){var li=document.createElement("li");li.appendChild(document.createTextNode(s[0]+" "));
+  if(s[1]){var b=document.createElement("button");b.className="copy";b.textContent="Copy";b.onclick=function(){copyText(getP(state.result,s[1])).then(function(){li.classList.add("dn");b.textContent="Copied ✓"})};li.appendChild(b)}
+  else{var d=document.createElement("button");d.className="copy";d.textContent="Done";d.onclick=function(){li.classList.add("dn")};li.appendChild(d)}ol.appendChild(li)});
+ box.appendChild(ol);box.style.display="block"}
+
+/* ---------- library ---------- */
+function getLib(){try{return JSON.parse(localStorage.getItem(LS_LIB)||"[]")||[]}catch(e){return[]}}
+function setLib(l){try{localStorage.setItem(LS_LIB,JSON.stringify(l));return true}catch(e){alert("Storage is full! Export your library and delete some princesses.");return false}}
+function lsUsage(){var n=0;try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);n+=(k.length+(localStorage.getItem(k)||"").length)*2}}catch(e){}return n}
+function renderLib(){var l=getLib(),box=$("lib");box.innerHTML="";$("libEmpty").style.display=l.length?"none":"block";
+ l.forEach(function(p,i){var d=document.createElement("div");d.className="it";var im;if(p.thumb){im=document.createElement("img");im.src=p.thumb;im.alt=""}else{im=document.createElement("div");im.className="noimg"}
+  var nm=document.createElement("div");nm.className="nm";nm.textContent=(p.result&&p.result.name)||"Princess";var del=document.createElement("button");del.className="del";del.textContent="✖";del.setAttribute("aria-label","Delete");
+  d.onclick=function(){state.result=normalize(JSON.parse(JSON.stringify(p.result)));state.thumb=p.thumb;render(state.result);$("outCard").scrollIntoView({behavior:"smooth"})};
+  del.onclick=function(ev){ev.stopPropagation();if(confirm("Delete "+nm.textContent+"?")){var L=getLib();L.splice(i,1);setLib(L);renderLib()}};
+  d.appendChild(del);d.appendChild(im);d.appendChild(nm);box.appendChild(d)});
+ var kb=lsUsage()/1024,cap=5120;var st=$("storage");st.textContent="Storage used: ~"+Math.round(kb)+" KB of ~5 MB";
+ if(kb>cap*0.8){st.className="warn";st.textContent+=" — nearly full! Export your library and delete some."}else st.className="hint"}
+function saveToLib(){var r=collect();if(!r){toast("Nothing to save");return}var l=getLib();var item={id:Date.now(),saved:new Date().toISOString(),thumb:state.thumb||null,basedOn:r.basedOn||null,result:JSON.parse(JSON.stringify(r))};
+ var ix=-1;l.forEach(function(p,i){if(p.result&&p.result.name===r.name)ix=i});
+ if(ix>=0&&confirm("A princess named "+r.name+" exists. Replace her? (Cancel = save as new)"))l[ix]=item;else l.unshift(item);
+ if(setLib(l)){toast("Saved 💖");renderLib()}}
+function importLib(file){var fr=new FileReader();fr.onload=function(){try{var d=JSON.parse(fr.result);var arr=Array.isArray(d)?d:(d.princesses||[]);arr=arr.filter(function(p){return p&&p.result});if(!arr.length)throw new Error("No princesses found");
+ var l=getLib(),ids={};l.forEach(function(p){ids[p.id]=1});var added=0;arr.forEach(function(p){if(!ids[p.id]){l.push(p);added++}});if(setLib(l)){renderLib();toast("Imported "+added)}}catch(e){alert("Import failed: "+e.message)}};fr.readAsText(file)}
+
+/* ---------- wire up ---------- */
+function init(){var ps=$("preset");PRESETS.forEach(function(p){var o=document.createElement("option");o.value=p.id;o.textContent=p.label;ps.appendChild(o)});applySettings();renderLib();
+ ps.addEventListener("change",function(){applyPreset(this.value)});
+ ["apiUrl","model","sendImg"].forEach(function(k){$(k).addEventListener("input",syncPreset);$(k).addEventListener("change",syncPreset)});
+ ["orKey","thKey","apiUrl","apiKey","model","userName","world","lorebook","lorebook2","cast"].forEach(function(k){$(k).addEventListener("input",persist)});
+ $("saveSet").onclick=saveSettings;["preset","orKey","thKey","twoStep","apiUrl","apiKey","model","userName","world","lorebook","lorebook2","lbFull","cast","sendImg"].forEach(function(k){$(k).addEventListener("change",function(){try{localStorage.setItem(LS_SET,JSON.stringify(readSettings()))}catch(e){}})});
+ $("img").onchange=async function(){var f=this.files&&this.files[0];if(!f)return;try{state.imgData=await downscale(f,1024,0.85);state.thumb=await thumbFrom(state.imgData);$("preview").src=state.imgData;$("preview").style.display="block";$("clrImg").style.display="block"}catch(e){showErr(e.message)}this.value=""};
+ $("clrImg").onclick=function(){state.imgData=null;state.thumb=null;$("preview").style.display="none";this.style.display="none"};
+ function updateBasedOnHint(){var show=$("premise").value==="genderswap"&&!$("basedOn").value.trim();$("basedOnHint").style.display=show?"block":"none"}
+ $("premise").onchange=function(){$("customPremise").style.display=this.value==="custom"?"block":"none";updateBasedOnHint()};
+ $("basedOn").addEventListener("input",updateBasedOnHint);updateBasedOnHint();
+ $("gen").onclick=generate;$("chkBtn").onclick=showChecklist;$("lbFull").addEventListener("change",function(){if(state.result)render(state.result)});$("regen").onclick=regenGreeting;$("saveLib").onclick=saveToLib;
+ $("copyAll").onclick=function(){if(state.result)copyText(allText(state.result)).then(function(){toast("All copied")})};
+ $("dl").onclick=function(){if(state.result)download(safeName(state.result.name)+".txt",allText(state.result))};
+ $("exp").onclick=function(){download("princess-library-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify({app:"Princess Maker",variant:"cai",version:1,princesses:getLib()},null,1),"application/json")};
+ $("imp").onchange=function(){if(this.files[0])importLib(this.files[0]);this.value=""}}
+if(typeof window!=="undefined"&&!window.__PM_TEST__)document.addEventListener("DOMContentLoaded",init);
+</script>
+</body></html>
