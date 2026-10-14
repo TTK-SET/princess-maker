@@ -148,7 +148,6 @@ var OR_URL="https://openrouter.ai/api/v1/chat/completions",TH_URL="https://token
 var PRESETS=[
  {id:"gemma4-31b",label:"Gemma 4 31B (free, sees images)",apiUrl:OR_URL,model:"google/gemma-4-31b-it:free",sendImg:true},
  {id:"gemma4-26b",label:"Gemma 4 26B A4B (free, sees images)",apiUrl:OR_URL,model:"google/gemma-4-26b-a4b-it:free",sendImg:true},
- {id:"inkling",label:"Inkling (free, sees images)",apiUrl:OR_URL,model:"thinkingmachines/inkling:free",sendImg:true},
  {id:"nemotron-omni",label:"Nemotron 3 Nano Omni 30B (free, sees images)",apiUrl:OR_URL,model:"nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",sendImg:true},
  {id:"th-deepseek",label:"TokenHarbor DeepSeek (free, no images)",apiUrl:TH_URL,model:"deepseek-v4.1-flash:free",sendImg:false},
  {id:"custom",label:"Custom",custom:true}];
@@ -158,6 +157,7 @@ var state={imgData:null,thumb:null,result:null};
 
 function toast(t){var e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){e.classList.remove("show")},1600)}
 function loadSettings(){var s={};try{s=JSON.parse(localStorage.getItem(LS_SET)||"{}")||{}}catch(e){}
+ if(s&&(s.preset==="ink"+"ling"||/^thinkingmachines\//i.test(String(s.model||"")))){s.preset="gemma4-26b";s.model="google/gemma-4-26b-a4b-it:free";s.apiUrl=OR_URL;s.sendImg=true;try{localStorage.setItem(LS_SET,JSON.stringify(s))}catch(e){}}
  var o={};for(var k in DEF)o[k]=(s[k]===undefined?DEF[k]:s[k]);return o}
 function applySettings(){var s=loadSettings();["preset","orKey","thKey","apiUrl","apiKey","model","userName","world","lorebook","lorebook2","cast"].forEach(function(k){$(k).value=s[k]});$("sendImg").checked=!!s.sendImg;$("lbFull").checked=!!s.lbFull;$("twoStep").checked=!!s.twoStep;
  if(!s.model){var p0=PRESETS[0];$("apiUrl").value=p0.apiUrl;$("model").value=p0.model;$("sendImg").checked=true}syncPreset();
@@ -240,7 +240,7 @@ function normalize(r){r=r||{};
 function orVisionPresets(){return PRESETS.filter(function(p){return !p.custom&&p.sendImg&&provider(p.apiUrl)==="or"})}
 function shortPresetLabel(p){return String(p.label||p.id).replace(/\s*\([^)]*\)\s*$/,"").trim()}
 function isOrModelMiss(status,txt){return (status===404||status===400)&&/model|endpoint/i.test(txt)&&/not (a )?valid|not exist|does ?n[o']t exist|not found|no endpoints|unknown|invalid model/i.test(txt)}
-function isOrRetryable(status,txt){return status===429||status===502||status===503||isOrModelMiss(status,txt)}
+function isOrRetryable(status,txt){return status===403||status===429||status===502||status===503||isOrModelMiss(status,txt)}
 function busyStatus(msg){["gen","regen"].forEach(function(id){var b=$(id);if(b&&b.disabled)b.innerHTML='<span class="spin"></span>'+msg})}
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
 callAPI.retryDelay=1500;callAPI.lastUsedLabel=null;
