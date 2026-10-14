@@ -237,19 +237,48 @@ function normalize(r){r=r||{};
  r.age=r.age==null?"":String(r.age);return r}
 
 /* ---------- API ---------- */
+function orVisionPresets(){return PRESETS.filter(function(p){return !p.custom&&p.sendImg&&provider(p.apiUrl)==="or"})}
+function shortPresetLabel(p){return String(p.label||p.id).replace(/\s*\([^)]*\)\s*$/,"").trim()}
+function isOrModelMiss(status,txt){return (status===404||status===400)&&/model|endpoint/i.test(txt)&&/not (a )?valid|not exist|does ?n[o']t exist|not found|no endpoints|unknown|invalid model/i.test(txt)}
+function isOrRetryable(status,txt){return status===429||status===502||status===503||isOrModelMiss(status,txt)}
+function busyStatus(msg){["gen","regen"].forEach(function(id){var b=$(id);if(b&&b.disabled)b.innerHTML='<span class="spin"></span>'+msg})}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+callAPI.retryDelay=1500;callAPI.lastUsedLabel=null;
 async function callAPI(s,messages,wantJson){
- async function go(useFmt){var body={model:s.model,messages:messages,temperature:0.9};if(useFmt)body.response_format={type:"json_object"};
+ callAPI.lastUsedLabel=null;
+ async function go(model,useFmt){var body={model:model,messages:messages,temperature:0.9};if(useFmt)body.response_format={type:"json_object"};
   var res;try{res=await fetch(s.apiUrl,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+keyFor(s),"HTTP-Referer":"https://princess-maker.local","X-Title":"Princess Maker CAI"},body:JSON.stringify(body)})}
   catch(e){throw new Error("Network error: "+e.message+"\n(Check the API URL, your connection, or CORS support.)")}
   var txt=await res.text();return{res:res,txt:txt}}
- var r=await go(wantJson);
- if(!r.res.ok&&wantJson&&r.res.status>=400&&r.res.status<500&&r.res.status!==401&&r.res.status!==403&&r.res.status!==429)r=await go(false);
- if(!r.res.ok){var m="HTTP "+r.res.status+" "+(r.res.statusText||"")+"\n"+r.txt.slice(0,300);if((r.res.status===404||r.res.status===400)&&/model|endpoint/i.test(r.txt)&&/not (a )?valid|not exist|does ?n[o']t exist|not found|no endpoints|unknown|invalid model/i.test(r.txt))m+="\n\nThis free model may have been retired; pick another preset.";throw new Error(m)}
- var j;try{j=JSON.parse(r.txt)}catch(e){throw new Error("API returned non-JSON (HTTP "+r.res.status+"):\n"+r.txt.slice(0,300))}
- if(j.error)throw new Error("API error: "+(j.error.message||JSON.stringify(j.error)).slice(0,300));
- var c=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
- if(Array.isArray(c))c=c.map(function(p){return p.text||""}).join("");
- if(!c)throw new Error("Model returned no content:\n"+r.txt.slice(0,300));return c}
+ async function attempt(model){var r=await go(model,wantJson);
+  if(!r.res.ok&&wantJson&&r.res.status>=400&&r.res.status<500&&r.res.status!==401&&r.res.status!==403&&r.res.status!==429)r=await go(model,false);
+  return r}
+ function failMsg(r){var m="HTTP "+r.res.status+" "+(r.res.statusText||"")+"\n"+r.txt.slice(0,300);if(isOrModelMiss(r.res.status,r.txt))m+="\n\nThis free model may have been retired; pick another preset.";return m}
+ function contentOf(r){var j;try{j=JSON.parse(r.txt)}catch(e){throw new Error("API returned non-JSON (HTTP "+r.res.status+"):\n"+r.txt.slice(0,300))}
+  if(j.error)throw new Error("API error: "+(j.error.message||JSON.stringify(j.error)).slice(0,300));
+  var c=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+  if(Array.isArray(c))c=c.map(function(p){return p.text||""}).join("");
+  if(!c)throw new Error("Model returned no content:\n"+r.txt.slice(0,300));return c}
+ var r=await attempt(s.model);
+ if(r.res.ok)return contentOf(r);
+ if(provider(s.apiUrl)!=="or"||!isOrRetryable(r.res.status,r.txt))throw new Error(failMsg(r));
+ var orig=failMsg(r),vision=orVisionPresets(),start=-1;
+ for(var i=0;i<vision.length;i++)if(vision[i].model===s.model){start=i;break}
+ var queue=[];
+ if(start>=0){for(var k=1;k<vision.length;k++)queue.push(vision[(start+k)%vision.length])}
+ else{for(var k=0;k<vision.length;k++)queue.push(vision[k])}
+ var prevLabel=start>=0?shortPresetLabel(vision[start]):(s.model.split("/").pop()||"Model");
+ for(var qi=0;qi<queue.length;qi++){
+  var next=queue[qi];
+  busyStatus(prevLabel+" busy, trying "+shortPresetLabel(next)+"…");
+  await sleep(callAPI.retryDelay);
+  r=await attempt(next.model);
+  if(r.res.ok){callAPI.lastUsedLabel=shortPresetLabel(next);return contentOf(r)}
+  if(!isOrRetryable(r.res.status,r.txt))throw new Error(failMsg(r));
+  prevLabel=shortPresetLabel(next);
+ }
+ throw new Error(orig+"\n\nAll free models are busy right now — try again in a minute.");
+}
 
 function getInputs(s){return{idea:$("idea").value.trim(),look:$("look").value.trim(),name:$("pname").value.trim().replace(/[&'’]/g,""),basedOn:$("basedOn").value.trim(),premise:$("premise").value,custom:$("customPremise").value.trim(),useImg:!!(s.sendImg&&state.imgData)}}
 function buildMessages(s,inp){var ut=buildUserText(s,inp);var content=inp.useImg?[{type:"text",text:ut},{type:"image_url",image_url:{url:state.imgData}}]:ut;
@@ -260,25 +289,25 @@ function busy(btn,on,label){btn.disabled=on;if(on){btn._l=btn.innerHTML;btn.inne
 async function describeImage(s){var vs={apiUrl:OR_URL,orKey:s.orKey,apiKey:"",model:VISION_MODEL};
  var t=await callAPI(vs,[{role:"user",content:[{type:"text",text:"Describe this anime character's appearance for a character card, in one compact paragraph: hair (color, length, style), eye color, gown colors and details, gloves, tiara/crown, earrings, pendant/necklace, other accessories. Only describe what is visible; no story."},{type:"image_url",image_url:{url:state.imgData}}]}],false);
  return String(t||"").replace(/<think>[\s\S]*?<\/think>/g,"").trim()}
-async function generate(){var s=readSettings();showErr("");
+async function generate(){var s=readSettings();showErr("");callAPI.lastUsedLabel=null;
  if(!keyFor(s)){showErr("Please add your "+({or:"OpenRouter ",th:"TokenHarbor "}[provider(s.apiUrl)]||"")+"API key in Settings.");$("setDet").open=true;return}
  if(!s.model){showErr("Please enter a model name in Settings.");$("setDet").open=true;return}
  if(!/\/chat\/completions\/?$/.test(s.apiUrl)){showErr("API URL should end in /chat/completions");$("setDet").open=true;return}
  var inp=getInputs(s);if(!inp.look&&!state.imgData&&!inp.basedOn){showErr("Add an image, a look description, or a based-on character.");return}
  try{localStorage.setItem(LS_SET,JSON.stringify(s))}catch(e){}
  busy($("gen"),true,"Summoning your princess…");
- try{if(s.twoStep&&state.imgData&&!isVisionModel(s)&&s.orKey){busy($("gen"),false);busy($("gen"),true,"Looking at the image…");
-   var d=await describeImage(s);if(d){$("look").value=d;inp=getInputs(s)}busy($("gen"),false);busy($("gen"),true,"Summoning your princess…")}
-  var c=await callAPI(s,buildMessages(s,inp),true);var r=normalize(extractJSON(c));if(inp.basedOn)r.basedOn=inp.basedOn;else delete r.basedOn;state.result=r;render(r);$("outCard").scrollIntoView({behavior:"smooth"})}
+ try{var usedNote=null;if(s.twoStep&&state.imgData&&!isVisionModel(s)&&s.orKey){busy($("gen"),false);busy($("gen"),true,"Looking at the image…");
+   var d=await describeImage(s);if(callAPI.lastUsedLabel)usedNote=callAPI.lastUsedLabel;if(d){$("look").value=d;inp=getInputs(s)}busy($("gen"),false);busy($("gen"),true,"Summoning your princess…")}
+  var c=await callAPI(s,buildMessages(s,inp),true);if(callAPI.lastUsedLabel)usedNote=callAPI.lastUsedLabel;var r=normalize(extractJSON(c));if(inp.basedOn)r.basedOn=inp.basedOn;else delete r.basedOn;state.result=r;render(r);if(usedNote)showErr("Used model: "+usedNote,true);$("outCard").scrollIntoView({behavior:"smooth"})}
  catch(e){showErr(e.message)}finally{busy($("gen"),false)}}
 
 async function regenGreeting(){var s=readSettings(),r=collect();if(!r){toast("Generate first");return}
  var which=$("regenWhich").value;var inp=getInputs(s);
  var sys=buildSystem(s)+"\nNOW: write ONE new greeting only. Return JSON {\"title\":\"short title\",\"text\":\"<=1900 chars\"}.";
  var u="Character JSON:\n"+JSON.stringify({name:r.name,title:r.title,kingdom:r.kingdom,castle:r.castle,age:r.age,definition:r.definition,greeting:r.greeting})+"\nPremise: "+(inp.premise==="custom"?inp.custom:PREMISES[inp.premise])+"\nWrite a fresh, different "+(which==="main"?"MAIN greeting":"alternate greeting")+" scenario. Never write {{user}}'s actions or words; end on her line.";
- busy($("regen"),true,"Writing…");
+ busy($("regen"),true,"Writing…");callAPI.lastUsedLabel=null;
  try{var g=extractJSON(await callAPI(s,[{role:"system",content:sys},{role:"user",content:u}],true));var txt=g.text||g.greeting||"";
-  if(which==="main")r.greeting=txt;else r.alt_greetings[+which]={title:g.title||r.alt_greetings[+which].title,text:txt};state.result=r;render(r);toast("Greeting regenerated")}
+  if(which==="main")r.greeting=txt;else r.alt_greetings[+which]={title:g.title||r.alt_greetings[+which].title,text:txt};state.result=r;render(r);toast("Greeting regenerated");if(callAPI.lastUsedLabel)showErr("Used model: "+callAPI.lastUsedLabel,true)}
  catch(e){alert(e.message)}finally{busy($("regen"),false)}}
 
 /* ---------- render ---------- */
