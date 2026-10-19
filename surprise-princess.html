@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Surprise Princess</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#1d1b26;color:#eee;max-width:760px;margin:auto;padding:16px}
+h1{font-size:22px}button{font-size:17px;padding:12px 18px;border:0;border-radius:10px;margin:4px;cursor:pointer}
+#go{background:#ff6fb5;color:#fff;font-size:22px;width:100%}
+.mode button{background:#3a3650;color:#eee}.mode button.on{background:#8a6cff}
+textarea{width:100%;height:150px;font-size:14px;background:#2a2738;color:#fff;border:1px solid #555;border-radius:8px;padding:8px;box-sizing:border-box}
+.chips span{display:inline-block;padding:5px 10px;margin:3px;border-radius:14px;font-size:13px;color:#000}
+.batch button{background:#ff9f43;color:#fff;min-width:56px}.item{background:#2a2738;border-radius:10px;padding:10px;margin:10px 0}.item pre{white-space:pre-wrap;font-size:13px;margin:6px 0}
+.copy{background:#4caf50;color:#fff}label{font-size:14px}
+</style></head><body>
+<h1>👑 Surprise Me Princess</h1>
+<div class="mode">Mode:
+<button data-m="curated" class="on">Looks good (curated)</button>
+<button data-m="harmony">Matching (random)</button>
+<button data-m="wild">Totally random</button></div>
+<button id="go">🎲 Surprise Me</button>
+<div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
+<div id="list"></div>
+<div class="chips" id="chips"></div>
+<h3>Prompt</h3><textarea id="p"></textarea><button class="copy" onclick="cp('p')">Copy prompt</button>
+<h3>Negative</h3><textarea id="n" style="height:70px"></textarea><button class="copy" onclick="cp('n')">Copy negative</button>
+<script>
+const HEX={blonde:'#f5d76e',brown:'#8b5a2b',black:'#333',white:'#fff',silver:'#c0c0c0',pink:'#ff8fc8',red:'#e53935',orange:'#ff9800',yellow:'#ffeb3b',green:'#4caf50',blue:'#2196f3',purple:'#9c27b0','light blue':'#9ad8ff','light pink':'#ffc8e0','light orange':'#ffd1a1',gold:'#d4af37',lavender:'#c8a2ff',mint:'#a8f0d0',teal:'#20b2aa',navy:'#1a237e','light green':'#b9f6ca','light purple':'#d1b3ff'};
+const HAIR=['blonde','brown','black','white','silver','pink','red','orange','yellow','green','blue','purple','light blue','light pink','light orange'];
+const EYES=['brown','blue','green','pink'];
+const DRESS=['pink','light pink','red','orange','light orange','yellow','green','light green','mint','teal','blue','light blue','navy','purple','light purple','lavender'];
+// curated: hair, eyes, dress, trim, tiara, gem/earrings, pendant
+const CUR=[
+['blonde','blue','pink','light pink','gold','blue','blue'],
+['brown','blue','yellow','orange','gold','light blue','light blue'],
+['blonde','blue','light blue','white','silver','blue','blue'],
+['light pink','pink','lavender','white','silver','pink','pink'],
+['silver','blue','navy','silver','silver','light blue','light blue'],
+['red','green','green','gold','gold','green','green'],
+['black','pink','red','gold','gold','red','red'],
+['light orange','green','mint','white','gold','pink','pink'],
+['brown','green','light green','yellow','gold','pink','pink'],
+['blonde','pink','light purple','pink','gold','purple','purple'],
+['light blue','blue','blue','light blue','silver','blue','blue'],
+['pink','blue','light blue','pink','silver','pink','pink'],
+['purple','pink','light pink','purple','silver','purple','purple'],
+['orange','brown','teal','orange','gold','orange','orange'],
+['white','blue','purple','gold','gold','purple','purple'],
+['yellow','blue','blue','yellow','gold','yellow','yellow'],
+['brown','brown','orange','light orange','gold','red','red'],
+['green','green','light pink','green','gold','green','green'],
+['black','blue','light blue','navy','silver','blue','blue'],
+['light pink','green','light green','light pink','gold','pink','pink'],
+['blonde','green','teal','gold','gold','green','green'],
+['red','blue','navy','red','gold','red','red'],
+['silver','pink','pink','silver','silver','pink','pink'],
+['blue','blue','light orange','blue','gold','blue','blue']];
+const COMP={pink:['mint','light green','light blue','white'],red:['gold','navy','white'],orange:['teal','blue','white'],yellow:['blue','purple','orange'],green:['pink','gold','white'],blue:['yellow','orange','gold','white'],purple:['gold','yellow','light pink'],'light blue':['pink','white','silver'],'light pink':['mint','lavender','white'],'light orange':['teal','mint','white'],mint:['pink','light pink','white'],teal:['orange','gold','pink'],navy:['gold','silver','light blue'],'light green':['pink','yellow','white'],'light purple':['pink','gold','white'],lavender:['light pink','silver','white']};
+const r=a=>a[Math.floor(Math.random()*a.length)];
+let mode='curated';
+document.querySelectorAll('.mode button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m});
+function pick(){
+ if(mode==='curated'){const c=r(CUR);return{hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6]}}
+ const dress=r(DRESS);let hair;do{hair=r(HAIR)}while(hair===dress);
+ if(mode==='wild')return{hair,eyes:r(EYES),dress,trim:r(DRESS.concat(['white','gold','silver'])),tiara:r(['gold','silver']),gem:r(DRESS),pend:r(DRESS)};
+ const acc=r(COMP[dress]);const tiara=['navy','purple','blue','light blue','lavender','pink','light pink'].includes(dress)?r(['silver','gold']):'gold';
+ const gem=acc==='white'||acc==='gold'||acc==='silver'?r(COMP[dress].filter(x=>!['white','gold','silver'].includes(x)).concat([dress])):acc;
+ return{hair,eyes:r(EYES),dress,trim:acc,tiara,gem,pend:gem};
+}
+function go(){
+ const c=pick(),v=false;
+ const [p,n]=build(c);
+ document.getElementById('list').innerHTML='';
+ document.getElementById('p').value=p;document.getElementById('n').value=n;
+ document.getElementById('chips').innerHTML=chips(c);
+}
+function batch(k){let h='',all=[];for(let i=1;i<=k;i++){const c=pick(),[p,n]=build(c);all.push(p);document.getElementById('n').value=n;h+=`<div class=item><b>#${i}</b><div class=chips>${chips(c)}</div><pre id=b${i}>${p}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button></div>`}
+ window._all=all.join('\\n\\n');document.getElementById('list').innerHTML=`<button class=copy onclick="cpAll()">Copy all ${k}</button>`+h;document.getElementById('chips').innerHTML='';document.getElementById('p').value='(batch below)';}
+function cpt(id){navigator.clipboard.writeText(document.getElementById(id).textContent)}
+function cpAll(){navigator.clipboard.writeText(window._all)}
+function build(c){const v=false;
+ const top=v?`${c.dress} dress, covered bodice, high neckline`:`${c.dress} off-shoulder dress, ${c.dress} dress`;
+ const p=`1girl, solo, close-up, three-quarter view, standing at an angle, ${c.hair} straight hair with bangs, ${c.hair} hair, ${c.eyes} eyes, ${top}, ${c.trim} trim, short puffy sleeves, ${v?'':'bare shoulders, '}long dress, ballgown, no neck collar, white gloves, ${c.tiara} tiara, ${c.gem} gem, ${c.gem} earrings, ${c.pend} pendant, worried, pleading expression, blush, sweatdrop, own hands together, hands clasped, praying hands, hands near chest, looking at viewer, castle hall, ${v?'':'big breasts, '}ultrabody`;
+ let n='white dress, wedding dress, wedding veil, veil, bridal, tight bodice, corset, extra arms, long arms, choker, neck collar'+(v?', cleavage, nsfw':'');
+ return [p,n];}
+function chips(c){return [['Hair',c.hair],['Eyes',c.eyes],['Dress',c.dress],['Trim',c.trim],['Tiara',c.tiara],['Gem',c.gem]].map(([k,x])=>{const h=HEX[x.split(' and ')[0]]||'#ccc';return `<span style="background:${h}">${k}: ${x}</span>`}).join('');}
+function cp(id){const t=document.getElementById(id);t.select();navigator.clipboard?navigator.clipboard.writeText(t.value):document.execCommand('copy')}
+document.getElementById('go').onclick=go;go();
+</script></body></html>
