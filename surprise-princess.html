@@ -9,12 +9,20 @@ textarea{width:100%;height:150px;font-size:14px;background:#2a2738;color:#fff;bo
 .chips span{display:inline-block;padding:5px 10px;margin:3px;border-radius:14px;font-size:13px;color:#000}
 .batch button{background:#ff9f43;color:#fff;min-width:56px}.item{background:#2a2738;border-radius:10px;padding:10px;margin:10px 0}.item pre{white-space:pre-wrap;font-size:13px;margin:6px 0}
 .copy{background:#4caf50;color:#fff}label{font-size:14px}
+details{background:#26233a;border-radius:10px;padding:8px;margin:8px 0}summary{font-size:17px;padding:6px;cursor:pointer}
+#tq{width:100%;font-size:17px;padding:10px;border-radius:8px;border:1px solid #555;background:#2a2738;color:#fff;box-sizing:border-box}
+#tgrid{max-height:340px;overflow-y:auto;margin-top:6px}#tgrid h4{margin:10px 4px 2px;font-size:14px;color:#bbb}
+.tb{background:#3a3650;color:#eee;font-size:15px;padding:10px 12px}.tb.on{background:#ff6fb5;color:#fff}
+.tname{background:#8a6cff;color:#fff;border-radius:8px;padding:2px 8px;font-size:13px;margin-left:6px}
 </style></head><body>
 <h1>👑 Surprise Me Princess</h1>
 <div class="mode">Mode:
 <button data-m="curated" class="on">Looks good (curated)</button>
 <button data-m="harmony">Matching (random)</button>
 <button data-m="wild">Totally random</button></div>
+<details open><summary>🎨 Theme: <b id="tcur">No theme</b></summary>
+<input id="tq" placeholder="Search themes (e.g. halloween, fruit, space)…">
+<div id="tgrid"></div></details>
 <button id="go">🎲 Surprise Me</button>
 <div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
 <div id="list"></div>
@@ -22,65 +30,203 @@ textarea{width:100%;height:150px;font-size:14px;background:#2a2738;color:#fff;bo
 <h3>Prompt</h3><textarea id="p"></textarea><button class="copy" onclick="cp('p')">Copy prompt</button>
 <h3>Negative</h3><textarea id="n" style="height:70px"></textarea><button class="copy" onclick="cp('n')">Copy negative</button>
 <script>
-const HEX={blonde:'#f5d76e',brown:'#8b5a2b',black:'#333',white:'#fff',silver:'#c0c0c0',pink:'#ff8fc8',red:'#e53935',orange:'#ff9800',yellow:'#ffeb3b',green:'#4caf50',blue:'#2196f3',purple:'#9c27b0','light blue':'#9ad8ff','light pink':'#ffc8e0','light orange':'#ffd1a1',gold:'#d4af37',lavender:'#c8a2ff',mint:'#a8f0d0',teal:'#20b2aa',navy:'#1a237e','light green':'#b9f6ca','light purple':'#d1b3ff'};
+// [group, name, extras, background, palettes "hair/eyes/dress/trim/tiara/gem/pendant;..."]
+const THEMES=[
+['Cute / Pastel','Cute','heart earrings, ribbon, sparkles, heart hair ornament','castle hall','blonde/pink/light pink/lavender/gold/pink/heart;light pink/blue/lavender/light pink/silver/pink/pink;light blue/pink/pink/light blue/silver/light blue/heart;brown/green/mint green/pink/gold/pink/pink'],
+['Cute / Pastel','Pastel Dream','pastel colors, sparkles, hair bow, star earrings','castle hall','light pink/blue/light blue/lavender/silver/pink/star;light blue/pink/lavender/mint green/silver/light blue/light blue;light orange/green/mint green/light pink/gold/pink/pink'],
+['Cute / Pastel','Kawaii Bunny','rabbit hair ornament, ribbon, carrot earrings, sparkles','flower garden','white/pink/light pink/pink/silver/pink/pink;light pink/blue/light blue/pink/silver/pink/pink;blonde/brown/lavender/light pink/gold/purple/purple'],
+['Cute / Pastel','Lolita Sweet','frills, hair bow, lace trim, heart earrings','tea party','blonde/blue/light pink/lavender/gold/pink/heart;black/pink/lavender/pink/silver/purple/purple;brown/green/light blue/pink/gold/blue/blue'],
+['Cute / Pastel','Teddy Bear','teddy bear, ribbon, bear hair ornament','bedroom','brown/brown/light orange/brown/gold/orange/orange;light orange/green/pink/brown/gold/pink/pink;blonde/brown/brown/pink/gold/red/red'],
+['Cute / Pastel','Kitty Cat','cat ear headband, paw print, bell, fish earrings','castle hall','black/green/pink/black/gold/pink/pink;white/blue/light blue/pink/silver/blue/blue;orange/green/mint green/orange/gold/green/green'],
+['Cute / Pastel','Rainbow','rainbow, sparkles, star earrings, rainbow hair ornament','rainbow sky','blonde/blue/light blue/pink/gold/purple/rainbow;pink/green/lavender/yellow/silver/blue/rainbow;white/pink/pink/light blue/gold/yellow/rainbow'],
+['Cute / Pastel','Cotton Candy Pastel','pastel colors, cloud hair ornament, sparkles','cloud castle','light pink/blue/light blue/pink/silver/pink/pink;light blue/pink/light pink/light blue/silver/light blue/light blue;lavender/pink/mint green/light pink/silver/purple/purple'.replace('lavender','light pink').replace('light pink/pink/mint','purple/pink/mint')],
+['Holidays','Halloween','pumpkin earrings, bat hair ornament, jack-o\'-lantern, candles, bat wings','haunted castle hall','black/green/orange/black/gold/purple/purple;purple/pink/black/orange/silver/orange/orange;orange/green/purple/black/gold/green/green;white/blue/black/purple/silver/purple/purple'],
+['Holidays','Christmas','snowflake earrings, holly hair ornament, christmas tree, snow, christmas ornament','snowy castle hall','blonde/green/red/gold/gold/green/green;red/green/dark green/gold/gold/red/red;white/blue/red/green/silver/green/green;brown/brown/green/red/gold/red/red'],
+['Holidays','Valentine\'s Day','heart earrings, heart hair ornament, rose, chocolate, heart','castle hall','blonde/blue/red/pink/gold/pink/heart;black/pink/pink/red/gold/red/heart;light pink/pink/red/light pink/silver/pink/heart;brown/green/light pink/red/gold/red/heart'],
+['Holidays','Easter','egg earrings, rabbit hair ornament, easter egg, flower, basket','flower garden','blonde/blue/lavender/yellow/gold/purple/purple;light pink/green/mint green/pink/silver/pink/pink;light blue/pink/yellow/lavender/silver/blue/blue'],
+['Holidays','St. Patrick\'s Day','clover earrings, shamrock, clover hair ornament, rainbow, gold coin','meadow','red/green/green/gold/gold/green/clover;orange/green/dark green/gold/gold/green/clover;blonde/green/green/gold/gold/green/clover'],
+['Holidays','Thanksgiving','leaf earrings, autumn leaves, pumpkin, maple leaf hair ornament','autumn forest','brown/brown/orange/brown/gold/orange/orange;red/green/brown/gold/gold/orange/orange;blonde/brown/dark red/orange/gold/red/red'],
+['Holidays','New Year','star earrings, fireworks, confetti, champagne glass','night sky','black/blue/gold/silver/silver/blue/star;blonde/blue/navy/gold/gold/blue/blue;silver/pink/black/gold/gold/pink/pink;red/brown/silver/gold/gold/red/star'],
+['Holidays','4th of July','star earrings, fireworks, star hair ornament, american flag','night sky','blonde/blue/red/blue/silver/blue/star;brown/blue/navy/red/silver/red/star;white/blue/blue/red/silver/red/red;red/blue/navy/silver/silver/blue/blue'],
+['Holidays','Lunar New Year','red lantern, flower hair ornament, gold coin, fireworks','castle hall','black/brown/red/gold/gold/red/red;black/brown/gold/red/gold/red/red;brown/brown/red/gold/gold/green/green'],
+['Holidays','Birthday','balloon, birthday cake, party hat, confetti, star earrings','party','pink/blue/light blue/pink/gold/pink/star;blonde/green/pink/yellow/gold/purple/purple;brown/blue/lavender/light pink/silver/pink/pink'],
+['Holidays','Day of the Dead','marigold, flower hair ornament, candles, skull earrings','candlelit hall','black/brown/purple/orange/gold/orange/orange;white/green/black/pink/gold/pink/pink;red/brown/orange/purple/gold/purple/purple'],
+['Holidays','Hanukkah','star earrings, candles, menorah, snow','castle hall','brown/blue/blue/silver/silver/blue/star;black/blue/navy/gold/gold/blue/star;blonde/blue/light blue/silver/silver/blue/blue'],
+['Seasons','Spring','cherry blossoms, flower hair ornament, petals, flower earrings','flower garden','light pink/green/mint green/pink/gold/pink/pink;brown/green/light pink/light green/gold/green/green;blonde/blue/light green/yellow/gold/pink/pink'],
+['Seasons','Summer','sunflower, straw hat, sun, shell earrings','beach','blonde/blue/yellow/orange/gold/blue/blue;brown/brown/light blue/yellow/gold/orange/orange;orange/green/teal/yellow/gold/teal/teal'],
+['Seasons','Autumn','autumn leaves, maple leaf hair ornament, leaf earrings','autumn forest','red/brown/orange/brown/gold/orange/orange;brown/green/dark red/gold/gold/orange/orange;orange/brown/brown/orange/gold/red/red'],
+['Seasons','Winter','snowflake earrings, snow, snowflake hair ornament, fur trim','snowy castle hall','white/blue/light blue/silver/silver/blue/blue;silver/blue/navy/light blue/silver/light blue/light blue;black/blue/blue/silver/silver/light blue/snowflake'],
+['Weather','Rainy Day','rain, umbrella, raindrop earrings, puddle','rainy garden','blue/blue/light blue/navy/silver/blue/blue;black/green/teal/light blue/silver/blue/blue;brown/blue/yellow/navy/gold/blue/blue'],
+['Weather','Thunderstorm','lightning, storm clouds, lightning bolt earrings','stormy sky','blonde/blue/navy/yellow/gold/yellow/yellow;silver/blue/purple/yellow/silver/purple/purple;black/blue/dark blue/yellow/gold/yellow/yellow'],
+['Weather','Snowy','snow, snowflake earrings, falling snow, mittens','snowy castle hall','white/blue/light blue/silver/silver/blue/blue;light blue/blue/lavender/silver/silver/light blue/light blue;brown/brown/red/silver/silver/red/red'],
+['Weather','Sunny','sun, sunbeam, sun earrings, sunflower','sunny meadow','blonde/blue/yellow/orange/gold/orange/orange;orange/brown/light orange/yellow/gold/yellow/yellow;brown/green/light yellow/orange/gold/orange/orange'],
+['Weather','Rainbow After Rain','rainbow, raindrop earrings, puddle, clouds','rainbow sky','light blue/pink/lavender/yellow/silver/blue/rainbow;blonde/blue/light blue/pink/gold/pink/rainbow'],
+['Weather','Windy','wind, falling leaves, floating hair, petals','meadow','green/green/teal/light green/silver/green/green;blonde/blue/light blue/white/gold/blue/blue;pink/green/mint green/pink/silver/pink/pink'],
+['Sky / Time of Day','Sunrise','sunrise, morning sky, sun earrings','balcony','light orange/blue/light pink/orange/gold/orange/orange;blonde/pink/light orange/pink/gold/pink/pink;pink/brown/yellow/light pink/gold/orange/orange'],
+['Sky / Time of Day','Sunset','sunset, orange sky, clouds','balcony','orange/brown/purple/orange/gold/orange/orange;red/brown/orange/purple/gold/purple/purple;blonde/blue/pink/orange/gold/orange/orange'],
+['Sky / Time of Day','Twilight','twilight, gradient sky, star earrings, crescent moon','balcony','purple/pink/navy/lavender/silver/purple/star;light blue/pink/purple/light pink/silver/pink/pink;silver/blue/lavender/navy/silver/blue/blue'],
+['Sky / Time of Day','Midnight','night sky, moon, starry sky, moon earrings','moonlit castle hall','silver/blue/navy/silver/silver/blue/moon;black/blue/dark blue/silver/silver/blue/blue;white/pink/black/silver/silver/purple/moon'],
+['Sky / Time of Day','Starry Night','starry sky, star earrings, shooting star, star hair ornament','night sky','blonde/blue/navy/gold/gold/blue/star;light blue/blue/dark blue/silver/silver/light blue/star;purple/pink/black/gold/gold/purple/star'],
+['Space','Galaxy','galaxy, nebula, star earrings, stars','outer space','purple/blue/navy/pink/silver/purple/star;pink/blue/purple/light blue/silver/pink/star;silver/pink/black/purple/silver/blue/star'],
+['Space','Moon','crescent moon, moon earrings, moon hair ornament, starry sky','moonlit castle hall','silver/blue/navy/silver/silver/light blue/moon;white/blue/light blue/silver/silver/blue/moon;black/pink/lavender/silver/silver/purple/moon'],
+['Space','Sun','sun, sun earrings, sunbeam, sun hair ornament','sunny sky','blonde/blue/orange/gold/gold/orange/orange;red/brown/yellow/orange/gold/red/red;orange/brown/red/gold/gold/yellow/yellow'],
+['Space','Mars','red planet, planet earrings, stars','outer space','black/brown/red/orange/gold/red/red;blonde/blue/orange/red/gold/red/red;brown/brown/dark red/orange/gold/orange/orange'],
+['Space','Saturn','planet, planetary ring, planet earrings, stars','outer space','blonde/brown/light orange/brown/gold/orange/planet;brown/brown/yellow/brown/gold/yellow/planet;light orange/blue/brown/yellow/gold/yellow/planet'],
+['Space','Neptune','planet, planet earrings, stars, ice','outer space','silver/blue/blue/light blue/silver/blue/planet;light blue/blue/navy/silver/silver/blue/planet;white/blue/teal/blue/silver/blue/planet'],
+['Space','Comet','comet, shooting star, star earrings, sparkles','night sky','silver/blue/navy/light blue/silver/blue/star;light blue/blue/purple/silver/silver/light blue/star'],
+['Fruits','Strawberry','strawberry earrings, strawberry hair ornament, strawberry','fruit garden','blonde/green/red/pink/gold/red/red;pink/green/light pink/red/gold/red/red;brown/brown/pink/green/gold/red/red'],
+['Fruits','Cherry','cherry earrings, cherry hair ornament, cherry','fruit garden','black/brown/red/pink/gold/red/red;brown/green/light pink/red/gold/red/red;blonde/blue/dark red/pink/gold/red/red'],
+['Fruits','Lemon','lemon earrings, lemon slice, lemon hair ornament','fruit garden','blonde/blue/yellow/green/gold/yellow/yellow;green/green/yellow/green/gold/yellow/yellow;brown/green/light yellow/green/gold/yellow/yellow'],
+['Fruits','Orange','orange slice, citrus, orange hair ornament','fruit garden','orange/green/light orange/green/gold/orange/orange;blonde/brown/orange/green/gold/orange/orange;brown/green/orange/yellow/gold/orange/orange'],
+['Fruits','Peach','peach, peach blossom, flower earrings','fruit garden','light pink/brown/light orange/pink/gold/pink/pink;light orange/blue/pink/light orange/gold/pink/pink;brown/green/peach/pink/gold/pink/pink'.replace('/peach/','/light orange/').replace('brown/green/light orange/pink','brown/green/light orange/pink')],
+['Fruits','Blueberry','blueberry, blueberry earrings, leaf hair ornament','fruit garden','light blue/blue/blue/navy/silver/blue/blue;silver/blue/navy/light blue/silver/blue/blue;black/blue/purple/blue/silver/blue/blue'],
+['Fruits','Grape','grape earrings, grapes, vine hair ornament','vineyard','light purple/pink/purple/green/gold/purple/purple;blonde/green/purple/light green/gold/purple/purple;black/pink/lavender/purple/silver/purple/purple'.replace('light purple/','light pink/')],
+['Fruits','Watermelon','watermelon slice, watermelon earrings, seeds','beach','green/green/pink/green/gold/pink/pink;black/green/red/green/gold/green/green;pink/green/green/red/gold/red/red'],
+['Fruits','Apple','apple, apple earrings, leaf hair ornament','orchard','red/green/green/red/gold/red/red;blonde/green/red/green/gold/green/green;brown/brown/red/gold/gold/red/red'],
+['Fruits','Pineapple','pineapple, tropical flower, flower earrings','tropical beach','blonde/green/yellow/green/gold/yellow/yellow;brown/brown/green/yellow/gold/yellow/yellow'],
+['Desserts / Candy','Cupcake','cupcake, sprinkles, cherry earrings, frosting','bakery','pink/brown/light pink/brown/gold/pink/pink;brown/pink/lavender/pink/silver/pink/pink;blonde/blue/mint green/pink/gold/red/red'],
+['Desserts / Candy','Candy','lollipop, candy, candy earrings, sweets','candy castle','pink/blue/light blue/pink/silver/pink/pink;light blue/pink/pink/light blue/silver/blue/blue;red/green/mint green/red/gold/red/red'],
+['Desserts / Candy','Candy Cane','candy cane, stripes, peppermint, candy earrings','snowy castle hall','white/green/red/green/silver/red/red;red/blue/green/red/gold/red/red;blonde/green/red/green/gold/red/red'],
+['Desserts / Candy','Chocolate','chocolate, heart earrings, chocolate bar, cocoa','castle hall','brown/brown/pink/brown/gold/pink/pink;black/brown/brown/pink/gold/red/red;blonde/brown/dark red/brown/gold/red/red'],
+['Desserts / Candy','Ice Cream','ice cream cone, sprinkles, cherry earrings','ice cream parlor','light pink/blue/mint green/pink/silver/pink/pink;brown/pink/light pink/brown/gold/pink/pink;blonde/blue/light blue/pink/silver/blue/blue'],
+['Desserts / Candy','Macaron','macaron, macaron earrings, pastel colors','tea party','light pink/green/mint green/pink/gold/pink/pink;lavender/pink/light pink/lavender/silver/purple/purple'.replace('lavender/pink/light pink','purple/pink/light pink')+';light blue/pink/lavender/light blue/silver/blue/blue'],
+['Desserts / Candy','Cotton Candy','cotton candy, sparkles, cloud hair ornament','carnival','light pink/blue/light blue/pink/silver/pink/pink;light blue/pink/pink/light blue/silver/blue/blue'],
+['Desserts / Candy','Gingerbread','gingerbread man, cookie, icing, candy cane','snowy castle hall','brown/brown/red/green/gold/red/red;light orange/green/brown/red/gold/green/green'],
+['Desserts / Candy','Honey','honey, honeycomb, bee hair ornament, bee earrings','flower garden','blonde/brown/yellow/brown/gold/orange/orange;brown/brown/orange/yellow/gold/yellow/yellow;black/brown/yellow/black/gold/yellow/yellow'],
+['Flowers','Rose','rose, rose hair ornament, rose petals, flower earrings','rose garden','black/pink/red/gold/gold/red/red;blonde/blue/red/pink/gold/red/red;brown/green/pink/red/gold/pink/pink'],
+['Flowers','Cherry Blossom','cherry blossoms, petals, flower hair ornament, flower earrings','cherry blossom garden','light pink/pink/pink/light pink/silver/pink/pink;black/brown/light pink/pink/gold/pink/pink;brown/green/lavender/pink/silver/pink/pink'],
+['Flowers','Sunflower','sunflower, sunflower hair ornament, flower earrings','sunflower field','blonde/blue/yellow/brown/gold/orange/orange;brown/brown/yellow/green/gold/yellow/yellow;orange/green/light orange/yellow/gold/yellow/yellow'],
+['Flowers','Lavender','lavender flowers, flower hair ornament, petals','lavender field','light purple/pink/lavender/purple/silver/purple/purple'.replace('light purple/','silver/')+';blonde/blue/purple/lavender/gold/purple/purple;brown/green/lavender/light green/silver/purple/purple'],
+['Flowers','Lily','lily, lily hair ornament, petals, flower earrings','flower garden','blonde/green/light green/yellow/gold/green/green;red/green/orange/yellow/gold/orange/orange;brown/blue/light pink/green/gold/pink/pink'],
+['Flowers','Lotus','lotus, lotus hair ornament, water lily','lotus pond','light pink/green/pink/green/gold/pink/pink;black/brown/light pink/mint green/gold/pink/pink'],
+['Flowers','Tulip','tulip, tulip hair ornament, flower earrings','tulip field','blonde/blue/red/yellow/gold/red/red;brown/green/pink/yellow/gold/pink/pink;orange/green/purple/yellow/gold/purple/purple'],
+['Flowers','Hydrangea','hydrangea, flower hair ornament, raindrop earrings','rainy garden','light blue/blue/lavender/blue/silver/blue/blue;pink/blue/light blue/purple/silver/purple/purple'],
+['Gems','Ruby','ruby, red gemstone, jewelry, sparkles','treasure room','black/pink/red/gold/gold/red/red;blonde/blue/dark red/gold/gold/red/red;silver/pink/red/silver/silver/red/red'],
+['Gems','Sapphire','sapphire, blue gemstone, jewelry, sparkles','treasure room','blonde/blue/blue/gold/gold/blue/blue;silver/blue/navy/silver/silver/blue/blue;black/blue/blue/silver/silver/blue/blue'],
+['Gems','Emerald','emerald, green gemstone, jewelry, sparkles','treasure room','red/green/green/gold/gold/green/green;black/green/dark green/gold/gold/green/green;blonde/green/green/gold/gold/green/green'],
+['Gems','Amethyst','amethyst, purple gemstone, crystal, sparkles','crystal cave','silver/pink/purple/silver/silver/purple/purple;blonde/blue/purple/gold/gold/purple/purple;black/pink/lavender/purple/silver/purple/purple'],
+['Gems','Diamond','diamond, crystal, sparkles, jewelry','crystal palace','silver/blue/light blue/silver/silver/light blue/light blue;blonde/blue/lavender/silver/silver/light blue/light blue;black/blue/navy/silver/silver/light blue/light blue'],
+['Gems','Pearl','pearl earrings, pearl necklace, pearls, seashell','castle hall','brown/blue/light pink/lavender/silver/pink/pink;blonde/blue/lavender/light pink/silver/purple/purple;black/blue/light blue/lavender/silver/light blue/light blue'],
+['Gems','Opal','opal, iridescent, sparkles, crystal','crystal cave','silver/pink/lavender/light blue/silver/pink/pink;light blue/pink/mint green/pink/silver/light blue/light blue'],
+['Gems','Topaz','topaz, gemstone, jewelry, sparkles','treasure room','brown/brown/orange/gold/gold/orange/orange;blonde/blue/light orange/gold/gold/orange/orange'],
+['Ocean / Beach','Beach','seashell earrings, starfish, palm tree, ocean','beach','blonde/blue/light blue/yellow/gold/blue/blue;brown/brown/teal/light orange/gold/teal/teal;light pink/blue/yellow/light blue/gold/pink/pink'],
+['Ocean / Beach','Under the Sea','bubbles, seashell earrings, fish, coral','underwater palace','blue/blue/teal/light blue/silver/blue/blue;pink/blue/light blue/pink/silver/pink/pink;green/blue/blue/teal/silver/teal/teal'],
+['Ocean / Beach','Coral Reef','coral, tropical fish, bubbles, seashell earrings','underwater','orange/blue/light orange/teal/gold/orange/orange;pink/green/teal/pink/gold/pink/pink;red/blue/teal/orange/gold/orange/orange'],
+['Ocean / Beach','Tropical Island','hibiscus, flower hair ornament, palm tree, flower earrings','tropical beach','black/brown/red/yellow/gold/red/red;brown/brown/orange/teal/gold/teal/teal;blonde/green/pink/teal/gold/pink/pink'],
+['Ocean / Beach','Sailor','sailor collar, anchor, anchor earrings, ocean','ship deck','blonde/blue/navy/red/gold/red/red;brown/blue/blue/red/silver/red/red;red/blue/light blue/navy/silver/blue/blue'.replace('sailor collar, ','')],
+['Animals','Bunny','rabbit ears, rabbit hair ornament, carrot earrings','meadow','white/pink/pink/light pink/silver/pink/pink;brown/brown/light pink/brown/gold/pink/pink'],
+['Animals','Butterfly','butterfly, butterfly hair ornament, butterfly earrings','flower garden','blonde/blue/light blue/purple/gold/blue/blue;black/blue/blue/orange/gold/orange/orange;pink/green/lavender/pink/silver/purple/purple'],
+['Animals','Fox','fox ears, fox tail, leaf earrings','autumn forest','orange/brown/brown/orange/gold/orange/orange;white/blue/orange/brown/gold/orange/orange;light orange/green/green/orange/gold/orange/orange'],
+['Animals','Swan','swan, feathers, feather earrings, lake','lake','blonde/blue/light blue/silver/silver/blue/blue;white/pink/black/silver/silver/red/red;silver/blue/lavender/light blue/silver/blue/blue'],
+['Animals','Peacock','peacock feathers, feather earrings, feathers','palace garden','black/green/teal/gold/gold/blue/blue;blonde/blue/blue/green/gold/green/green;purple/green/green/blue/gold/blue/blue'],
+['Animals','Bee','bee, bee hair ornament, honeycomb, flower','flower garden','blonde/brown/yellow/black/gold/yellow/yellow;black/brown/yellow/brown/gold/orange/orange'],
+['Animals','Ladybug','ladybug, ladybug hair ornament, polka dot, leaf','flower garden','black/green/red/black/gold/red/red;blonde/blue/red/black/gold/red/red'],
+['Animals','Panda','panda hair ornament, bamboo, bear ears','bamboo forest','black/brown/light green/black/silver/green/green;white/blue/pink/black/silver/pink/pink'],
+['Animals','Penguin','penguin, snow, fish earrings, ice','icy castle hall','black/blue/light blue/black/silver/blue/blue;white/blue/navy/light blue/silver/blue/blue'],
+['Animals','Unicorn','unicorn, unicorn horn, rainbow, star earrings','rainbow sky','light pink/blue/lavender/light blue/silver/purple/star;white/pink/light pink/lavender/silver/pink/star;light blue/pink/pink/mint green/gold/pink/star'],
+['Fantasy','Fairy','fairy wings, sparkles, flower hair ornament, glowing particles','enchanted forest','green/green/mint green/pink/gold/green/green;blonde/blue/light pink/light green/gold/pink/pink;light blue/pink/lavender/mint green/silver/purple/purple'],
+['Fantasy','Mermaid','seashell earrings, bubbles, pearls, starfish hair ornament','underwater palace','red/blue/teal/purple/gold/teal/teal;pink/blue/light blue/purple/silver/pink/pink;blue/green/purple/teal/silver/purple/purple'],
+['Fantasy','Dragon','dragon horns, dragon wings, dragon tail, scales','dragon lair','red/green/dark red/gold/gold/red/red;black/blue/green/gold/gold/green/green;silver/blue/purple/silver/silver/purple/purple'],
+['Fantasy','Witch','witch hat, magic wand, potion, crescent moon','haunted castle hall','black/green/purple/black/silver/purple/purple;purple/pink/black/purple/silver/purple/purple;orange/green/dark green/black/gold/green/green'],
+['Fantasy','Angel','angel wings, halo, feathers, light rays','cloud castle','blonde/blue/light blue/gold/gold/blue/blue;silver/blue/light pink/gold/gold/pink/pink;white/blue/lavender/gold/gold/purple/purple'],
+['Fantasy','Vampire','bat earrings, bat wings, fangs, candles, red moon','gothic castle hall','black/pink/dark red/black/silver/red/red;silver/pink/black/red/silver/red/red;white/pink/purple/black/silver/red/red'],
+['Fantasy','Demon','demon horns, demon tail, demon wings, flames','dark throne room','black/pink/red/black/gold/red/red;white/pink/black/red/gold/red/red;purple/pink/dark red/black/silver/purple/purple'],
+['Fantasy','Elf','pointy ears, leaf hair ornament, vines, leaf earrings','enchanted forest','blonde/green/green/gold/gold/green/green;silver/blue/light green/silver/silver/green/green;green/green/teal/gold/gold/green/green'],
+['Fantasy','Ice Queen','ice crystals, snowflake earrings, frost, icicles','ice palace','white/blue/light blue/silver/silver/blue/blue;silver/blue/blue/silver/silver/light blue/light blue;light blue/blue/navy/silver/silver/blue/snowflake'],
+['Fantasy','Moon Goddess','crescent moon, moon earrings, starry sky, glowing','moonlit temple','silver/blue/navy/silver/silver/blue/moon;white/pink/lavender/silver/silver/purple/moon'],
+['Fantasy','Phoenix','phoenix, fire, feathers, feather earrings','burning sky','red/brown/orange/gold/gold/red/red;orange/brown/red/gold/gold/orange/orange;blonde/brown/red/orange/gold/orange/orange'],
+['Fantasy','Magical Girl','magic wand, star earrings, sparkles, hair bow','starry sky','pink/blue/light pink/light blue/silver/pink/heart;blonde/pink/light blue/pink/gold/blue/star;purple/pink/lavender/pink/silver/purple/heart'],
+['Elements','Fire','fire, flames, embers, flame earrings','burning castle hall','red/brown/orange/gold/gold/red/red;orange/brown/red/gold/gold/orange/orange;black/brown/dark red/orange/gold/red/red'],
+['Elements','Ice','ice, ice crystals, frost, snowflake earrings','ice palace','white/blue/light blue/silver/silver/blue/blue;light blue/blue/navy/silver/silver/light blue/light blue'],
+['Elements','Thunder','lightning, electricity, lightning bolt earrings, storm clouds','stormy sky','blonde/blue/purple/yellow/gold/yellow/yellow;yellow/blue/navy/yellow/gold/yellow/yellow'],
+['Elements','Water','water, splashing, bubbles, raindrop earrings','waterfall','blue/blue/light blue/navy/silver/blue/blue;light blue/blue/teal/silver/silver/blue/blue'],
+['Elements','Earth','vines, leaves, rocks, leaf earrings','forest','brown/green/green/brown/gold/green/green;green/brown/brown/green/gold/green/green'],
+['Elements','Wind','wind, floating hair, feathers, feather earrings','sky','green/green/mint green/silver/silver/green/green;silver/blue/light blue/mint green/silver/blue/blue'],
+['Elements','Light','light rays, glowing, sparkles, halo','temple','blonde/blue/yellow/gold/gold/yellow/yellow;white/blue/light yellow/gold/gold/yellow/yellow'],
+['Elements','Shadow','shadow, dark aura, black feathers, crescent moon','dark castle hall','black/pink/purple/black/silver/purple/purple;silver/pink/black/purple/silver/purple/purple;white/blue/navy/black/silver/purple/purple'],
+['Food / Drink','Tea Party','teacup, teapot, cake, flower earrings','tea party','blonde/blue/light blue/pink/gold/blue/blue;brown/green/mint green/pink/gold/pink/pink'],
+['Food / Drink','Coffee','coffee cup, coffee beans, steam','cafe','brown/brown/light orange/brown/gold/brown/brown;black/brown/brown/light orange/gold/orange/orange'],
+['Food / Drink','Boba Tea','bubble tea, straw, tapioca','cafe','brown/brown/light pink/brown/gold/pink/pink;black/brown/lavender/brown/silver/purple/purple'],
+['Food / Drink','Sushi','sushi, chopsticks, fish earrings','restaurant','black/brown/red/black/gold/red/red;pink/brown/light orange/green/gold/orange/orange'],
+['Food / Drink','Pizza Party','pizza slice, party, confetti','party','brown/green/red/yellow/gold/green/green;blonde/blue/orange/red/gold/red/red'],
+['Food / Drink','Milk & Cookies','cookie, glass of milk, cookie earrings','kitchen','brown/blue/light blue/brown/silver/blue/blue;blonde/brown/light orange/brown/gold/orange/orange'],
+['Nature','Enchanted Forest','vines, mushrooms, fireflies, leaf earrings','enchanted forest','brown/green/green/gold/gold/green/green;green/green/teal/brown/gold/green/green;red/green/dark green/gold/gold/green/green'],
+['Nature','Desert','sand dunes, cactus, sun, gold bangle','desert palace','black/brown/orange/gold/gold/teal/teal;brown/brown/teal/gold/gold/orange/orange;blonde/green/red/gold/gold/red/red'],
+['Nature','Mountain','mountains, pine tree, snow, clouds','mountain castle','brown/green/green/brown/silver/green/green;black/blue/blue/silver/silver/blue/blue'],
+['Nature','Jungle','jungle, leaves, tropical flower, parrot','jungle','black/green/green/yellow/gold/green/green;orange/green/teal/orange/gold/orange/orange'],
+['Nature','Mushroom Forest','mushroom, mushroom hair ornament, polka dot, moss','mushroom forest','brown/green/red/gold/gold/red/red;brown/brown/light pink/red/gold/red/red;blonde/green/green/red/gold/red/red'],
+['Nature','Crystal Cave','crystals, glowing, crystal earrings','crystal cave','silver/blue/purple/light blue/silver/purple/purple;light blue/pink/lavender/silver/silver/blue/blue'],
+['Nature','Meadow','meadow, wildflowers, butterfly, flower earrings','meadow','blonde/blue/light green/yellow/gold/pink/pink;brown/green/yellow/light green/gold/green/green'],
+['Music / Party','Idol Concert','microphone, stage lights, heart earrings, glowstick','concert stage','pink/blue/light pink/light blue/silver/pink/heart;blue/pink/light blue/pink/silver/blue/star;blonde/pink/red/pink/gold/red/heart'],
+['Music / Party','Disco','disco ball, sparkles, glitter, star earrings','dance floor','blonde/blue/purple/silver/silver/purple/star;pink/blue/silver/pink/silver/pink/pink;black/pink/gold/purple/gold/purple/purple'],
+['Music / Party','Masquerade','masquerade mask, feathers, candles, chandelier','ballroom','black/blue/purple/gold/gold/purple/purple;blonde/blue/dark red/gold/gold/red/red;silver/pink/black/silver/silver/purple/purple'],
+['Music / Party','Classical Music','violin, musical note, music note earrings','concert hall','brown/brown/dark red/gold/gold/red/red;blonde/blue/navy/gold/gold/blue/blue'],
+['Music / Party','Rock Star','electric guitar, stage lights, star earrings, studded','concert stage','black/pink/red/black/silver/red/star;pink/blue/black/pink/silver/pink/pink;purple/green/black/purple/silver/purple/star'],
+['Music / Party','Carnival','confetti, feathers, mask, streamers','carnival','black/brown/purple/gold/gold/green/green;red/green/green/yellow/gold/purple/purple'],
+['Sports Colors','Red & Blue','sports, pennant, star earrings','stadium','blonde/blue/red/blue/silver/blue/blue;brown/blue/blue/red/silver/red/red'],
+['Sports Colors','Green & Gold','sports, pennant, star earrings','stadium','brown/green/green/gold/gold/green/green;blonde/green/dark green/yellow/gold/yellow/yellow'],
+['Sports Colors','Black & Orange','sports, pennant, star earrings','stadium','black/brown/orange/black/gold/orange/orange;orange/brown/black/orange/gold/orange/orange'],
+['Sports Colors','Purple & Gold','sports, pennant, star earrings','stadium','blonde/blue/purple/gold/gold/purple/purple;black/brown/purple/yellow/gold/yellow/yellow'],
+['Sports Colors','Navy & Silver','sports, pennant, star earrings','stadium','silver/blue/navy/silver/silver/blue/blue;blonde/blue/navy/gray/silver/blue/blue'],
+['Sports Colors','Teal & Black','sports, pennant, star earrings','stadium','black/blue/teal/black/silver/teal/teal;silver/blue/teal/black/silver/teal/teal'],
+['Sports Colors','Red & Gold','sports, pennant, star earrings','stadium','blonde/brown/red/gold/gold/red/red;brown/brown/dark red/gold/gold/yellow/yellow'],
+];
 const HAIR=['blonde','brown','black','white','silver','pink','red','orange','yellow','green','blue','purple','light blue','light pink','light orange'];
 const EYES=['brown','blue','green','pink'];
-const DRESS=['pink','light pink','red','orange','light orange','yellow','green','light green','mint','teal','blue','light blue','navy','purple','light purple','lavender'];
-// curated: hair, eyes, dress, trim, tiara, gem/earrings, pendant
-const CUR=[
-['blonde','blue','pink','light pink','gold','blue','blue'],
-['brown','blue','yellow','orange','gold','light blue','light blue'],
-['blonde','blue','light blue','white','silver','blue','blue'],
-['light pink','pink','lavender','white','silver','pink','pink'],
-['silver','blue','navy','silver','silver','light blue','light blue'],
-['red','green','green','gold','gold','green','green'],
-['black','pink','red','gold','gold','red','red'],
-['light orange','green','mint','white','gold','pink','pink'],
-['brown','green','light green','yellow','gold','pink','pink'],
-['blonde','pink','light purple','pink','gold','purple','purple'],
-['light blue','blue','blue','light blue','silver','blue','blue'],
-['pink','blue','light blue','pink','silver','pink','pink'],
-['purple','pink','light pink','purple','silver','purple','purple'],
-['orange','brown','teal','orange','gold','orange','orange'],
-['white','blue','purple','gold','gold','purple','purple'],
-['yellow','blue','blue','yellow','gold','yellow','yellow'],
-['brown','brown','orange','light orange','gold','red','red'],
-['green','green','light pink','green','gold','green','green'],
-['black','blue','light blue','navy','silver','blue','blue'],
-['light pink','green','light green','light pink','gold','pink','pink'],
-['blonde','green','teal','gold','gold','green','green'],
-['red','blue','navy','red','gold','red','red'],
-['silver','pink','pink','silver','silver','pink','pink'],
-['blue','blue','light orange','blue','gold','blue','blue']];
-const COMP={pink:['mint','light green','light blue','white'],red:['gold','navy','white'],orange:['teal','blue','white'],yellow:['blue','purple','orange'],green:['pink','gold','white'],blue:['yellow','orange','gold','white'],purple:['gold','yellow','light pink'],'light blue':['pink','white','silver'],'light pink':['mint','lavender','white'],'light orange':['teal','mint','white'],mint:['pink','light pink','white'],teal:['orange','gold','pink'],navy:['gold','silver','light blue'],'light green':['pink','yellow','white'],'light purple':['pink','gold','white'],lavender:['light pink','silver','white']};
+const DRESS=['pink','light pink','red','orange','light orange','yellow','green','light green','mint green','teal','blue','light blue','navy','purple','light purple','lavender'];
+const CUR=[['blonde','blue','pink','light pink','gold','blue','blue'],['brown','blue','yellow','orange','gold','light blue','light blue'],['blonde','blue','light blue','gold','silver','blue','blue'],['light pink','pink','lavender','silver','silver','pink','pink'],['silver','blue','navy','silver','silver','light blue','light blue'],['red','green','green','gold','gold','green','green'],['black','pink','red','gold','gold','red','red'],['light orange','green','mint green','pink','gold','pink','pink'],['brown','green','light green','yellow','gold','pink','pink'],['blonde','pink','light purple','pink','gold','purple','purple'],['light blue','blue','blue','light blue','silver','blue','blue'],['pink','blue','light blue','pink','silver','pink','pink'],['purple','pink','light pink','purple','silver','purple','purple'],['orange','brown','teal','orange','gold','orange','orange'],['white','blue','purple','gold','gold','purple','purple'],['yellow','blue','blue','yellow','gold','yellow','yellow'],['brown','brown','orange','light orange','gold','red','red'],['green','green','light pink','green','gold','green','green'],['black','blue','light blue','navy','silver','blue','blue'],['light pink','green','light green','light pink','gold','pink','pink'],['blonde','green','teal','gold','gold','green','green'],['red','blue','navy','red','gold','red','red'],['silver','pink','pink','silver','silver','pink','pink'],['blue','blue','light orange','blue','gold','blue','blue']];
+const COMP={pink:['mint green','light green','light blue','gold'],red:['gold','navy','silver'],orange:['teal','blue','gold'],yellow:['blue','purple','orange'],green:['pink','gold','yellow'],blue:['yellow','orange','gold','silver'],purple:['gold','yellow','light pink'],'light blue':['pink','silver','navy'],'light pink':['mint green','lavender','gold'],'light orange':['teal','mint green','gold'],'mint green':['pink','light pink','gold'],teal:['orange','gold','pink'],navy:['gold','silver','light blue'],'light green':['pink','yellow','gold'],'light purple':['pink','gold','silver'],lavender:['light pink','silver','gold']};
+const NEG='white dress, wedding dress, wedding veil, veil, bridal, tight bodice, corset, extra arms, long arms, choker, neck collar';
 const r=a=>a[Math.floor(Math.random()*a.length)];
-let mode='curated';
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const TH=THEMES.map(([g,name,ex,bg,pal])=>({g,name,ex:ex.split(',').map(s=>s.trim()).filter(Boolean),bg,pal:pal.split(';').map(s=>s.split('/'))}));
+function hairNot(d){let h;do{h=r(HAIR)}while(h===d);return h}
+function pick(mode,ti){ // ti: -1 none, else theme index
+ if(ti>=0){const t=TH[ti],c=r(t.pal);let o={hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6],theme:t};
+  if(mode==='harmony')o.hair=hairNot(o.dress);
+  if(mode==='wild'){o.hair=hairNot(o.dress);o.eyes=r(EYES);o.tiara=r(['gold','silver'])}
+  if(!HAIR.includes(o.hair)||o.hair===o.dress)o.hair=hairNot(o.dress);
+  if(!EYES.includes(o.eyes))o.eyes=r(EYES);
+  if(o.dress==='white')o.dress='light blue';
+  const n=Math.min(t.ex.length,2+Math.floor(Math.random()*2));o.extras=shuf(t.ex).slice(0,n);o.bg=t.bg;return o}
+ let o;
+ if(mode==='curated'){const c=r(CUR);o={hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6]}}
+ else{const dress=r(DRESS),hair=hairNot(dress);
+  if(mode==='wild')o={hair,eyes:r(EYES),dress,trim:r(DRESS.concat(['gold','silver'])),tiara:r(['gold','silver']),gem:r(DRESS),pend:r(DRESS)};
+  else{const acc=r(COMP[dress]);const tiara=['navy','purple','blue','light blue','lavender','pink','light pink'].includes(dress)?r(['silver','gold']):'gold';
+   const gem=['gold','silver'].includes(acc)?r(COMP[dress].filter(x=>!['gold','silver'].includes(x)).concat([dress])):acc;o={hair,eyes:r(EYES),dress,trim:acc,tiara,gem,pend:gem}}}
+ o.extras=[];o.bg='castle hall';return o}
+function build(c){
+ const ear=c.extras.find(x=>/earrings/.test(x));const ex=c.extras.filter(x=>x!==ear);
+ const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${c.hair} straight hair with bangs, ${c.hair} hair, ${c.eyes} eyes`,`${c.dress} off-shoulder dress, ${c.dress} dress, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ballgown, no neck collar, white gloves`,`${c.tiara} tiara, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.pend} pendant`];
+ if(ex.length)parts.push(ex.join(', '));
+ parts.push('worried, pleading expression, blush, sweatdrop, own hands together, hands clasped, praying hands, hands near chest, looking at viewer',c.bg,'big breasts, ultrabody');
+ let n=NEG;if(c.theme&&c.theme.g==='Sports Colors')n+=', logo, letter, text, number';
+ return [parts.join(', '),n]}
+const HEX={blonde:'#f5d76e',brown:'#8b5a2b',black:'#555',white:'#fff',silver:'#c0c0c0',pink:'#ff8fc8',red:'#e53935','dark red':'#b71c1c',orange:'#ff9800',yellow:'#ffeb3b','light yellow':'#fff59d',green:'#4caf50','dark green':'#2e7d32',blue:'#2196f3','dark blue':'#1565c0',purple:'#9c27b0','light blue':'#9ad8ff','light pink':'#ffc8e0','light orange':'#ffd1a1',gold:'#d4af37',lavender:'#c8a2ff','mint green':'#a8f0d0',teal:'#20b2aa',navy:'#3949ab','light green':'#b9f6ca','light purple':'#d1b3ff',gray:'#999'};
+let mode='curated',theme=-1; // -1 none, -2 any
 document.querySelectorAll('.mode button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m});
-function pick(){
- if(mode==='curated'){const c=r(CUR);return{hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6]}}
- const dress=r(DRESS);let hair;do{hair=r(HAIR)}while(hair===dress);
- if(mode==='wild')return{hair,eyes:r(EYES),dress,trim:r(DRESS.concat(['white','gold','silver'])),tiara:r(['gold','silver']),gem:r(DRESS),pend:r(DRESS)};
- const acc=r(COMP[dress]);const tiara=['navy','purple','blue','light blue','lavender','pink','light pink'].includes(dress)?r(['silver','gold']):'gold';
- const gem=acc==='white'||acc==='gold'||acc==='silver'?r(COMP[dress].filter(x=>!['white','gold','silver'].includes(x)).concat([dress])):acc;
- return{hair,eyes:r(EYES),dress,trim:acc,tiara,gem,pend:gem};
-}
-function go(){
- const c=pick(),v=false;
- const [p,n]=build(c);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function drawThemes(){const q=document.getElementById('tq').value.toLowerCase().trim();let h='';
+ h+=`<button class="tb${theme===-1?' on':''}" onclick="setT(-1)">🚫 No theme</button><button class="tb${theme===-2?' on':''}" onclick="setT(-2)">🎲 Any theme (random)</button>`;
+ let g='';TH.forEach((t,i)=>{if(q&&!(t.name+' '+t.g+' '+t.ex.join(' ')).toLowerCase().includes(q))return;if(t.g!==g){g=t.g;h+=`<h4>${esc(g)}</h4>`}h+=`<button class="tb${theme===i?' on':''}" onclick="setT(${i})">${esc(t.name)}</button>`});
+ document.getElementById('tgrid').innerHTML=h}
+function setT(i){theme=i;document.getElementById('tcur').textContent=i===-1?'No theme':i===-2?'Any theme (random)':TH[i].name;drawThemes()}
+document.getElementById('tq').oninput=drawThemes;
+const ti=()=>theme===-2?Math.floor(Math.random()*TH.length):theme;
+const label=c=>c.theme?c.theme.name:'No theme';
+function go(){const c=pick(mode,ti()),[p,n]=build(c);
  document.getElementById('list').innerHTML='';
  document.getElementById('p').value=p;document.getElementById('n').value=n;
- document.getElementById('chips').innerHTML=chips(c);
-}
-function batch(k){let h='',all=[];for(let i=1;i<=k;i++){const c=pick(),[p,n]=build(c);all.push(p);document.getElementById('n').value=n;h+=`<div class=item><b>#${i}</b><div class=chips>${chips(c)}</div><pre id=b${i}>${p}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button></div>`}
- window._all=all.join('\\n\\n');document.getElementById('list').innerHTML=`<button class=copy onclick="cpAll()">Copy all ${k}</button>`+h;document.getElementById('chips').innerHTML='';document.getElementById('p').value='(batch below)';}
-function cpt(id){navigator.clipboard.writeText(document.getElementById(id).textContent)}
-function cpAll(){navigator.clipboard.writeText(window._all)}
-function build(c){const v=false;
- const top=v?`${c.dress} dress, covered bodice, high neckline`:`${c.dress} off-shoulder dress, ${c.dress} dress`;
- const p=`1girl, solo, close-up, three-quarter view, standing at an angle, ${c.hair} straight hair with bangs, ${c.hair} hair, ${c.eyes} eyes, ${top}, ${c.trim} trim, short puffy sleeves, ${v?'':'bare shoulders, '}long dress, ballgown, no neck collar, white gloves, ${c.tiara} tiara, ${c.gem} gem, ${c.gem} earrings, ${c.pend} pendant, worried, pleading expression, blush, sweatdrop, own hands together, hands clasped, praying hands, hands near chest, looking at viewer, castle hall, ${v?'':'big breasts, '}ultrabody`;
- let n='white dress, wedding dress, wedding veil, veil, bridal, tight bodice, corset, extra arms, long arms, choker, neck collar'+(v?', cleavage, nsfw':'');
- return [p,n];}
-function chips(c){return [['Hair',c.hair],['Eyes',c.eyes],['Dress',c.dress],['Trim',c.trim],['Tiara',c.tiara],['Gem',c.gem]].map(([k,x])=>{const h=HEX[x.split(' and ')[0]]||'#ccc';return `<span style="background:${h}">${k}: ${x}</span>`}).join('');}
-function cp(id){const t=document.getElementById(id);t.select();navigator.clipboard?navigator.clipboard.writeText(t.value):document.execCommand('copy')}
-document.getElementById('go').onclick=go;go();
+ document.getElementById('chips').innerHTML=`<span style="background:#8a6cff;color:#fff">Theme: ${esc(label(c))}</span>`+chips(c);}
+function batch(k){let h='',all=[],negs=new Set();for(let i=1;i<=k;i++){const c=pick(mode,ti()),[p,n]=build(c);all.push(p);negs.add(n);
+ h+=`<div class=item><b>#${i}</b><span class=tname>${esc(label(c))}</span><div class=chips>${chips(c)}</div><pre id=b${i}>${esc(p)}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button></div>`}
+ document.getElementById('n').value=[...negs].sort((a,b)=>b.length-a.length)[0];
+ window._all=all.join('\n\n');document.getElementById('list').innerHTML=`<button class=copy onclick="cpAll()">Copy all ${k}</button>`+h;document.getElementById('chips').innerHTML='';document.getElementById('p').value='(batch below)';}
+function wr(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
+function cpt(id){wr(document.getElementById(id).textContent)}
+function cpAll(){wr(window._all)}
+function chips(c){return [['Hair',c.hair],['Eyes',c.eyes],['Dress',c.dress],['Trim',c.trim],['Tiara',c.tiara],['Gem',c.gem]].map(([k,x])=>`<span style="background:${HEX[x]||'#ccc'}">${k}: ${x}</span>`).join('');}
+function cp(id){wr(document.getElementById(id).value)}
+document.getElementById('go').onclick=go;drawThemes();go();
 </script></body></html>
