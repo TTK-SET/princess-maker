@@ -10,8 +10,8 @@ textarea{width:100%;height:150px;font-size:14px;background:#2a2738;color:#fff;bo
 .batch button{background:#ff9f43;color:#fff;min-width:56px}.item{background:#2a2738;border-radius:10px;padding:10px;margin:10px 0}.item pre{white-space:pre-wrap;font-size:13px;margin:6px 0}
 .copy{background:#4caf50;color:#fff}label{font-size:14px}
 details{background:#26233a;border-radius:10px;padding:8px;margin:8px 0}summary{font-size:17px;padding:6px;cursor:pointer}
-#tq{width:100%;font-size:17px;padding:10px;border-radius:8px;border:1px solid #555;background:#2a2738;color:#fff;box-sizing:border-box}
-#tgrid{max-height:340px;overflow-y:auto;margin-top:6px}#tgrid h4{margin:10px 4px 2px;font-size:14px;color:#bbb}
+#tq,#cq{width:100%;font-size:17px;padding:10px;border-radius:8px;border:1px solid #555;background:#2a2738;color:#fff;box-sizing:border-box}
+#tgrid,#cgrid{max-height:340px;overflow-y:auto;margin-top:6px}#cgrid details{padding:4px;margin:4px 0}#cgrid summary{font-size:15px}#tgrid h4{margin:10px 4px 2px;font-size:14px;color:#bbb}
 .tb{background:#3a3650;color:#eee;font-size:15px;padding:10px 12px}.tb.on{background:#ff6fb5;color:#fff}
 .tname{background:#8a6cff;color:#fff;border-radius:8px;padding:2px 8px;font-size:13px;margin-left:6px}
 </style></head><body>
@@ -23,6 +23,9 @@ details{background:#26233a;border-radius:10px;padding:8px;margin:8px 0}summary{f
 <details open><summary>🎨 Theme: <b id="tcur">No theme</b></summary>
 <input id="tq" placeholder="Search themes (e.g. halloween, fruit, space)…">
 <div id="tgrid"></div></details>
+<details open><summary>👸 Characters: <b id="ccur">None</b></summary>
+<input id="cq" class="tq" placeholder="Search characters or franchises (e.g. mario, sonic, pikachu)…">
+<div id="cgrid"></div></details>
 <button id="go">🎲 Surprise Me</button>
 <div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
 <div id="list"></div>
@@ -61,7 +64,7 @@ const THEMES=[
 ['Weather','Snowy','snow, snowflake earrings, falling snow, mittens','snowy castle hall','white/blue/light blue/silver/silver/blue/blue;light blue/blue/lavender/silver/silver/light blue/light blue;brown/brown/red/silver/silver/red/red'],
 ['Weather','Sunny','sun, sunbeam, sun earrings, sunflower','sunny meadow','blonde/blue/yellow/orange/gold/orange/orange;orange/brown/light orange/yellow/gold/yellow/yellow;brown/green/light yellow/orange/gold/orange/orange'],
 ['Weather','Rainbow After Rain','rainbow, raindrop earrings, puddle, clouds','rainbow sky','light blue/pink/lavender/yellow/silver/blue/rainbow;blonde/blue/light blue/pink/gold/pink/rainbow'],
-['Weather','Windy','wind, falling leaves, floating hair, petals','meadow','green/green/teal/light green/silver/green/green;blonde/blue/light blue/white/gold/blue/blue;pink/green/mint green/pink/silver/pink/pink'],
+['Weather','Windy','wind, falling leaves, floating hair, petals','meadow','green/green/teal/light green/silver/green/green;blonde/blue/light blue/silver/gold/blue/blue;pink/green/mint green/pink/silver/pink/pink'],
 ['Sky / Time of Day','Sunrise','sunrise, morning sky, sun earrings','balcony','light orange/blue/light pink/orange/gold/orange/orange;blonde/pink/light orange/pink/gold/pink/pink;pink/brown/yellow/light pink/gold/orange/orange'],
 ['Sky / Time of Day','Sunset','sunset, orange sky, clouds','balcony','orange/brown/purple/orange/gold/orange/orange;red/brown/orange/purple/gold/purple/purple;blonde/blue/pink/orange/gold/orange/orange'],
 ['Sky / Time of Day','Twilight','twilight, gradient sky, star earrings, crescent moon','balcony','purple/pink/navy/lavender/silver/purple/star;light blue/pink/purple/light pink/silver/pink/pink;silver/blue/lavender/navy/silver/blue/blue'],
@@ -180,8 +183,283 @@ const NEG='white dress, wedding dress, wedding veil, veil, bridal, tight bodice,
 const r=a=>a[Math.floor(Math.random()*a.length)];
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const TH=THEMES.map(([g,name,ex,bg,pal])=>({g,name,ex:ex.split(',').map(s=>s.trim()).filter(Boolean),bg,pal:pal.split(';').map(s=>s.split('/'))}));
+// Character themes: franchise|name|hair|eyes|top|bottom(- = one color)|trim|tiara|gem|extras. Names are UI-only, never in prompts.
+const CHARS=[
+"Super Mario|Mario|brown|blue|red|blue|brown|gold|red|mushroom hair ornament, star earrings",
+"Super Mario|Luigi|brown|blue|green|blue|brown|gold|green|star hair ornament",
+"Super Mario|Princess Peach|blonde|blue|pink|-|light pink|gold|blue|puffy hair, blue brooch",
+"Super Mario|Princess Daisy|orange|blue|yellow|-|orange|gold|green|flower hair ornament, flower earrings",
+"Super Mario|Rosalina|blonde|blue|light blue|-|silver|silver|blue|side-swept bangs, star wand, star earrings",
+"Super Mario|Bowser|red|green|green|yellow|orange|gold|red|small horns, fang, spiked bracelet",
+"Super Mario|Bowser Jr.|orange|green|green|yellow|light orange|gold|red|small horns, fang, paintbrush",
+"Super Mario|Wario|brown|blue|yellow|purple|green|gold|yellow|zigzag mustache hair ornament, mischievous grin",
+"Super Mario|Waluigi|black|blue|purple|navy|orange|gold|purple|tall slim figure, pointed hair ornament",
+"Super Mario|Yoshi|green|blue|red|-|orange|gold|red|small dinosaur tail, spotted egg",
+"Super Mario|Toad|white|blue|blue|-|gold|gold|red|polka dot hair bow, mushroom hair ornament",
+"Super Mario|Toadette|pink|blue|light pink|-|pink|gold|pink|polka dot hair bow, twin braids",
+"Super Mario|Koopa Troopa|yellow|blue|green|-|red|gold|green|turtle shell backpack",
+"Super Mario|Goomba|brown|brown|light orange|-|brown|gold|orange|angry eyebrows, fang",
+"Super Mario|Boo|white|brown|silver|-|pink|silver|pink|ghost costume, fang",
+"Super Mario|King Boo|white|pink|light blue|-|gold|gold|red|ghost costume, fang",
+"Super Mario|Kamek|yellow|brown|blue|-|silver|silver|red|round glasses, magic wand, broom",
+"Super Mario|Lakitu|yellow|blue|green|-|orange|gold|green|goggles on head, fluffy cloud",
+"Super Mario|Shy Guy|black|brown|red|-|navy|gold|red|hood, mask on head",
+"Super Mario|Piranha Plant|red|brown|green|-|gold|gold|red|polka dot hair bow, leaf hair ornament, fang",
+"Super Mario|Birdo|pink|brown|red|-|light pink|gold|red|big hair bow, diamond ring",
+"Super Mario|Pauline|brown|blue|red|-|gold|gold|red|microphone, red lipstick",
+"Super Mario|Larry Koopa|blue|blue|light blue|-|yellow|gold|light blue|small horns, fang, magic wand",
+"Super Mario|Morton Koopa Jr.|silver|blue|brown|-|yellow|gold|brown|star facial mark, fang, magic wand",
+"Super Mario|Wendy O. Koopa|pink|blue|light pink|-|gold|gold|pink|polka dot hair bow, gold bracelets, magic wand",
+"Super Mario|Iggy Koopa|green|blue|light green|-|yellow|gold|green|round glasses, fang, magic wand",
+"Super Mario|Roy Koopa|pink|blue|light pink|-|purple|gold|pink|sunglasses on head, fang, magic wand",
+"Super Mario|Lemmy Koopa|orange|blue|yellow|-|green|gold|orange|multicolored hair streaks, circus ball, magic wand",
+"Super Mario|Ludwig von Koopa|blue|blue|navy|-|silver|gold|blue|wild hair, fang, magic wand",
+"Donkey Kong|Donkey Kong|brown|brown|red|-|yellow|gold|red|necktie, wooden barrel",
+"Donkey Kong|Diddy Kong|brown|brown|red|-|yellow|gold|red|star earrings, monkey tail",
+"Donkey Kong|Dixie Kong|blonde|brown|pink|-|pink|gold|pink|long ponytail, monkey tail",
+"Donkey Kong|King K. Rool|green|green|red|yellow|gold|gold|red|red cape, fang, crocodile tail",
+"Sonic|Sonic the Hedgehog|blue|green|red|-|gold|gold|green|spiky hair ornament",
+"Sonic|Miles \"Tails\" Prower|orange|blue|light orange|-|red|gold|orange|fox ears, twin fox tails",
+"Sonic|Knuckles the Echidna|red|pink|green|-|yellow|gold|green|spiky hair ornament, spiked bracelet",
+"Sonic|Amy Rose|pink|green|red|-|light pink|gold|red|red hair band, toy hammer",
+"Sonic|Shadow the Hedgehog|black|pink|red|-|gold|gold|red|red hair streaks, gold bracelets, spiky hair ornament",
+"Sonic|Rouge the Bat|white|green|pink|black|light pink|silver|pink|bat wings, heart brooch",
+"Sonic|Cream the Rabbit|light orange|brown|orange|-|blue|gold|blue|long rabbit ears, blue bow tie",
+"Sonic|Silver the Hedgehog|silver|brown|light blue|-|teal|gold|teal|glowing markings, gold bracelets",
+"Sonic|Blaze the Cat|purple|brown|light purple|-|pink|gold|red|red forehead jewel, cat ears, fire magic",
+"Sonic|Dr. Eggman|orange|blue|red|black|yellow|gold|blue|goggles on head, big mustache",
+"Sonic|Metal Sonic|blue|pink|silver|-|red|silver|red|robot, metal armor, spiky hair ornament",
+"Sonic|Espio the Chameleon|purple|brown|yellow|-|purple|gold|purple|ninja, shuriken, horn hair ornament",
+"Sonic|Vector the Crocodile|green|brown|yellow|-|gold|gold|orange|headphones, gold chain",
+"Sonic|Charmy Bee|yellow|brown|orange|-|black|gold|orange|bee antennae, bee wings",
+"Sonic|Big the Cat|purple|brown|yellow|-|purple|gold|purple|cat ears, fishing rod",
+"Pokémon|Pikachu|blonde|brown|yellow|-|brown|gold|red|lightning bolt hair ornament, red cheeks, pointy ears",
+"Pokémon|Eevee|brown|brown|light orange|-|brown|gold|orange|fox ears, fluffy tail",
+"Pokémon|Vaporeon|light blue|blue|blue|-|navy|silver|blue|fin hair ornament, mermaid tail",
+"Pokémon|Jolteon|blonde|brown|yellow|-|light orange|gold|yellow|spiky hair, lightning bolt hair ornament",
+"Pokémon|Flareon|orange|brown|red|-|yellow|gold|orange|fluffy tail, fox ears, fluffy fur trim",
+"Pokémon|Espeon|purple|pink|light purple|-|purple|gold|red|red forehead gem, forked tail",
+"Pokémon|Umbreon|black|pink|navy|-|yellow|gold|yellow|ring pattern, fox ears",
+"Pokémon|Leafeon|blonde|brown|green|-|brown|gold|green|leaf hair ornament, fox ears",
+"Pokémon|Glaceon|light blue|blue|blue|-|navy|silver|blue|diamond pattern, snowflake hair ornament",
+"Pokémon|Sylveon|white|blue|pink|-|light blue|silver|blue|ribbon hair bow, long ribbons",
+"Pokémon|Bulbasaur|green|pink|teal|-|green|gold|green|flower bud hair ornament",
+"Pokémon|Charmander|orange|blue|yellow|-|red|gold|red|flame tail",
+"Pokémon|Squirtle|light blue|brown|brown|-|light orange|gold|blue|turtle shell backpack, curly tail",
+"Pokémon|Charizard|orange|blue|teal|-|light orange|gold|red|dragon wings, flame tail",
+"Pokémon|Mudkip|light blue|brown|orange|-|blue|gold|orange|fin hair ornament, orange cheeks",
+"Pokémon|Piplup|blue|blue|light blue|-|yellow|gold|blue|penguin, small wings",
+"Pokémon|Greninja|blue|pink|navy|-|pink|silver|pink|ninja, shuriken",
+"Pokémon|Jigglypuff|pink|blue|light pink|-|blue|silver|blue|microphone, curl hair ornament",
+"Pokémon|Mewtwo|silver|pink|purple|-|light purple|silver|purple|psychic aura, long tail",
+"Pokémon|Mew|pink|blue|light pink|-|light blue|silver|blue|long thin tail, floating bubble",
+"Pokémon|Gengar|purple|pink|light purple|-|red|silver|red|fang, spiky hair ornament, ghost",
+"Pokémon|Lucario|blue|pink|yellow|black|silver|silver|blue|jackal ears, wrist spikes",
+"Pokémon|Gardevoir|green|pink|light green|-|red|silver|red|red heart brooch, flowing gown",
+"Pokémon|Lugia|white|blue|light blue|-|navy|silver|blue|feathered wings",
+"Pokémon|Articuno|light blue|brown|blue|-|navy|silver|blue|long feathered tail, ice crystals",
+"Pokémon|Zapdos|yellow|brown|orange|-|black|gold|yellow|spiky feathers, lightning",
+"Pokémon|Moltres|orange|brown|yellow|-|red|gold|orange|flame wings",
+"Pokémon|Celebi|green|blue|light green|-|green|silver|blue|fairy wings, antennae",
+"Pokémon|Meowth|blonde|blue|light orange|-|brown|gold|orange|gold coin hair ornament, cat ears",
+"The Legend of Zelda|Link|blonde|blue|green|-|brown|gold|green|pointed ears, sword and shield",
+"The Legend of Zelda|Princess Zelda|blonde|blue|pink|-|gold|gold|red|pointed ears, long braids",
+"The Legend of Zelda|Ganondorf|red|brown|black|-|gold|gold|blue|dark armor, cape",
+"The Legend of Zelda|Midna|orange|pink|black|-|teal|gold|teal|glowing markings, imp",
+"Kirby|Kirby|pink|blue|light pink|-|red|gold|red|star wand, star earrings",
+"Kirby|Meta Knight|blue|brown|navy|-|gold|silver|gold|bat wings, sword",
+"Kirby|King Dedede|blue|brown|red|-|gold|gold|red|fur trimmed robe, wooden hammer",
+"Kirby|Waddle Dee|orange|brown|light orange|-|yellow|gold|blue|blue bandana, round cheeks",
+"Metroid|Samus Aran (Power Suit)|blonde|blue|red|orange|yellow|gold|green|arm cannon, armored shoulder pads",
+"Metroid|Zero Suit Samus|blonde|blue|blue|-|light blue|silver|blue|ponytail, bodysuit",
+"Animal Crossing|Isabelle|yellow|brown|green|-|red|gold|red|dog ears, bell hair ornament",
+"Splatoon|Inkling Girl|orange|brown|light blue|-|orange|silver|orange|tentacle hair, ink splatter",
+"Splatoon|Callie|black|brown|pink|-|black|gold|pink|tentacle hair, pink hair tips",
+"Splatoon|Marie|silver|green|green|-|black|silver|green|tentacle hair, green hair tips",
+"Fire Emblem|Marth|blue|blue|navy|-|gold|gold|blue|cape, sword",
+"Fire Emblem|Lucina|blue|blue|navy|-|gold|gold|red|cape, sword",
+"Fire Emblem|Roy (Fire Emblem)|red|blue|blue|-|gold|gold|blue|cape, sword",
+"Smash Bros. & Nintendo|Fox McCloud|orange|green|green|-|silver|silver|red|fox ears, fox tail",
+"Smash Bros. & Nintendo|Ness|black|brown|blue|-|yellow|gold|red|striped pattern, baseball bat",
+"Pac-Man|Pac-Man|blonde|brown|yellow|-|orange|gold|yellow|round hair ornament",
+"Pac-Man|Ms. Pac-Man|blonde|blue|yellow|-|red|gold|red|big red hair bow, beauty mark",
+"Pac-Man|Blinky|red|blue|navy|-|blue|silver|red|ghost costume",
+"Pac-Man|Pinky|pink|blue|navy|-|blue|silver|pink|ghost costume",
+"Pac-Man|Inky|light blue|blue|navy|-|blue|silver|light blue|ghost costume",
+"Pac-Man|Clyde|orange|blue|navy|-|blue|silver|orange|ghost costume",
+"Mega Man|Mega Man|brown|green|light blue|blue|blue|silver|blue|arm cannon",
+"Mega Man|Roll|blonde|blue|red|-|green|gold|green|green hair ribbon, ponytail",
+"Mega Man|Proto Man|black|brown|red|-|yellow|silver|red|yellow scarf, sunglasses",
+"Mega Man|Mega Man X|brown|green|blue|-|light blue|silver|red|armor, arm cannon",
+"Mega Man|Zero (Mega Man)|blonde|blue|red|-|silver|silver|green|very long hair, armor",
+"Street Fighter|Ryu|black|brown|silver|-|black|silver|red|red headband, martial arts",
+"Street Fighter|Ken Masters|blonde|blue|red|-|black|gold|red|martial arts, fingerless gloves",
+"Street Fighter|Chun-Li|black|brown|blue|-|gold|gold|blue|hair buns, spiked bracelet",
+"Street Fighter|Cammy|blonde|blue|green|-|red|gold|red|long twin braids, red beret",
+"Final Fantasy|Cloud Strife|blonde|blue|navy|-|silver|silver|green|spiky hair ornament, big sword, shoulder pauldron",
+"Final Fantasy|Tifa Lockhart|black|brown|silver|black|red|silver|red|suspenders, fighting gloves",
+"Final Fantasy|Aerith Gainsborough|brown|green|pink|-|red|gold|pink|long braid, pink hair ribbon",
+"Final Fantasy|Sephiroth|silver|green|black|-|silver|silver|green|single black wing, long sword",
+"Final Fantasy|Chocobo|yellow|brown|light orange|-|orange|gold|yellow|feathers, bird wings",
+"Kingdom Hearts|Sora|brown|blue|black|red|yellow|silver|silver|spiky hair ornament, key-shaped sword",
+"Kingdom Hearts|Riku|silver|green|yellow|blue|black|silver|blue|key-shaped sword",
+"Kingdom Hearts|Kairi|red|blue|pink|-|purple|silver|pink|star-shaped charm",
+"Crash & Spyro|Crash Bandicoot|orange|green|light orange|blue|red|gold|orange|animal ears, wide grin",
+"Crash & Spyro|Spyro|purple|brown|yellow|-|gold|gold|purple|small dragon horns, dragon wings",
+"Disney Princesses|Snow White|black|brown|blue|yellow|red|gold|red|red hair bow, short hair",
+"Disney Princesses|Cinderella|blonde|blue|light blue|-|silver|silver|blue|hair bun, blue hair band, glass slippers",
+"Disney Princesses|Aurora|blonde|blue|pink|-|gold|gold|pink|long wavy hair",
+"Disney Princesses|Ariel|red|blue|purple|green|purple|gold|purple|seashell hair ornament, mermaid",
+"Disney Princesses|Belle|brown|brown|yellow|-|gold|gold|yellow|hair bun, red rose",
+"Disney Princesses|Jasmine|black|brown|teal|-|gold|gold|blue|long ponytail, gold headband",
+"Disney Princesses|Pocahontas|black|brown|light orange|-|teal|gold|teal|feather hair ornament, very long hair",
+"Disney Princesses|Mulan|black|brown|light pink|blue|red|gold|pink|hair bun, red sash",
+"Disney Princesses|Tiana|black|brown|light green|-|green|gold|green|water lily hair ornament",
+"Disney Princesses|Rapunzel|blonde|green|purple|light purple|pink|gold|purple|very long hair, flower hair ornament",
+"Disney Princesses|Merida|red|blue|teal|-|gold|gold|teal|curly hair, bow and arrow",
+"Disney Princesses|Moana|black|brown|red|light orange|brown|gold|red|wavy hair, flower hair ornament",
+"Disney Princesses|Elsa|blonde|blue|light blue|-|silver|silver|blue|single braid, snowflake hair ornament, sparkles",
+"Disney Princesses|Anna|red|blue|black|blue|pink|gold|green|twin braids, flower pattern",
+"Classic Disney|Mickey Mouse|black|brown|red|-|yellow|gold|red|round mouse ears, gold buttons",
+"Classic Disney|Minnie Mouse|black|brown|red|-|yellow|gold|red|round mouse ears, polka dot, big hair bow",
+"Classic Disney|Donald Duck|white|blue|blue|-|yellow|gold|red|sailor ribbon, duck tail feathers",
+"Classic Disney|Daisy Duck|white|blue|purple|-|pink|gold|pink|big hair bow, long eyelashes",
+"Classic Disney|Goofy|black|brown|orange|blue|black|gold|green|dog ears",
+"Classic Disney|Stitch|blue|brown|light blue|-|pink|silver|pink|big floppy ears, fluffy",
+"Classic Disney|Tinker Bell|blonde|blue|green|-|light green|gold|green|fairy wings, hair bun, pom pom shoes",
+"Classic Disney|Alice|blonde|blue|light blue|-|black|silver|black|black headband, apron",
+"Classic Disney|Maleficent|black|green|purple|-|black|gold|green|black horns, crow",
+"Classic Disney|Ursula|white|blue|black|-|purple|gold|purple|octopus tentacles, beauty mark",
+"Classic Disney|Cruella de Vil|white|brown|black|-|red|silver|red|two-tone hair, fur stole",
+"Winnie the Pooh|Winnie the Pooh|yellow|brown|red|-|gold|gold|orange|bear ears, honey pot",
+"Winnie the Pooh|Tigger|orange|blue|light orange|-|black|gold|orange|tiger stripes, tiger ears",
+"Pixar|Woody|brown|brown|yellow|blue|red|gold|red|cow print, star badge",
+"Pixar|Jessie|red|green|yellow|blue|red|gold|red|cow print, single braid",
+"Pixar|Buzz Lightyear|purple|blue|green|-|purple|silver|green|space suit, wings",
+"Pixar|Nemo|orange|brown|light orange|-|black|gold|orange|stripes, fins",
+"Pixar|Dory|blue|brown|yellow|-|black|silver|blue|fins",
+"Sanrio|Hello Kitty|white|brown|yellow|blue|red|gold|red|big red hair bow, cat ears",
+"Sanrio|My Melody|white|brown|pink|-|light pink|gold|pink|long rabbit ears, flower hair ornament",
+"Sanrio|Kuromi|white|brown|black|-|pink|silver|pink|jester hood, devil tail, skull hair ornament",
+"Sanrio|Cinnamoroll|white|blue|light blue|-|pink|silver|light blue|long floppy ears, fluffy curled tail",
+"My Little Pony|Twilight Sparkle|purple|pink|lavender|-|pink|gold|pink|unicorn horn, star hair ornament",
+"My Little Pony|Rainbow Dash|red|pink|light blue|-|yellow|gold|blue|multicolored hair, pegasus wings, lightning bolt",
+"My Little Pony|Pinkie Pie|pink|blue|light pink|-|blue|gold|blue|curly hair, balloon",
+"My Little Pony|Fluttershy|light pink|green|yellow|-|pink|gold|pink|pegasus wings, butterfly hair ornament",
+"My Little Pony|Rarity|purple|blue|lavender|-|blue|silver|blue|curly hair, unicorn horn, diamond",
+"My Little Pony|Applejack|blonde|green|orange|-|brown|gold|brown|freckles, ponytail",
+"My Little Pony|Princess Celestia|light blue|pink|light pink|-|gold|gold|purple|unicorn horn, pegasus wings",
+"My Little Pony|Princess Luna|blue|blue|navy|-|silver|silver|blue|crescent moon, unicorn horn, pegasus wings",
+"Care Bears|Tenderheart Bear|brown|brown|red|-|gold|gold|red|bear ears, heart hair ornament",
+"Care Bears|Cheer Bear|pink|brown|light blue|-|yellow|gold|pink|bear ears, rainbow",
+"Care Bears|Grumpy Bear|blue|brown|light blue|-|navy|silver|blue|bear ears, raincloud hair ornament",
+"Care Bears|Funshine Bear|yellow|brown|orange|-|gold|gold|orange|bear ears, sun hair ornament",
+"Care Bears|Share Bear|purple|brown|pink|-|light pink|gold|pink|bear ears, lollipop hair ornament",
+"Care Bears|Good Luck Bear|green|brown|light green|-|gold|gold|green|bear ears, clover hair ornament",
+"Care Bears|Bedtime Bear|blue|brown|yellow|-|navy|silver|yellow|bear ears, crescent moon, nightcap",
+"Care Bears|Love-a-Lot Bear|pink|brown|red|-|light pink|gold|red|bear ears, two hearts hair ornament",
+"Powerpuff Girls|Blossom (Powerpuff)|orange|pink|pink|-|black|gold|red|big red hair bow, very long hair",
+"Powerpuff Girls|Bubbles (Powerpuff)|blonde|blue|light blue|-|black|silver|blue|twin tails",
+"Powerpuff Girls|Buttercup (Powerpuff)|black|green|green|-|black|gold|green|flipped hair",
+"SpongeBob SquarePants|SpongeBob SquarePants|yellow|blue|silver|brown|red|gold|red|red necktie, buck teeth",
+"SpongeBob SquarePants|Patrick Star|pink|brown|light pink|green|purple|gold|pink|flower pattern",
+"SpongeBob SquarePants|Sandy Cheeks|brown|brown|purple|-|pink|silver|pink|squirrel ears, flower hair ornament",
+"Looney Tunes|Bugs Bunny|silver|blue|pink|-|gray|silver|pink|long rabbit ears",
+"Looney Tunes|Daffy Duck|black|brown|orange|-|orange|gold|orange|duck tail feathers",
+"Looney Tunes|Tweety|blonde|blue|yellow|-|orange|gold|yellow|big round eyes, small wings",
+"Marvel|Spider-Man|brown|blue|red|blue|black|silver|red|web pattern",
+"Marvel|Iron Man|black|brown|red|yellow|gold|gold|light blue|metal armor, glowing chest light",
+"Marvel|Captain America|blonde|blue|blue|red|silver|silver|red|round shield, star",
+"Marvel|Thor|blonde|blue|navy|-|silver|silver|red|red cape, hammer, winged helmet",
+"Marvel|Hulk|black|green|green|purple|purple|gold|green|muscular",
+"Marvel|Black Widow|red|green|black|-|silver|silver|red|utility belt",
+"Marvel|Scarlet Witch|brown|green|red|-|gold|gold|red|red magic aura, pointed headpiece",
+"Marvel|Captain Marvel|blonde|blue|red|blue|gold|gold|gold|star brooch",
+"Marvel|Wolverine|black|brown|yellow|blue|blue|gold|yellow|metal claws, pointy hair",
+"Marvel|Storm (X-Men)|white|blue|black|-|silver|silver|blue|lightning, cape",
+"Marvel|Rogue (X-Men)|brown|green|green|yellow|yellow|gold|green|white hair streak",
+"Marvel|Jean Grey|red|green|green|-|gold|gold|green|fire bird motif",
+"Marvel|Loki|black|green|green|-|gold|gold|green|golden horns",
+"Marvel|Doctor Strange|black|green|blue|-|red|gold|green|red cloak, magic circle",
+"DC|Superman|black|blue|blue|red|yellow|gold|red|red cape",
+"DC|Wonder Woman|black|blue|red|blue|gold|gold|red|gold bracelets, golden lasso",
+"DC|Batman|black|blue|silver|black|yellow|silver|black|bat ears, cape",
+"DC|Batgirl|red|blue|purple|black|yellow|gold|yellow|bat ears, cape",
+"DC|Supergirl|blonde|blue|blue|red|gold|gold|red|red cape",
+"DC|Catwoman|black|green|purple|-|black|silver|purple|cat ears, whip",
+"DC|Harley Quinn|blonde|blue|red|black|black|silver|red|twin tails, two-tone hair tips",
+"DC|Poison Ivy|red|green|green|-|gold|gold|green|leaves, vines",
+"DC|The Joker|green|green|purple|-|orange|gold|green|playing card",
+"DC|Robin (DC)|black|blue|red|green|yellow|gold|red|yellow cape",
+"DC|The Flash|blonde|blue|red|-|gold|gold|yellow|lightning bolt hair ornament",
+"DC|Raven (DC)|purple|blue|blue|-|gold|gold|red|hooded cloak, forehead gem",
+"DC|Starfire|red|green|purple|-|silver|silver|green|very long hair",
+"Star Wars|Princess Leia|brown|brown|silver|-|gold|silver|silver|side hair buns",
+"Star Wars|Luke Skywalker|blonde|blue|light orange|-|brown|gold|blue|glowing blue sword",
+"Star Wars|Darth Vader|silver|brown|black|-|red|silver|red|black cape, glowing red sword",
+"Star Wars|Yoda|green|green|light orange|-|brown|gold|green|pointed ears, wooden cane",
+"Star Wars|Rey|brown|brown|light orange|-|brown|gold|brown|staff, three hair buns",
+"Star Wars|Grogu|green|brown|light orange|-|brown|gold|green|big pointed ears",
+"Star Wars|R2-D2|white|blue|blue|-|silver|silver|blue|robot",
+"Star Wars|C-3PO|blonde|blue|yellow|-|silver|gold|yellow|robot",
+"Sailor Moon|Sailor Moon|blonde|blue|blue|-|red|gold|red|twin buns, long twin tails, red bow, crescent moon",
+"Sailor Moon|Sailor Mercury|blue|blue|light blue|-|blue|gold|blue|short hair, blue bow",
+"Sailor Moon|Sailor Mars|black|brown|red|-|purple|gold|red|very long hair, purple bow",
+"Sailor Moon|Sailor Jupiter|brown|green|green|-|pink|gold|green|ponytail, rose earrings, pink bow",
+"Sailor Moon|Sailor Venus|blonde|blue|orange|-|blue|gold|orange|big red hair bow, blue bow",
+"Sailor Moon|Sailor Chibi Moon|pink|pink|light pink|-|red|gold|pink|twin buns, heart hair ornament",
+"Dragon Ball|Goku|black|brown|orange|-|blue|gold|orange|spiky hair ornament, martial arts wristbands",
+"Dragon Ball|Vegeta|black|brown|blue|-|gold|gold|blue|widow's peak, armor",
+"Dragon Ball|Bulma|blue|blue|pink|-|purple|gold|pink|goggles",
+"Dragon Ball|Piccolo|green|brown|purple|-|light blue|silver|purple|pointed ears, antennae, cape",
+"Dragon Ball|Frieza|purple|pink|silver|-|purple|silver|purple|small horns, long tail",
+"Dragon Ball|Android 18|blonde|blue|blue|-|black|silver|blue|hoop earrings, short hair",
+"Naruto|Naruto Uzumaki|blonde|blue|orange|-|navy|silver|blue|whisker marks, ninja headband",
+"Naruto|Sasuke Uchiha|black|brown|navy|-|silver|silver|blue|ninja headband",
+"Naruto|Sakura Haruno|pink|green|red|-|light pink|silver|blue|ninja headband",
+"Naruto|Hinata Hyuga|blue|pink|lavender|-|purple|silver|blue|ninja headband",
+"Naruto|Kakashi Hatake|silver|brown|green|navy|navy|silver|blue|ninja headband",
+"One Piece|Monkey D. Luffy|black|brown|red|blue|yellow|gold|red|scar under eye",
+"One Piece|Nami|orange|brown|blue|orange|blue|gold|orange|pinwheel tattoo",
+"One Piece|Roronoa Zoro|green|brown|silver|black|green|silver|green|katana, gold earrings",
+"Demon Slayer|Tanjiro Kamado|red|pink|green|black|black|gold|red|checkered pattern, scar on forehead",
+"Demon Slayer|Nezuko Kamado|black|pink|pink|-|brown|gold|pink|pink hair ribbon, hemp leaf pattern, orange hair tips",
+"Demon Slayer|Zenitsu Agatsuma|blonde|brown|yellow|black|orange|gold|yellow|triangle pattern, lightning",
+"Demon Slayer|Kyojuro Rengoku|blonde|brown|orange|-|red|gold|red|flame pattern, red hair tips",
+"Anime (Other)|Hatsune Miku|light blue|blue|silver|black|teal|silver|light blue|very long twin tails, necktie",
+"Anime (Other)|Anya Forger|pink|green|black|-|gold|gold|pink|cone hair ornaments",
+"Anime (Other)|Kiki|black|brown|navy|-|red|gold|red|big red hair bow, broom, black cat",
+"Minecraft|Steve|brown|blue|teal|blue|silver|silver|teal|square pixel hair ornament",
+"Minecraft|Alex|orange|green|green|brown|brown|gold|green|square pixel hair ornament",
+"Minecraft|Creeper|green|brown|light green|-|black|silver|green|pixel pattern",
+"Minecraft|Enderman|black|pink|purple|-|black|silver|purple|purple sparkles, very tall",
+"Five Nights at Freddy's|Freddy Fazbear|brown|blue|light orange|-|black|gold|black|bear ears, bow tie, microphone",
+"Five Nights at Freddy's|Bonnie|purple|pink|lavender|-|red|silver|red|long rabbit ears, red bow tie, guitar",
+"Five Nights at Freddy's|Chica|yellow|pink|orange|-|orange|gold|orange|bird wings, chick hair ornament",
+"Five Nights at Freddy's|Foxy|red|brown|brown|-|yellow|gold|red|fox ears, eyepatch",
+"Undertale|Frisk|brown|brown|blue|-|purple|gold|red|striped pattern",
+"Undertale|Sans|white|blue|blue|black|pink|silver|blue|hoodie, skull hair ornament",
+"Undertale|Papyrus|white|brown|silver|blue|red|silver|red|red scarf",
+"Undertale|Toriel|white|pink|purple|-|gold|gold|purple|goat horns, long floppy ears",
+"Undertale|Undyne|red|brown|black|-|blue|silver|blue|eyepatch, fins, spear",
+"Among Us|Red Crewmate|black|blue|red|-|light blue|silver|light blue|space suit, small backpack",
+"Among Us|Blue Crewmate|silver|blue|blue|-|light blue|silver|light blue|space suit, small backpack",
+"Among Us|Green Crewmate|brown|blue|green|-|light blue|silver|light blue|space suit, small backpack",
+"Among Us|Pink Crewmate|blonde|blue|pink|-|light blue|silver|light blue|space suit, small backpack",
+"Among Us|Yellow Crewmate|brown|blue|yellow|-|light blue|silver|light blue|space suit, small backpack",
+"Among Us|Black Crewmate|silver|blue|black|-|light blue|silver|light blue|space suit, small backpack",
+"Kids TV|Bluey|blue|brown|light blue|-|light orange|silver|blue|dog ears",
+"Kids TV|Peppa Pig|pink|brown|red|-|light pink|gold|red|pig ears"
+];
+const NOLD=THEMES.length;
+CHARS.forEach(s=>{const [f,name,hair,eyes,top,bot,trim,tiara,gem,ex]=s.split('|');TH.push({g:f,name,ch:true,ex:ex.split(',').map(x=>x.trim()).filter(Boolean),bg:'castle hall',c:{hair,eyes,dress:top,bot:bot==='-'?'':bot,trim,tiara,gem,pend:gem}})});
+const FRANS=[...new Set(CHARS.map(s=>s.split('|')[0]))];
 function hairNot(d){let h;do{h=r(HAIR)}while(h===d);return h}
 function pick(mode,ti){ // ti: -1 none, else theme index
+ if(ti>=0&&TH[ti].ch){const t=TH[ti],o=Object.assign({theme:t},t.c);
+  if(mode==='harmony')o.tiara=r(['gold','silver']);
+  if(mode==='wild'){o.eyes=r(EYES);o.tiara=r(['gold','silver'])}
+  o.extras=t.ex.slice();o.bg=t.bg;return o}
  if(ti>=0){const t=TH[ti],c=r(t.pal);let o={hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6],theme:t};
   if(mode==='harmony')o.hair=hairNot(o.dress);
   if(mode==='wild'){o.hair=hairNot(o.dress);o.eyes=r(EYES);o.tiara=r(['gold','silver'])}
@@ -198,23 +476,34 @@ function pick(mode,ti){ // ti: -1 none, else theme index
  o.extras=[];o.bg='castle hall';return o}
 function build(c){
  const ear=c.extras.find(x=>/earrings/.test(x));const ex=c.extras.filter(x=>x!==ear);
- const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${c.hair} straight hair with bangs, ${c.hair} hair, ${c.eyes} eyes`,`${c.dress} off-shoulder dress, ${c.dress} dress, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ballgown, no neck collar, white gloves`,`${c.tiara} tiara, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.pend} pendant`];
+ const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${c.hair} straight hair with bangs, ${c.hair} hair, ${c.eyes} eyes`,`${c.bot?`${c.dress} off-shoulder dress, ${c.dress} bodice, ${c.bot} skirt, two-tone dress`:`${c.dress} off-shoulder dress, ${c.dress} dress`}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ballgown, no neck collar, white gloves`,`${c.tiara} tiara, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.pend} pendant`];
  if(ex.length)parts.push(ex.join(', '));
  parts.push('worried, pleading expression, blush, sweatdrop, own hands together, hands clasped, praying hands, hands near chest, looking at viewer',c.bg,'big breasts, ultrabody');
  let n=NEG;if(c.theme&&c.theme.g==='Sports Colors')n+=', logo, letter, text, number';
+ if(c.theme&&c.theme.ch)n+=', logo, letter, text, emblem';
  return [parts.join(', '),n]}
-const HEX={blonde:'#f5d76e',brown:'#8b5a2b',black:'#555',white:'#fff',silver:'#c0c0c0',pink:'#ff8fc8',red:'#e53935','dark red':'#b71c1c',orange:'#ff9800',yellow:'#ffeb3b','light yellow':'#fff59d',green:'#4caf50','dark green':'#2e7d32',blue:'#2196f3','dark blue':'#1565c0',purple:'#9c27b0','light blue':'#9ad8ff','light pink':'#ffc8e0','light orange':'#ffd1a1',gold:'#d4af37',lavender:'#c8a2ff','mint green':'#a8f0d0',teal:'#20b2aa',navy:'#3949ab','light green':'#b9f6ca','light purple':'#d1b3ff',gray:'#999'};
+const HEX={blonde:'#f5d76e',brown:'#8b5a2b',black:'#555',white:'#fff',silver:'#c0c0c0',pink:'#ff8fc8',red:'#e53935','dark red':'#b71c1c',orange:'#ff9800',yellow:'#ffeb3b','light yellow':'#fff59d',green:'#4caf50','dark green':'#2e7d32',blue:'#2196f3','dark blue':'#1565c0',purple:'#9c27b0','light blue':'#9ad8ff','light pink':'#ffc8e0','light orange':'#ffd1a1',gold:'#d4af37',lavender:'#c8a2ff','mint green':'#a8f0d0',teal:'#20b2aa',navy:'#3949ab','light green':'#b9f6ca','light purple':'#d1b3ff',gray:'#999',black:'#555',brown:'#8b5a2b'};
 let mode='curated',theme=-1; // -1 none, -2 any
 document.querySelectorAll('.mode button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m});
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 function drawThemes(){const q=document.getElementById('tq').value.toLowerCase().trim();let h='';
  h+=`<button class="tb${theme===-1?' on':''}" onclick="setT(-1)">🚫 No theme</button><button class="tb${theme===-2?' on':''}" onclick="setT(-2)">🎲 Any theme (random)</button>`;
- let g='';TH.forEach((t,i)=>{if(q&&!(t.name+' '+t.g+' '+t.ex.join(' ')).toLowerCase().includes(q))return;if(t.g!==g){g=t.g;h+=`<h4>${esc(g)}</h4>`}h+=`<button class="tb${theme===i?' on':''}" onclick="setT(${i})">${esc(t.name)}</button>`});
+ let g='';TH.forEach((t,i)=>{if(t.ch)return;if(q&&!(t.name+' '+t.g+' '+t.ex.join(' ')).toLowerCase().includes(q))return;if(t.g!==g){g=t.g;h+=`<h4>${esc(g)}</h4>`}h+=`<button class="tb${theme===i?' on':''}" onclick="setT(${i})">${esc(t.name)}</button>`});
  document.getElementById('tgrid').innerHTML=h}
-function setT(i){theme=i;document.getElementById('tcur').textContent=i===-1?'No theme':i===-2?'Any theme (random)':TH[i].name;drawThemes()}
+function setT(i){theme=i;const ch=typeof i==='string'||i===-3||(i>=0&&TH[i].ch);
+ document.getElementById('tcur').textContent=ch?'(character selected)':i===-1?'No theme':i===-2?'Any theme (random)':TH[i].name;
+ document.getElementById('ccur').textContent=!ch?'None':i===-3?'Any character (random)':typeof i==='string'?'Any '+i+' character':TH[i].name+' ('+TH[i].g+')';
+ drawThemes();drawChars()}
+function drawChars(){const q=document.getElementById('cq').value.toLowerCase().trim();let h=`<button class="tb${theme===-3?' on':''}" onclick="setT(-3)">🎲 Any character (random)</button>`;
+ FRANS.forEach((f,fi)=>{const fm=f.toLowerCase().includes(q);const items=TH.map((t,i)=>[t,i]).filter(([t])=>t.ch&&t.g===f&&(!q||fm||t.name.toLowerCase().includes(q)));if(!items.length)return;
+  const open=q||theme===f||items.some(([t,i])=>i===theme);
+  h+=`<details${open?' open':''}><summary>${esc(f)} (${items.length})</summary><button class="tb${theme===f?' on':''}" onclick="setT(FRANS[${fi}])">🎲 Any ${esc(f)} character</button>`+items.map(([t,i])=>`<button class="tb${theme===i?' on':''}" onclick="setT(${i})">${esc(t.name)}</button>`).join('')+'</details>'});
+ document.getElementById('cgrid').innerHTML=h}
+document.getElementById('cq').oninput=drawChars;
 document.getElementById('tq').oninput=drawThemes;
-const ti=()=>theme===-2?Math.floor(Math.random()*TH.length):theme;
-const label=c=>c.theme?c.theme.name:'No theme';
+const CIDX=TH.map((t,i)=>t.ch?i:-1).filter(i=>i>=0);
+const ti=()=>theme===-2?Math.floor(Math.random()*NOLD):theme===-3?r(CIDX):typeof theme==='string'?r(CIDX.filter(i=>TH[i].g===theme)):theme;
+const label=c=>c.theme?(c.theme.ch?c.theme.name+' ('+c.theme.g+')':c.theme.name):'No theme';
 function go(){const c=pick(mode,ti()),[p,n]=build(c);
  document.getElementById('list').innerHTML='';
  document.getElementById('p').value=p;document.getElementById('n').value=n;
@@ -226,7 +515,7 @@ function batch(k){let h='',all=[],negs=new Set();for(let i=1;i<=k;i++){const c=p
 function wr(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
 function cpt(id){wr(document.getElementById(id).textContent)}
 function cpAll(){wr(window._all)}
-function chips(c){return [['Hair',c.hair],['Eyes',c.eyes],['Dress',c.dress],['Trim',c.trim],['Tiara',c.tiara],['Gem',c.gem]].map(([k,x])=>`<span style="background:${HEX[x]||'#ccc'}">${k}: ${x}</span>`).join('');}
+function chips(c){return [['Hair',c.hair],['Eyes',c.eyes],...(c.bot?[['Bodice',c.dress],['Skirt',c.bot]]:[['Dress',c.dress]]),['Trim',c.trim],['Tiara',c.tiara],['Gem',c.gem]].map(([k,x])=>`<span style="background:${HEX[x]||'#ccc'}">${k}: ${x}</span>`).join('');}
 function cp(id){wr(document.getElementById(id).value)}
-document.getElementById('go').onclick=go;drawThemes();go();
+document.getElementById('go').onclick=go;drawThemes();drawChars();go();
 </script></body></html>
