@@ -46,6 +46,7 @@ body.light{background:#f6f3fb;color:#222}body.light details,body.light .item,bod
 <details><summary>⚙️ Options <span id="ocur" class="muted"></span></summary><div id="opts"></div></details>
 <details><summary>👭 Sisters &amp; Mashup</summary><h4>Sister set (matching colors)</h4><button class=copy onclick="doSis(2)">👭 2 sisters</button><button class=copy onclick="doSis(3)">👭👧 3 sisters</button>
 <h4>Character mashup (hair, eyes, tiara from A; dress and trim from B)</h4><div class=row><label>Character A</label><select id="ma"></select></div><div class=row><label>Character B</label><select id="mb"></select></div><button class=copy onclick="doMash()">🔀 Make mashup</button></details>
+<details id="pkd"><summary>🎯 Pick my colors <span id="pkc" class="muted"></span></summary><p class=muted>Lock any part to the color you want. Surprise Me and batches will always use it.</p><div id="pk"></div><button class=copy onclick="pkClear()">Clear all</button></details>
 <button id="go">🎲 Surprise Me</button>
 <div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
 <div id="list"></div>
@@ -600,7 +601,12 @@ function applyLocks(c){const L=LOCK;if(!Object.keys(L).length)return c;
  PARTS.forEach(p=>{if(L[p])c[p]=L[p]});if(L.gem&&!c.neck)c.pend=L.gem;
  if(c.hair===c.dress){if(!L.hair)c.hair=hairFor(c);else if(!L.dress)c.dress=r(DRESS.filter(x=>x!==c.hair&&x!==c.trim));else c.forced=true}
  if(c.h2===c.hair)c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress));return c}
-function lock(p){if(!RES.s)return;if(LOCK[p])delete LOCK[p];else LOCK[p]=RES.s[p];lss('sp_lock',LOCK);showSingle(RES.s,true)}
+function lock(p){if(!RES.s)return;if(LOCK[p])delete LOCK[p];else LOCK[p]=RES.s[p];lss('sp_lock',LOCK);showSingle(RES.s,true);drawPick()}
+const PKL=[['Hair','hair',()=>HAIR],['Eyes','eyes',()=>EYES],['Dress','dress',()=>DRESS],['Trim','trim',()=>ACOL],['Tiara','tiara',()=>GS],['Gem','gem',()=>DRESS]];
+function drawPick(){document.getElementById('pk').innerHTML=PKL.map(([n,p,f])=>`<div class=row><label>${n}</label><select onchange="pkSet('${p}',this.value)"><option value=''>Any</option>${f().map(x=>`<option${LOCK[p]===x?' selected':''}>${x}</option>`).join('')}</select></div>`).join('');const k=Object.keys(LOCK).filter(x=>LOCK[x]);document.getElementById('pkc').textContent=k.length?'('+k.map(x=>x+': '+LOCK[x]).join(', ')+')':''}
+function pkSet(p,v){if(v)LOCK[p]=v;else delete LOCK[p];lss('sp_lock',LOCK);drawPick();if(RES.s)showSingle(RES.s,true)}
+function pkClear(){LOCK={};lss('sp_lock',LOCK);drawPick();if(RES.s)showSingle(RES.s,true)}
+function curSis(k){if(!RES.s)return;drawBatch(sisters(k,JSON.parse(JSON.stringify(RES.s))));const b=document.getElementById('list');if(b)b.scrollIntoView({behavior:'smooth'})}
 function reroll(c,p){const o=c[p];
  if(p==='hair'){c.hair=hairFor(c);if(c.h2===c.hair)c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress))}
  else if(p==='eyes')c.eyes=r(EYES.filter(x=>x!==o));
@@ -640,14 +646,14 @@ function showSingle(c,nohist){RES.s=c;const [p,n]=build(c);
  document.getElementById('list').innerHTML='';
  document.getElementById('p').value=p;document.getElementById('n').value=n;
  document.getElementById('chips').innerHTML=`<span style="background:#8a6cff;color:#fff">Theme: ${esc(label(c))}</span>${badge(c)}`+chips(c,'s')+warns(c);
- document.getElementById('sx').innerHTML=tools('s');
+ document.getElementById('sx').innerHTML=tools('s')+`<div class=tools><button class=copy onclick="curSis(2)">👭 2 sisters of her</button><button class=copy onclick="curSis(3)">👭👧 3 sisters of her</button></div>`;
  if(!nohist)addHist([[p,n,label(c)]])}
 function go(){showSingle(applyLocks(apply(pick(mode,ti()))))}
 const ckey=c=>(c.lab||label(c))+'|'+[c.hair,c.eyes,c.dress,c.bot,c.trim,c.tiara,c.gem].join('/');
 function tiGen(){if(!O.norep||typeof theme==='number'&&theme>=-1)return ti;const used=new Set();
  return()=>{const pool=theme===-2?[...Array(NOLD).keys()]:theme===-3?CIDX:CIDX.filter(i=>TH[i].g===theme);let av=pool.filter(i=>!used.has(i));if(!av.length){used.clear();av=pool}const i=r(av);used.add(i);return i}}
 function batch(k){const tg=tiGen(),seen=new Set(),cs=[];
- for(let i=1;i<=k;i++){let c,t=0;do{c=apply(pick(mode,tg()))}while(O.norep&&seen.has(ckey(c))&&++t<40);seen.add(ckey(c));cs.push(c)}
+ for(let i=1;i<=k;i++){let c,t=0;do{c=applyLocks(apply(pick(mode,tg())))}while(O.norep&&seen.has(ckey(c))&&++t<40);seen.add(ckey(c));cs.push(c)}
  drawBatch(cs)}
 let BN=[];
 function itemHTML(i){const c=RES[i],[p]=build(c);return `<b>#${i}</b><span class=tname>${esc(label(c))}</span>${badge(c)}<div class=chips>${chips(c,i)}</div>${warns(c)}<pre id=b${i}>${esc(p)}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button>`+tools(i)}
@@ -715,5 +721,5 @@ function panic(){document.getElementById('hoa').style.display='block';document.t
 document.addEventListener('keydown',e=>{if(e.key==='Escape')panic()});
 function hoaTap(){taps++;clearTimeout(window._ht);window._ht=setTimeout(()=>taps=0,1500);if(taps>=3){taps=0;document.getElementById('hoa').style.display='none';document.title=DISG?'HOA Meeting Minutes':'Surprise Princess'}}
 
-document.getElementById('go').onclick=go;drawThemes();drawChars();drawOpts();drawMash();drawSaved();drawDaily();applyDisp();if(DISG)document.getElementById('hoa').style.display='block';showSingle(apply(pick(mode,ti())),true);
+document.getElementById('go').onclick=go;drawThemes();drawChars();drawOpts();drawMash();drawSaved();drawDaily();drawPick();applyDisp();if(DISG)document.getElementById('hoa').style.display='block';showSingle(apply(pick(mode,ti())),true);
 </script></body></html>
