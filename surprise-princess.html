@@ -26,13 +26,21 @@ details h4{margin:12px 4px 4px;font-size:15px;color:#bbb}.muted{color:#999;font-
 #panic{position:fixed;right:12px;bottom:12px;z-index:98;width:44px;height:44px;border-radius:50%;border:1px solid #999;background:#eee;font-size:20px;opacity:.6}
 #hoa{display:none;position:fixed;inset:0;background:#fff;color:#222;font-family:Georgia,serif;padding:24px;z-index:99;overflow:auto}#hoa h2{font-size:22px;cursor:default;user-select:none;-webkit-user-select:none}#hoa p{font-size:15px;line-height:1.5}
 body.light{background:#f6f3fb;color:#222}body.light details,body.light .item,body.light .sub{background:#fff;color:#222}body.light textarea,body.light select,body.light #tq,body.light #cq,body.light #codein{background:#fff;color:#222;border-color:#bbb}body.light .tb,body.light .mode button,body.light .ck,body.light .top button,body.light .cbtn{background:#e6e0f3;color:#222}body.light .tb.on{background:#ff6fb5;color:#fff}body.light .mode button.on{background:#8a6cff;color:#fff}body.light #daily{background:linear-gradient(135deg,#efe3ff,#fff)}
+@media(max-width:640px){button{min-height:48px;font-size:18px}.tb,.qb{font-size:16px;padding:12px 14px}.chips span.rr{padding:10px 14px;font-size:15px}.ck{padding:12px 14px}#mbar{display:flex}body{padding-bottom:86px}#panic{bottom:84px}#toast{bottom:96px}.cmp pre{font-size:11px}}
+#mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;background:#1d1b26ee;padding:8px;gap:6px;border-top:1px solid #444}#mbar button{flex:1;margin:0;font-size:18px}#mbar .g{background:#ff6fb5;color:#fff;flex:2}
+.info{font-size:13px;color:#cfc6ff;margin:4px 0;line-height:1.4}.lwarn{color:#ffd77a}.qb{background:#3a3650;color:#eee;font-size:13px;padding:6px 10px;margin:3px;border-radius:14px}.qb.on{background:#c62828;color:#fff}
+.up{background:#2e7d32;color:#fff}.dn{background:#6d4c41;color:#fff}.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cmp .item{margin:0}.cmp pre{font-size:12px}
+#chal{background:linear-gradient(135deg,#1f3a4a,#2a2738);border-radius:12px;padding:10px;margin:8px 0}.rS{background:linear-gradient(90deg,#8a6cff,#ff6fb5,#f5c518);color:#fff}
+#wn{display:none;position:fixed;inset:0;background:#000a;z-index:60;align-items:center;justify-content:center;padding:16px}#wn>div{background:#26233a;color:#eee;border-radius:14px;padding:16px;max-width:520px;max-height:80vh;overflow:auto}#wn li{margin:4px 0;font-size:14px}
+.item details.more{background:transparent;padding:0;margin:4px 0}.item details.more summary{font-size:15px}#gobar button{font-size:15px}
+body.light #mbar{background:#f6f3fbee;border-color:#ccc}body.light .info{color:#5a4a8a}body.light .qb{background:#e6e0f3;color:#222}body.light .qb.on{background:#c62828;color:#fff}body.light #chal{background:linear-gradient(135deg,#e0f2ff,#fff)}body.light #wn>div{background:#fff;color:#222}body.light .lwarn{color:#8a5a00}
 </style></head><body>
 <button id="panic" onclick="panic()" title="Panic (Esc)">🏠</button><div id="hoa"><h2 onclick="hoaTap()">Maple Ridge HOA: Meeting Minutes</h2><p><i>Regular monthly meeting, Community Room, 7:00 PM</i></p><p>1. Call to order at 7:04 PM. Quorum confirmed (5 of 7 board members present).</p><p>2. Minutes of the previous meeting approved as amended (typo in item 4b).</p><p>3. Treasurer's report: reserve fund balance unchanged. Landscaping invoice for October under review.</p><p>4. Old business: the mailbox cluster repaint is tabled until spring. The pool cover quote is still pending.</p><p>5. New business: residents are reminded that trash bins must be stored out of street view. Discussion of holiday light guidelines was deferred to a committee.</p><p>6. Open forum: one comment regarding speed bumps on Birchwood Ln.</p><p>7. Adjourned at 8:12 PM. Next meeting: second Tuesday of the month.</p></div>
 <div id="toast"></div>
 <h1>👑 Surprise Me Princess</h1>
 <div class="top"><button id="dm" onclick="togDark()">☀️ Light mode</button><button id="dg" onclick="togDisg()">🕵️ Disguise: off</button></div>
 <div id="week"></div>
-<div id="daily"></div>
+<div id="daily"></div><div id="chal"></div>
 <div class="mode">Mode:
 <button data-m="curated" class="on">Looks good (curated)</button>
 <button data-m="harmony">Matching (random)</button>
@@ -43,19 +51,26 @@ body.light{background:#f6f3fb;color:#222}body.light details,body.light .item,bod
 <details open><summary>👸 Characters: <b id="ccur">None</b></summary>
 <input id="cq" class="tq" placeholder="Search characters or franchises (e.g. mario, sonic, pikachu)…">
 <div id="cgrid"></div></details>
+<details><summary>🌈 Mood &amp; season <span id="mcur" class="muted"></span></summary><p class=muted>Mood limits the colors Surprise Me and batches use (characters keep their own colors).</p><div id="mood"></div><label class=ck><input type=checkbox id="seas" onchange="setSeason(this.checked)"> 🍃 Season auto-mode: lean toward <b id="seasl"></b> colors</label></details>
 <details><summary>⚙️ Options <span id="ocur" class="muted"></span></summary><div id="opts"></div></details>
-<details><summary>👭 Sisters &amp; Mashup</summary><h4>Sister set (matching colors)</h4><button class=copy onclick="doSis(2)">👭 2 sisters</button><button class=copy onclick="doSis(3)">👭👧 3 sisters</button>
+<details><summary>👭 Sisters &amp; Mashup</summary><h4>Sister set (matching colors)</h4><div class=row><label>Sister style (all sister buttons)</label><select id="sist" onchange="setSis(this.value)"><option value="def">Classic (different dress families)</option><option value="fam">Matching dress family</option><option value="hair">Matching hair</option><option value="opp">Total opposites</option></select></div><button class=copy onclick="doSis(2)">👭 2 sisters</button><button class=copy onclick="doSis(3)">👭👧 3 sisters</button><button class=fav onclick="royal()">👑 Royal family (Queen + 2 princesses)</button>
 <h4>Character mashup (hair, eyes, tiara from A; dress and trim from B)</h4><div class=row><label>Character A</label><select id="ma"></select></div><div class=row><label>Character B</label><select id="mb"></select></div><button class=copy onclick="doMash()">🔀 Make mashup</button></details>
+<details><summary>🧪 Theme mixer</summary><p class=muted>Hair and eyes from theme A, dress and trim from theme B, extras from both.</p><div class=row><label>Theme A (hair, eyes)</label><select id="xa"></select></div><div class=row><label>Theme B (dress, trim)</label><select id="xb"></select></div><button class=copy onclick="doMix()">🧪 Mix themes</button></details>
+<details><summary>💾 Presets</summary><p class=muted>Save your 🎯 picks, 🚫 blocks and mood under a name. Tap a preset to switch.</p><input id="pren" class=tq placeholder="Preset name (e.g. No blonde, pastel)" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box"><label class=ck><input type=checkbox id="preo"> Also save Options</label><button class=copy onclick="preSave()">💾 Save preset</button><div id="prel"></div></details>
 <details id="pkd"><summary>🎯 Pick my colors <span id="pkc" class="muted"></span></summary><p class=muted>Lock any part to the color you want. Surprise Me and batches will always use it.</p><div id="pk"></div><button class=copy onclick="pkClear()">Clear all</button></details>
 <details id="bnd"><summary>🚫 Never use these colors <span id="bnc" class="muted"></span></summary><p class=muted>Turn colors off for one part at a time (for example, no blonde hair). Surprise Me, batches and sisters skip them. A color you pick in 🎯 still wins.</p><div id="bn" class=chips style="display:block"></div><button class=copy onclick="bnClear()">Clear all</button></details>
-<button id="go">🎲 Surprise Me</button>
+<div id="preq"></div><div id="qt"></div><button id="go">🎲 Surprise Me</button><div class=tools id="gobar"><button class=cbtn onclick="undo()">⬅️ Undo</button><button class=copy onclick="pixTop()">📋 Copy for PixAI</button></div>
 <div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
 <div id="list"></div>
 <div class="chips" id="chips"></div><div id="sx"></div>
 <h3>Prompt</h3><textarea id="p"></textarea><button class="copy" onclick="cp('p')">Copy prompt</button>
 <h3>Negative</h3><textarea id="n" style="height:70px"></textarea><button class="copy" onclick="cp('n')">Copy negative</button>
-<details><summary>⭐ Saved: My Favorites (<span id="nfav">0</span>)</summary><button class=copy onclick="cpFavs()">📋 Copy all favorites</button><button class=vbtn onclick="dlFavs()">⬇️ Download .txt</button><div id="favs"></div></details>
+<details><summary>⭐ Saved: My Favorites (<span id="nfav">0</span>)</summary><button class=copy onclick="cpFavs()">📋 Copy all favorites</button><button class=vbtn onclick="dlFavs()">⬇️ Download .txt</button><input id="fq" class=tq placeholder="🔎 Search favorites…" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box;margin-top:6px"><div id="favs"></div></details>
 <details><summary>🕘 History (<span id="nhist">0</span>, last 50)</summary><button class=del onclick="clearHist()">🗑 Clear history</button><div id="hist"></div></details>
+<details><summary>🧰 Extras &amp; privacy <span id="sdc" class="muted"></span></summary><h4>🙈 Hide my history</h4><button class=del onclick="wipeAll()">🧹 Hide my history (wipe everything)</button><button class=cbtn onclick="wipeHist()">Wipe history only</button><h4>👍 Ratings</h4><p class=muted id="rtc"></p><button class=cbtn onclick="rtReset()">↩️ Reset ratings</button><h4>🔒 Fixed seed</h4><p class=muted>With a seed, Surprise Me gives the same roll every time (same settings). Clear it to go back to random.</p><input id="seed" class=tq placeholder="Seed (blank = off)" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box"><button class=copy onclick="setSeed(document.getElementById('seed').value)">Set seed</button><button class=cbtn onclick="newSeed()">🎲 New seed</button><button class=cbtn onclick="setSeed('')">Clear seed</button><h4>⚙️ Backup settings</h4><textarea id="sxo" style="height:70px" placeholder="Settings code (PS1.…)"></textarea><button class=copy onclick="expSet()">⬆️ Export settings code</button><button class=cbtn onclick="impSet()">⬇️ Import code</button><h4>ℹ️</h4><button class=cbtn onclick="wnShow()">✨ What's new</button></details>
+<div id="mbar"><button class=cbtn onclick="undo()">⬅️</button><button class=g onclick="go()">🎲 Surprise Me</button><button class=copy onclick="pixTop()">📋 Copy</button></div>
+<div id="wn" onclick="if(event.target===this)wnClose()"><div><h3>✨ What's new</h3><ul><li>💾 Presets for your picks and blocks</li><li>🌈 Moods (Pastel, Bold, Dark &amp; royal, Soft &amp; sweet) and 🍃 season mode</li><li>👭 Sister styles and 👑 Royal family</li><li>📋 Copy for PixAI (prompt + negative) and 🔢 Copy batch as list</li><li>👍/👎 ratings that gently steer the colors</li><li>🔁 Remix a favorite, 🔎 search favorites</li><li>👗 Dress styles, time of day, patterns, glove tint, hair accessories (in ⚙️ Options)</li><li>🧪 Theme mixer, 🏆 daily challenge, ⚖️ compare, 👯 twin, ⬅️ undo</li><li>🏷️ Princess names, 🎨 color tips and 📏 prompt length check</li><li>✨ Sparkle tags on rare rolls, 🍀 lucky streaks</li><li>🧹 Hide my history, ⚙️ settings backup, 🔒 fixed seed, 💍 re-roll accessories</li></ul><button class=copy onclick="wnClose()">Got it</button></div></div>
+<details id="cmpd"><summary>⚖️ Compare (<span id="ncmp">0</span>/2)</summary><div id="cmp"></div></details>
 <details><summary>🔗 Enter a share code</summary><input id="codein" placeholder="Paste a code (PP1.…)"><button class=copy onclick="loadCode()">Recreate prompt</button></details>
 <script>
 // [group, name, extras, background, palettes "hair/eyes/dress/trim/tiara/gem/pendant;..."]
@@ -533,9 +548,9 @@ const BGS={hall:['Castle hall','castle hall'],throne:['Throne room','throne room
 const HSTY={straight:['Straight with bangs'],pony:['Ponytail'],twin:['Twin tails'],wavy:['Long wavy, side-swept bangs']};
 const ADDONS={heart:['Heart earrings','heart earrings'],bracelet:['Gold bracelet','gold bracelet'],sparkles:['Sparkles','sparkles'],ribbon:['Ribbon','ribbon'],rose:['Rose','rose'],flower:['Flower hair ornament','flower hair ornament'],cape:['Cape','cape']};
 const EARS=['heart','star','flower','pearl','crystal'];
-const ORN={bow:'hair bow',flower:'flower hair ornament',star:'star hair ornament',ribbon:'hair ribbon'};
-const RAR={R:['sparkles','glowing gem'],L:['sparkles','glowing gem','cape','light particles']},RARN={C:'Common',R:'💎 Rare',L:'🌟 Legendary'};
-const DEF={pose:'pray',expr:'worried',bg:'theme',hs:'straight',grad:'off',add:[],ear:'',neck:'',br:'',orn:'',vs:false,rar:false,norep:false};
+const ORN={bow:'hair bow',flower:'hair flower',star:'star hair ornament',ribbon:'hair ribbon',braid:'side braid'};
+const RAR={R:['sparkles','glowing gem','glowing tiara','sparkling gown'],L:['sparkles','glowing gem','glowing tiara','sparkling gown','starry dress pattern','light particles']},RARN={C:'Common',R:'💎 Rare',L:'🌟 Legendary'};
+const DEF={pose:'pray',expr:'worried',bg:'theme',hs:'straight',grad:'off',add:[],ear:'',neck:'',br:'',orn:'',ds:'ballgown',tod:'none',pat:'none',glove:'white',vs:false,rar:false,norep:false};
 function lsg(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
 function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let O=Object.assign({},DEF,lsg('sp_opts',{}));O.add=(O.add||[]).filter(k=>ADDONS[k]);
@@ -546,7 +561,7 @@ function apply(c,o){o=o||O;
  c.pose=rk(POSES,o.pose);c.expr=rk(EXPRS,o.expr);c.bgo=o.bg==='theme'?'':BGS[rk(BGS,o.bg)][1];c.hs=rk(HSTY,o.hs);
  c.h2=o.grad==='off'||!o.grad?'':o.grad;
  if(o.grad==='rand'||c.h2===c.hair||(c.h2&&!HAIR.includes(c.h2)))c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress));
- c.add=(o.add||[]).filter(k=>ADDONS[k]);c.ear=o.ear==='rand'?r(EARS.concat(ACOL)):o.ear||'';c.neck=o.neck==='rand'?r(ACOL):o.neck||'';c.br=o.br||'';c.orn=o.orn||'';c.vs=!!o.vs;
+ c.add=(o.add||[]).filter(k=>ADDONS[k]);c.ear=o.ear==='rand'?r(EARS.concat(ACOL)):o.ear||'';c.neck=o.neck==='rand'?r(ACOL):o.neck||'';c.br=o.br||'';c.orn=o.orn==='rand'?r(Object.keys(ORN)):ORN[o.orn]?o.orn:'';c.ds=rk(DST,o.ds||'ballgown');c.tod=o.tod&&o.tod!=='none'?rk(TOD,o.tod):'';if(c.tod==='none')c.tod='';c.pat=o.pat&&o.pat!=='none'?rk(PAT,o.pat):'';if(c.pat==='none')c.pat='';c.glove=o.glove==='trim'?'trim':'';c.vs=!!o.vs;
  c.rar=o.rar?(x=>x<.05?'L':x<.30?'R':'C')(Math.random()):'';
  return c}
 function hairFor(c){return r(HAIR.filter(x=>x!==c.dress&&x!==c.hair))}
@@ -557,10 +572,10 @@ function build(c){
  const dp=c.bot?`${top}, ${c.dress} bodice, ${c.bot} skirt, two-tone dress`:c.vs?top:`${top}, ${c.dress} dress`;
  const bgt=(c.bgo||c.bg).split(', ');let ear=c.extras.find(x=>/earrings/.test(x));const ex=c.extras.filter(x=>!/earrings/.test(x)&&!bgt.includes(x));
  const adds=(c.add||[]).map(k=>ADDONS[k][1]);if(adds.includes('heart earrings'))ear='heart earrings';if(c.ear)ear=c.ear+' earrings';
- const acc=adds.filter(x=>!/earrings/.test(x));if(c.br)acc.push(c.br+' bracelet');if(c.orn&&ORN[c.orn])acc.push(ORN[c.orn]);if(RAR[c.rar])acc.push(...RAR[c.rar]);
- const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${hair}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ballgown, no neck collar, white gloves`,`${c.tiara} tiara, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
+ const acc=adds.filter(x=>!/earrings/.test(x));if(c.br)acc.push(c.br+' bracelet');if(c.orn&&ORN[c.orn])acc.push(ORN[c.orn]);if(RAR[c.rar])acc.push(...RAR[c.rar]);if(c.role&&ROLE[c.role]&&ROLE[c.role][1])acc.unshift(ROLE[c.role][1]);
+ const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${hair}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}`,`${c.tiara} ${c.role==='queen'?'crown':'tiara'}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
  if(ex.length)parts.push(ex.join(', '));if(acc.length)parts.push(acc.join(', '));
- parts.push(EXPRS[c.expr||'worried'][1],POSES[c.pose||'pray'][1],'looking at viewer',c.bgo||c.bg,'big breasts, ultrabody');
+ parts.push(EXPRS[c.expr||'worried'][1],POSES[c.pose||'pray'][1],'looking at viewer',c.bgo||c.bg);if(c.tod&&TOD[c.tod]&&TOD[c.tod][1])parts.push(TOD[c.tod][1]);parts.push('big breasts, ultrabody');
  let tags=[...new Set(parts.join(', ').split(', '))];
  if(c.vs)tags=tags.filter(t=>t!=='bare shoulders'&&t!=='big breasts');
  tags=tags.filter(t=>t!=='ultrabody');tags.push('ultrabody');
@@ -569,7 +584,7 @@ function build(c){
  if(hs==='wavy')n+=', short hair';if(c.vs)n+=', cleavage, nsfw';
  return [tags.join(', '),n]}
 // share codes
-const KEYS=['hair','eyes','dress','bot','trim','tiara','gem','pend','extras','bg','pose','expr','bgo','hs','h2','add','ear','neck','br','orn','vs','rar','lab','forced'];
+const KEYS=['hair','eyes','dress','bot','trim','tiara','gem','pend','extras','bg','pose','expr','bgo','hs','h2','add','ear','neck','br','orn','vs','rar','lab','forced','ds','tod','pat','glove','role','nm'];
 const b64e=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(escape(atob(s)))};
 function enc(c){const o={t:c.mx||(c.theme?TH.indexOf(c.theme):-1)};KEYS.forEach(k=>{const v=c[k];if(v!==undefined&&v!==''&&v!==false&&!(Array.isArray(v)&&!v.length))o[k]=v});return 'PP1.'+b64e(JSON.stringify(o))}
@@ -589,11 +604,23 @@ function mash(ia,ib){if(!isCh(ia))ia=r(CIDX);if(!isCh(ib))ib=r(CIDX.filter(i=>i!
 // sisters
 const FAM={pink:'p','light pink':'p',blue:'b','light blue':'b',navy:'b',red:'r',orange:'r','light orange':'r','dark red':'r',yellow:'y',blonde:'y','light yellow':'y',purple:'u',lavender:'u','light purple':'u',green:'g','light green':'g','mint green':'g',teal:'g','dark green':'g',silver:'s',white:'s',gray:'s'};
 const fam=x=>FAM[x]||x;
-function sisters(k,b){const base=b||banFix(apply(pick(mode,ti())));const ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress)&&!bn('dress',x))).slice(0,k-1)];
+function sisters(k,b,st){st=st||SIS;const base=b||banFix(tune(apply(pick(mode,ti()))));const okD=x=>!bn('dress',x)&&x!=='white';let ds;
+ if(st==='fam'){const same=shuf(DRESS.filter(x=>x!==base.dress&&fam(x)===fam(base.dress)&&okD(x)&&x!==base.hair));ds=[base.dress,...same].slice(0,k)}
+ else if(st==='opp'){ds=[base.dress];for(let i=1;i<k;i++){const prev=ds[i-1],nf=x=>!ds.includes(x)&&okD(x)&&!ds.some(y=>fam(y)===fam(x));const cm=(COMP[prev]||[]).filter(x=>DRESS.includes(x)&&nf(x)),al=DRESS.filter(nf);ds.push(cm.length?r(cm):al.length?r(al):r(DRESS.filter(okD)))}}
+ else if(st==='hair'){ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress)&&fam(x)!==fam(base.hair)&&okD(x))).slice(0,k-1)]}
+ else ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress)&&okD(x))).slice(0,k-1)];
+ while(ds.length<k){const a=DRESS.filter(x=>okD(x)&&!ds.includes(x)&&x!==base.hair);ds.push(a.length?r(a):r(DRESS.filter(okD)))}
  const used=new Set(),out=[];
- for(let i=0;i<k;i++){const d=ds[i];let h=i===0&&base.hair!==d&&fam(base.hair)!==fam(d)?base.hair:r(HAIR.filter(x=>x!==d&&fam(x)!==fam(d)&&!used.has(x)&&x!=='white'&&!bn('hair',x)));used.add(h);
-  const s=Object.assign({},base,{dress:d,bot:'',hair:h,trim:ds[(i+1)%k],extras:base.extras.slice(),add:base.add.slice()});
-  if(s.h2&&(s.h2===h))s.h2=r(HAIR.filter(x=>x!==h&&x!==d));
+ for(let i=0;i<k;i++){const d=ds[i];let h;
+  if(st==='hair'&&base.hair!==d)h=base.hair;
+  else if(i===0&&base.hair!==d&&fam(base.hair)!==fam(d))h=base.hair;
+  else{let pool=HAIR.filter(x=>x!==d&&fam(x)!==fam(d)&&!used.has(x)&&x!=='white'&&!bn('hair',x));
+   if(st==='opp'){const q=pool.filter(x=>![...used].some(u=>fam(u)===fam(x)));if(q.length)pool=q}
+   if(!pool.length)pool=HAIR.filter(x=>x!==d&&!bn('hair',x));if(!pool.length)pool=HAIR.filter(x=>x!==d);h=r(pool)}
+  used.add(h);
+  let tr=ds[(i+1)%k];if(tr===d||bn('trim',tr))tr=r(ACOL.filter(x=>x!==d&&!bn('trim',x)));
+  const s=Object.assign({},base,{dress:d,bot:'',hair:h,trim:tr,extras:base.extras.slice(),add:(base.add||[]).slice()});delete s.nm;
+  if(s.h2&&(s.h2===h||s.h2===d))s.h2=r(HAIR.filter(x=>x!==h&&x!==d));
   s.lab=`Sister ${i+1} of ${k} · ${label(base)}`;out.push(s)}
  return out}
 // locks & re-roll
@@ -612,8 +639,8 @@ function banFix(c){if(!Object.values(BAN).some(v=>v&&v.length))return c;
  if(bn('gem',c.gem))c.gem=okc('gem',DRESS)||c.gem;if(bn('gem',c.pend))c.pend=c.gem;return c}
 function drawBan(){document.getElementById('bn').innerHTML=BNP.map(([n,p,f])=>`<h4>${n}</h4>`+f().map(x=>`<span class=rr onclick="bnTog('${p}','${x}')" style="background:${HEX[x]||'#ccc'};${bn(p,x)?'text-decoration:line-through;opacity:.45':''}">${bn(p,x)?'🚫 ':''}${x}</span>`).join('')).join('');
  const t=BNP.filter(([n,p])=>(BAN[p]||[]).length).map(([n,p])=>n.toLowerCase()+': '+BAN[p].join(', '));document.getElementById('bnc').textContent=t.length?'('+t.join('; ')+')':''}
-function bnTog(p,x){const a=BAN[p]||[];BAN[p]=a.includes(x)?a.filter(y=>y!==x):a.concat(x);lss('sp_ban2',BAN);drawBan()}
-function bnClear(){BAN={};lss('sp_ban2',BAN);drawBan()}
+function bnTog(p,x){const a=BAN[p]||[];BAN[p]=a.includes(x)?a.filter(y=>y!==x):a.concat(x);lss('sp_ban2',BAN);drawBan();qtNote(p,x);drawQT()}
+function bnClear(){BAN={};lss('sp_ban2',BAN);drawBan();drawQT()}
 function lock(p){if(!RES.s)return;if(LOCK[p])delete LOCK[p];else LOCK[p]=RES.s[p];lss('sp_lock',LOCK);showSingle(RES.s,true);drawPick()}
 const PKL=[['Hair','hair',()=>HAIR],['Eyes','eyes',()=>EYES],['Dress','dress',()=>DRESS],['Trim','trim',()=>ACOL],['Tiara','tiara',()=>GS],['Gem','gem',()=>DRESS]];
 function drawPick(){document.getElementById('pk').innerHTML=PKL.map(([n,p,f])=>`<div class=row><label>${n}</label><select onchange="pkSet('${p}',this.value)"><option value=''>Any</option>${f().map(x=>`<option${LOCK[p]===x?' selected':''}>${x}</option>`).join('')}</select></div>`).join('');const k=Object.keys(LOCK).filter(x=>LOCK[x]);document.getElementById('pkc').textContent=k.length?'('+k.map(x=>x+': '+LOCK[x]).join(', ')+')':''}
@@ -653,29 +680,29 @@ function weekTheme(d){const n=WEEK[d.getMonth()];return TH.findIndex(t=>!t.ch&&t
 function chips(c,k){return [['Hair','hair'],['Eyes','eyes'],...(c.bot?[['Bodice','dress'],['Skirt','bot']]:[['Dress','dress']]),['Trim','trim'],['Tiara','tiara'],['Gem','gem']].map(([n,p])=>{const x=c[p];
  const s=`<span${k?` class=rr onclick="rr('${k}','${p}')" title="Tap to re-roll"`:''} style="background:${HEX[x]||'#ccc'}">${n}: ${x}${p==='hair'&&c.h2?' → '+c.h2:''}</span>`;
  return s+(k==='s'&&PARTS.includes(p)?`<button class="lk${LOCK[p]?' on':''}" onclick="lock('${p}')">${LOCK[p]?'🔒':'🔓'}</button>`:'')}).join('');}
-const badge=c=>c.rar?`<span class="rar r${c.rar}">${RARN[c.rar]}</span>`:'';
-function tools(k){return `<div class=tools><button class=fav onclick="fav('${k}')">⭐ Save</button><button class=vbtn onclick="vid('${k}')">🎬 Video prompt</button><button class=cbtn onclick="code('${k}')">🔗 Share code</button></div><div id=x${k}></div>`}
-function showSingle(c,nohist){RES.s=c;const [p,n]=build(c);
+const badge=c=>(c.rar?`<span class="rar r${c.rar}">${RARN[c.rar]}</span>`:'')+(c.rar==='R'||c.rar==='L'?'<span class="rar rS">✨ Sparkle</span>':'')+(c.role?`<span class="rar rR">${esc(ROLE[c.role][0])}</span>`:'');
+function tools(k){return `<div class=tools><button class=copy onclick="cpPix('${k}')">📋 Copy for PixAI</button><button class=fav onclick="fav('${k}')">⭐ Save</button><button class=up onclick="rate('${k}',1)" title="More like this">👍</button><button class=dn onclick="rate('${k}',-1)" title="Less like this">👎</button>`+`<details class=more><summary>➕ More</summary><button class=copy onclick="cpP('${k}',0)">Copy prompt</button><button class=copy onclick="cpP('${k}',1)">Copy negative</button><button class=cbtn onclick="pin('${k}')">📌 Pin to compare</button><button class=cbtn onclick="twin('${k}')">👯 Surprise twin</button><button class=cbtn onclick="accRoll('${k}')">💍 Re-roll accessories</button><button class=vbtn onclick="vid('${k}')">🎬 Video prompt</button><button class=cbtn onclick="code('${k}')">🔗 Share code</button></details></div><div id=x${k}></div>`}
+function showSingle(c,nohist){if(RES.s&&RES.s!==c&&!nohist){UNDO.push(enc(RES.s));if(UNDO.length>30)UNDO.shift()}RES.s=c;const [p,n]=build(c);
  document.getElementById('list').innerHTML='';
  document.getElementById('p').value=p;document.getElementById('n').value=n;
- document.getElementById('chips').innerHTML=`<span style="background:#8a6cff;color:#fff">Theme: ${esc(label(c))}</span>${badge(c)}`+chips(c,'s')+warns(c);
+ document.getElementById('chips').innerHTML=`<span style="background:#8a6cff;color:#fff">Theme: ${esc(label(c))}</span>${badge(c)}`+chips(c,'s')+warns(c)+info(c);
  document.getElementById('sx').innerHTML=tools('s')+`<div class=tools><button class=copy onclick="curSis(2)">👭 2 sisters of her</button><button class=copy onclick="curSis(3)">👭👧 3 sisters of her</button></div>`;
  if(!nohist)addHist([[p,n,label(c)]])}
-function go(){showSingle(applyLocks(apply(pick(mode,ti()))))}
+function go(){const c=SEED?seeded('seed-'+SEED,()=>roll()):roll();if(c.rar==='R'||c.rar==='L'){STREAK++;if(STREAK>1)toast('🍀 Lucky streak ×'+STREAK+'!')}else STREAK=0;showSingle(c)}
 const ckey=c=>(c.lab||label(c))+'|'+[c.hair,c.eyes,c.dress,c.bot,c.trim,c.tiara,c.gem].join('/');
 function tiGen(){if(!O.norep||typeof theme==='number'&&theme>=-1)return ti;const used=new Set();
  return()=>{const pool=theme===-2?[...Array(NOLD).keys()]:theme===-3?CIDX:CIDX.filter(i=>TH[i].g===theme);let av=pool.filter(i=>!used.has(i));if(!av.length){used.clear();av=pool}const i=r(av);used.add(i);return i}}
 function batch(k){const tg=tiGen(),seen=new Set(),cs=[];
- for(let i=1;i<=k;i++){let c,t=0;do{c=applyLocks(apply(pick(mode,tg())))}while(O.norep&&seen.has(ckey(c))&&++t<40);seen.add(ckey(c));cs.push(c)}
+ for(let i=1;i<=k;i++){let c,t=0;do{c=roll(tg())}while(O.norep&&seen.has(ckey(c))&&++t<40);seen.add(ckey(c));cs.push(c)}
  drawBatch(cs)}
 let BN=[];
-function itemHTML(i){const c=RES[i],[p]=build(c);return `<b>#${i}</b><span class=tname>${esc(label(c))}</span>${badge(c)}<div class=chips>${chips(c,i)}</div>${warns(c)}<pre id=b${i}>${esc(p)}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button>`+tools(i)}
+function itemHTML(i){const c=RES[i],[p]=build(c);return `<b>#${i}</b><span class=tname>${esc(label(c))}</span>${badge(c)}<div class=chips>${chips(c,i)}</div>${warns(c)}${info(c)}<pre id=b${i}>${esc(p)}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button>`+tools(i)}
 function drawItem(i){document.getElementById('it'+i).innerHTML=itemHTML(i);allTxt()}
 function allTxt(){window._all=BN.map(i=>build(RES[i])[0]).join('\n\n')}
 function drawBatch(cs){let h='',negs=new Set(),hist=[];BN=[];
  cs.forEach((c,j)=>{const i=j+1;RES[i]=c;BN.push(i);const [p,n]=build(c);negs.add(n);hist.push([p,n,label(c)]);h+=`<div class=item id=it${i}>${itemHTML(i)}</div>`});
  document.getElementById('n').value=[...negs].sort((a,b)=>b.length-a.length)[0];allTxt();
- document.getElementById('list').innerHTML=`<button class=copy onclick="cpAll()">Copy all ${cs.length}</button>`+h;document.getElementById('chips').innerHTML='';document.getElementById('sx').innerHTML='';document.getElementById('p').value='(batch below)';
+ document.getElementById('list').innerHTML=`<button class=copy onclick="cpAll()">Copy all ${cs.length}</button><button class=copy onclick="cpList()">🔢 Copy as list</button>`+h;document.getElementById('chips').innerHTML='';document.getElementById('sx').innerHTML='';document.getElementById('p').value='(batch below)';
  addHist(hist)}
 function showXs(k,html){const e=document.getElementById('x'+k);if(e)e.innerHTML=html}
 function vid(k){const v=vprompt(RES[k]);window['_v'+k]=v;showXs(k,`<div class=sub><b>🎬 Grok Imagine motion prompt</b><pre id=vp${k}>${esc(v)}</pre><button class=copy onclick="cpt('vp${k}')">Copy video prompt</button><button onclick="vid('${k}')">🎲 Another</button></div>`)}
@@ -693,7 +720,7 @@ function dlFavs(){if(!FAV.length)return toast('No favorites yet');const a=docume
 function cpRaw(s){wr(s);toast('Copied')}
 function drawSaved(){const f=document.getElementById('favs'),h=document.getElementById('hist');if(!f||!h)return;
  document.getElementById('nfav').textContent=FAV.length;document.getElementById('nhist').textContent=HIST.length;
- f.innerHTML=FAV.length?FAV.map((x,i)=>`<div class=item><span class=tname>${esc(x.l)}</span><pre id=fv${i}>${esc(x.p)}</pre><button class=copy onclick="cpt('fv${i}')">Copy</button><button onclick="cpRaw(FAV[${i}].n)">Copy negative</button><button class=del onclick="delFav(${i})">🗑 Delete</button></div>`).join(''):'<p class=muted>No favorites yet. Tap ⭐ on a result.</p>';
+ f.innerHTML=FAV.length?FAV.map((x,i)=>!fmatch(x)?'':`<div class=item><span class=tname>${esc(x.l)}</span><pre id=fv${i}>${esc(x.p)}</pre><button class=copy onclick="cpt('fv${i}')">Copy</button><button onclick="cpRaw(FAV[${i}].n)">Copy negative</button><button class=cbtn onclick="remixUI(${i})">🔁 Remix</button><button class=del onclick="delFav(${i})">🗑 Delete</button><div id=fx${i}></div></div>`).join(''):'<p class=muted>No favorites yet. Tap ⭐ on a result.</p>';
  h.innerHTML=HIST.length?HIST.map((x,i)=>`<div class=item><span class=tname>${esc(x.l)}</span><pre id=hs${i}>${esc(x.p)}</pre><button class=copy onclick="cpt('hs${i}')">Copy</button></div>`).join(''):'<p class=muted>Nothing yet.</p>'}
 function toast(m){const t=document.getElementById('toast');if(!t)return;t.textContent=m;t.classList.add('on');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('on'),1600)}
 // options UI
@@ -705,11 +732,11 @@ function drawOpts(){const R=['rand','🎲 Random'];
  document.getElementById('opts').innerHTML=
  `<div class=row><label>Pose</label>${sel('pose',[...lst(POSES),R])}</div><div class=row><label>Expression</label>${sel('expr',[...lst(EXPRS),R])}</div>`+
  `<div class=row><label>Background</label>${sel('bg',[['theme','Theme default'],...lst(BGS),R])}</div><div class=row><label>Hairstyle</label>${sel('hs',[...lst(HSTY),R])}</div>`+
- `<div class=row><label>Gradient hair (2nd color)</label>${sel('grad',[['off','Off'],R,...colOpts(HAIR)])}</div>`+
+ `<h4>👗 Dress &amp; scene</h4><div class=row><label>Dress style</label>${sel('ds',[...lst(DST),R])}</div><div class=row><label>Time of day</label>${sel('tod',[...lst(TOD),R])}</div>`+`<div class=row><label>Pattern add-on</label>${sel('pat',[...lst(PAT),R])}</div><div class=row><label>Gloves</label>${sel('glove',[['white','White gloves (default)'],['trim','Tinted to match the trim']])}</div>`+`<div class=row><label>Gradient hair (2nd color)</label>${sel('grad',[['off','Off'],R,...colOpts(HAIR)])}</div>`+
  `<h4>Add-ons</h4><div class=cks>`+Object.keys(ADDONS).map(k=>`<label class=ck><input type=checkbox${O.add.includes(k)?' checked':''} onchange="setAdd('${k}',this.checked)"> ${ADDONS[k][0]}</label>`).join('')+'</div>'+
  `<h4>Accessories</h4><div class=row><label>Earrings</label>${sel('ear',[['','Theme / gem default'],...EARS.map(x=>[x,x[0].toUpperCase()+x.slice(1)]),R,...ACOL.map(x=>[x,x+' earrings'])])}</div>`+
  `<div class=row><label>Necklace / pendant color</label>${sel('neck',[['','Default'],R,...colOpts(ACOL)])}</div>`+
- `<div class=row><label>Bracelet</label>${sel('br',[['','None'],['gold','Gold'],['silver','Silver']])}</div><div class=row><label>Hair ornament</label>${sel('orn',[['','None'],['bow','Bow'],['flower','Flower'],['star','Star'],['ribbon','Ribbon']])}</div>`+
+ `<div class=row><label>Bracelet</label>${sel('br',[['','None'],['gold','Gold'],['silver','Silver']])}</div><div class=row><label>🎀 Hair accessory (worn with the tiara)</label>${sel('orn',[['','None'],['bow','Hair bow'],['flower','Hair flower'],['ribbon','Hair ribbon'],['braid','Side braid'],['star','Star ornament'],R])}</div>`+
  `<h4>Switches</h4><div class=cks>${ck('norep','🚫 Never repeat in a batch')}${ck('rar','🎰 Rarity roll')}${ck('vs','🎬 Video still (covered dress)')}</div>`+
  `<button onclick="resetO()">↩️ Reset options to default</button>`;
  const on=JSON.stringify(O)!==JSON.stringify(DEF);document.getElementById('ocur').textContent=on?'(custom)':'(default)'}
@@ -718,7 +745,7 @@ function setAdd(k,v){O.add=O.add.filter(x=>x!==k);if(v)O.add.push(k);O.add=Objec
 function resetO(){O=Object.assign({},DEF,{add:[]});lss('sp_opts',O);drawOpts()}
 function drawMash(){const o='<option value="-1">🎲 Random</option>'+FRANS.map(f=>`<optgroup label="${esc(f)}">`+CIDX.filter(i=>TH[i].g===f).map(i=>`<option value="${i}">${esc(TH[i].name)}</option>`).join('')+'</optgroup>').join('');
  document.getElementById('ma').innerHTML=o;document.getElementById('mb').innerHTML=o}
-function doMash(){const c=mash(+document.getElementById('ma').value,+document.getElementById('mb').value);showSingle(c)}
+function doMash(){const c=mash(+document.getElementById('ma').value,+document.getElementById('mb').value);showSingle(rules(banFix(c)))}
 function doSis(k){drawBatch(sisters(k))}
 function dSis(k){const ds=ymd(new Date());drawBatch(seeded('sis'+k+'-'+ds,()=>sisters(k,dailyC(ds))));const b=document.getElementById('list');if(b)b.scrollIntoView({behavior:'smooth'})}
 function drawDaily(){const d=new Date(),c=dailyC(ymd(d));RES.d=c;const [p]=build(c);
@@ -734,5 +761,164 @@ function panic(){document.getElementById('hoa').style.display='block';document.t
 document.addEventListener('keydown',e=>{if(e.key==='Escape')panic()});
 function hoaTap(){taps++;clearTimeout(window._ht);window._ht=setTimeout(()=>taps=0,1500);if(taps>=3){taps=0;document.getElementById('hoa').style.display='none';document.title=DISG?'HOA Meeting Minutes':'Surprise Princess'}}
 
-document.getElementById('go').onclick=go;drawThemes();drawChars();drawOpts();drawMash();drawSaved();drawDaily();drawPick();drawBan();applyDisp();if(DISG)document.getElementById('hoa').style.display='block';showSingle(apply(pick(mode,ti())),true);
+// ===== v4 extensions =====
+const DST={ballgown:['Ballgown (default)','ballgown'],mermaid:['Mermaid','mermaid dress'],aline:['A-line','a-line dress'],tiered:['Tiered','tiered skirt'],ruffle:['Layered ruffles','layered dress, frills']};
+const TOD={none:['Default (no change)',''],morning:['Morning light','morning, sunlight'],sunset:['Sunset','sunset, orange sky, window'],night:['Moonlit night','night, moonlight']};
+const PAT={none:['None',''],polka:['Polka dot','polka dot dress'],star:['Star print','star print dress'],heart:['Heart print','heart print dress'],floral:['Floral print','floral print dress'],lace:['Lace trim','lace trim']};
+const ROLE={queen:['👑 Queen','mature female, queen, elegant ballgown'],elder:['Elder princess','ornate gown'],younger:['Younger princess','']};
+const MOODS={any:['🎲 Any',null],
+ pastel:['🍬 Pastel',{dress:['light pink','light blue','mint green','lavender','light purple','light green','light orange'],hair:['light pink','light blue','blonde','silver','light orange','white'],trim:['silver','gold','light pink','lavender','light blue','mint green']}],
+ bold:['🔥 Bold',{dress:['red','blue','green','purple','orange','yellow','teal','pink'],hair:['black','red','blonde','blue','purple','brown'],trim:['gold','silver','yellow','navy','red']}],
+ dark:['🖤 Dark & royal',{dress:['navy','purple','red','teal','blue'],hair:['black','silver','brown','blonde','red','white'],trim:['gold','silver']}],
+ soft:['🌸 Soft & sweet',{dress:['pink','light pink','lavender','light blue','mint green','light orange'],hair:['blonde','light pink','brown','light orange','silver'],trim:['gold','silver','pink','light pink','light blue']}]};
+const SEAS=[['❄️ Winter',['light blue','navy','blue','lavender','light purple']],['🌷 Spring',['light pink','mint green','light green','lavender','yellow']],['☀️ Summer',['yellow','orange','teal','light blue','pink']],['🍂 Autumn',['orange','red','light orange','yellow','green']]];
+const seasonOf=d=>SEAS[[0,0,1,1,1,2,2,2,3,3,3,0][d.getMonth()]];
+const NAMES=['Marigold','Rosalind','Clementine','Seraphina','Primrose','Celestine','Opaline','Juniper','Bluebell','Amaryllis','Briar','Camellia','Dahlia','Evangeline','Fleur','Gardenia','Honeydew','Iris','Jasmine Rose','Lilac','Magnolia','Nectarine','Ophelia','Peony','Rosette','Sapphira','Tulip','Violetta','Wisteria','Azalea','Bellflower','Coralie','Daisy Mae','Emberly','Florabelle','Gemma','Hyacinth','Ivy','Larkspur','Moonbeam','Pearl','Starla','Sunny','Twinkle','Velvet','Willow','Aurelia','Cosette','Delphine','Elodie'];
+let MOOD=lsg('sp_mood','any'),SEASON=lsg('sp_season',false),SIS=lsg('sp_sis','def'),RT=lsg('sp_rate',{}),PRE=lsg('sp_pre',[]),PIN=lsg('sp_pin',[]),QTL=lsg('sp_qt',['hair|blonde']),SEED=lsg('sp_seed','');
+let UNDO=[],STREAK=0;if(!MOODS[MOOD])MOOD='any';
+function hsh(s){let a=0;for(const ch of s)a=(Math.imul(a^ch.charCodeAt(0),2654435761)+7)>>>0;return a}
+const pname=c=>c.nm||(c.nm='Princess '+NAMES[hsh(ckey(c)+'|'+(c.hs||'')+(c.pose||''))%NAMES.length]);
+function wt(p,x){const v=(RT[p]||{})[x];if(!v)return 1;return Math.max(.3,Math.min(3,1+.3*((v.u||0)-(v.d||0))))}
+function wpick(p,pool){const ws=pool.map(x=>wt(p,x)),t=ws.reduce((a,b)=>a+b,0);let q=Math.random()*t;for(let i=0;i<pool.length;i++){q-=ws[i];if(q<=0)return pool[i]}return pool[pool.length-1]}
+const hasRT=()=>Object.keys(RT).some(p=>Object.keys(RT[p]||{}).length);
+const mpool=p=>MOODS[MOOD]&&MOODS[MOOD][1]?MOODS[MOOD][1][p]:null;
+const okp=(p,pool,ex)=>pool.filter(y=>!bn(p,y)&&!(ex||[]).includes(y));
+function tune(c){if(c.theme&&c.theme.ch)return c;const free=!c.theme,rt=free&&hasRT();
+ const md=mpool('dress'),mh=mpool('hair'),mt=mpool('trim');let dp=md||DRESS,need=(md&&!md.includes(c.dress))||bn('dress',c.dress);
+ if(SEASON&&free){const s=seasonOf(new Date())[1].filter(x=>!md||md.includes(x));if(s.length&&Math.random()<.65){dp=s;if(!s.includes(c.dress))need=true}}
+ if(!need&&rt&&Math.random()<.5)need=true;
+ if(need){const a=okp('dress',dp,[c.hair,'white']);if(a.length)c.dress=wpick('dress',a)}
+ if(c.bot&&(c.bot===c.dress||(md&&!md.includes(c.bot)))){const a=okp('dress',md||DRESS,[c.hair,c.dress]);c.bot=a.length?r(a):''}
+ need=(mh&&!mh.includes(c.hair))||c.hair===c.dress||bn('hair',c.hair);if(!need&&rt&&Math.random()<.5)need=true;
+ if(need){let a=okp('hair',mh||HAIR,[c.dress]).filter(x=>fam(x)!==fam(c.dress));if(!a.length)a=okp('hair',HAIR,[c.dress]);if(a.length)c.hair=wpick('hair',a)}
+ if(c.h2&&(c.h2===c.hair||c.h2===c.dress))c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress));
+ need=(mt&&!mt.includes(c.trim))||bn('trim',c.trim);if(!need&&rt&&Math.random()<.4)need=true;
+ if(need){const a=okp('trim',mt||ACOL,[c.dress]);if(a.length)c.trim=wpick('trim',a)}
+ if(rt&&Math.random()<.4){const a=okp('eyes',EYES);if(a.length)c.eyes=wpick('eyes',a)}
+ return c}
+function rules(c){if(c.dress==='white')c.dress='light blue';if(c.bot==='white'||c.bot===c.dress)c.bot='';
+ if(c.hair===c.dress&&!c.forced)c.hair=okc('hair',HAIR.filter(x=>fam(x)!==fam(c.dress)),[c.dress])||hairFor(c);
+ if(c.h2&&(c.h2===c.hair||c.h2===c.dress))c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress));return c}
+function roll(t){return rules(applyLocks(tune(apply(pick(mode,t===undefined?ti():t)))))}
+// copy helpers
+const pixTxt=c=>{const [p,n]=build(c);return p+'\n\nNegative: '+n};
+function cpPix(k){if(!RES[k])return;wr(pixTxt(RES[k]));toast('📋 Copied for PixAI')}
+function cpP(k,w){if(!RES[k])return;wr(build(RES[k])[w]);toast(w?'Negative copied':'Prompt copied')}
+function listTxt(){if(!BN.length)return '';const n=[...new Set(BN.map(i=>build(RES[i])[1]))].sort((a,b)=>b.length-a.length)[0];return 'Negative: '+n+'\n\n'+BN.map((i,j)=>`${j+1}. ${build(RES[i])[0]}`).join('\n\n')}
+function cpList(){const t=listTxt();if(!t)return toast('Make a batch first');wr(t);toast('🔢 Copied '+BN.length+' as a list')}
+function pixTop(){if(document.getElementById('list').innerHTML&&BN.length)cpList();else cpPix('s')}
+// rating
+function rate(k,v){const c=RES[k];if(!c)return;['hair','eyes','dress','trim'].forEach(p=>{const x=c[p];if(!x)return;RT[p]=RT[p]||{};const e=RT[p][x]=RT[p][x]||{u:0,d:0};e[v>0?'u':'d']++});
+ lss('sp_rate',RT);toast(v>0?'👍 Noted: a bit more like this':'👎 Noted: a bit less like this');drawRT()}
+function drawRT(){const e=document.getElementById('rtc');if(!e)return;let u=0,d=0;Object.values(RT).forEach(m=>Object.values(m).forEach(v=>{u+=v.u||0;d+=v.d||0}));
+ const top=Object.entries(RT.dress||{}).map(([x,v])=>[x,(v.u||0)-(v.d||0)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+ e.textContent=`👍 ${u/4|0}  👎 ${d/4|0}`+(top.length?` · favorite dress colors: ${top.join(', ')}`:'')}
+function rtReset(){if(typeof confirm==='function'&&!confirm('Reset all 👍/👎 ratings?'))return;RT={};lss('sp_rate',RT);drawRT();toast('Ratings reset')}
+// color-wheel help
+const HUE={pink:330,'light pink':340,red:0,'dark red':0,orange:30,'light orange':30,yellow:55,'light yellow':55,green:120,'dark green':130,'light green':120,'mint green':150,teal:175,blue:210,'dark blue':220,'light blue':200,navy:230,purple:285,'light purple':270,lavender:270};
+const PAS=['light pink','light blue','mint green','lavender','light purple','light green','light orange','light yellow'];
+const hd=(a,b)=>{const x=Math.abs(a-b)%360;return x>180?360-x:x};
+function why(c){const d=c.dress,t=c.trim,h=c.hair,o=[];
+ if(GS.includes(t))o.push(`${t} trim is a metallic accent that suits ${d}`);
+ else if((COMP[d]||[]).includes(t))o.push(`${t} is a classic accent for ${d}`);
+ else if(HUE[d]!=null&&HUE[t]!=null){const x=hd(HUE[d],HUE[t]);o.push(x<45?`${d} + ${t} are analogous (wheel neighbors)`:x>150?`${d} + ${t} are complementary (opposites)`:x>100?`${d} + ${t} make a triadic pop`:`${d} + ${t} give soft contrast`)}
+ if(PAS.includes(d)&&(PAS.includes(t)||GS.includes(t)))o.push('pastel harmony');
+ if(HUE[h]==null||['blonde','brown'].includes(h))o.push(`${h} hair is neutral, so the dress stands out`);
+ else if(HUE[d]!=null)o.push(hd(HUE[h],HUE[d])>90?`${h} hair contrasts the dress`:`${h} hair sits next to the dress on the wheel`);
+ return o.join('; ')}
+// prompt length
+const TOKLIM=120;
+const tokN=p=>p.split(/[\s,]+/).filter(Boolean).length+(p.match(/,/g)||[]).length;
+function lenInfo(c){const n=tokN(build(c)[0]);if(n<=TOKLIM)return `<span class=muted>📏 ~${n} tokens</span>`;
+ const s=[];if(c.pat)s.push('pattern');if(c.tod)s.push('time of day');if(c.orn)s.push('hair accessory');if((c.add||[]).length)s.push('add-ons');if(c.extras&&c.extras.length>2)s.push('a theme extra');if(c.rar&&c.rar!=='C')s.push('sparkle tags');if(c.hs==='wavy')s.push('wavy hairstyle');if(c.ear||c.neck||c.br)s.push('custom jewelry');
+ return `<span class=lwarn>⚠️ Long prompt (~${n} tokens)${s.length?'. Try dropping: '+s.join(', '):''}</span>`}
+function info(c){return `<div class=info>🏷️ <b>${esc(pname(c))}</b> · 🎨 ${esc(why(c))}<br>${lenInfo(c)}</div>`}
+// twin / accessories
+const TD={blonde:'yellow',brown:'light orange',black:'navy',white:'light blue',silver:'lavender'},TH2={'light green':'green','mint green':'green',teal:'blue',navy:'blue','light purple':'purple',lavender:'purple'};
+function twin(k){const o=RES[k];if(!o)return;const c=dec(enc(o));c.theme=o.theme;const h=o.hair,d=o.dress;
+ c.dress=DRESS.includes(h)?h:(TD[h]||'light blue');c.hair=HAIR.includes(d)?d:(TH2[d]||hairFor(c));c.bot='';delete c.forced;delete c.nm;
+ if(c.hair===c.dress||fam(c.hair)===fam(c.dress))c.hair=okc('hair',HAIR.filter(x=>fam(x)!==fam(c.dress)),[c.dress,'white'])||hairFor(c);
+ if(c.trim===c.dress)c.trim=r(ACOL.filter(x=>x!==c.dress));banFix(c);rules(c);c.lab='👯 Twin · '+label(o);showSingle(c)}
+function accRoll(k){const c=RES[k];if(!c)return;if(!LOCK.gem){c.gem=okc('gem',DRESS,[c.gem])||c.gem;c.pend=c.gem}c.ear=r(EARS);c.orn=r(Object.keys(ORN));if(!LOCK.tiara)c.tiara=okc('tiara',GS)||c.tiara;
+ c.add=shuf(Object.keys(ADDONS)).slice(0,Math.floor(Math.random()*3));c.neck='';if(k==='s')showSingle(c,true);else drawItem(k);toast('💍 New accessories')}
+// undo
+function undo(){if(!UNDO.length)return toast('Nothing to undo');const c=dec(UNDO.pop());showSingle(c,true);toast('⬅️ Back ('+UNDO.length+' more)')}
+// compare
+function pin(k){if(!RES[k])return;PIN.push(enc(RES[k]));PIN=PIN.slice(-2);lss('sp_pin',PIN);drawCmp();const d=document.getElementById('cmpd');if(d){d.open=true}toast('📌 Pinned ('+PIN.length+'/2)')}
+function unpin(i){PIN.splice(i,1);lss('sp_pin',PIN);drawCmp()}
+function drawCmp(){const e=document.getElementById('cmp');if(!e)return;document.getElementById('ncmp').textContent=PIN.length;
+ if(!PIN.length){e.innerHTML='<p class=muted>Tap 📌 Pin on any two results to see them side by side.</p>';return}
+ e.innerHTML='<div class=cmp>'+PIN.map((s,i)=>{let c;try{c=dec(s)}catch(x){return ''}RES['c'+i]=c;return `<div class=item><b>${esc(pname(c))}</b><br><span class=tname>${esc(label(c))}</span><div class=chips>${chips(c)}</div><pre>${esc(build(c)[0])}</pre><button class=copy onclick="cpPix('c${i}')">📋 PixAI</button><button class=del onclick="unpin(${i})">✖</button></div>`}).join('')+'</div>'}
+// presets
+const cl=o=>JSON.parse(JSON.stringify(o));
+function preSave(){const ni=document.getElementById('pren'),n=(ni.value||'').trim()||('Preset '+(PRE.length+1));const e={n,lock:cl(LOCK),ban:cl(BAN),mood:MOOD};
+ if(document.getElementById('preo').checked)e.o=cl(O);const i=PRE.findIndex(x=>x.n===n);if(i>=0)PRE[i]=e;else PRE.push(e);lss('sp_pre',PRE);ni.value='';drawPre();toast('💾 Saved “'+n+'”')}
+function preLoad(i){const e=PRE[i];if(!e)return;LOCK=cl(e.lock||{});BAN=cl(e.ban||{});lss('sp_lock',LOCK);lss('sp_ban2',BAN);MOOD=MOODS[e.mood]?e.mood:'any';lss('sp_mood',MOOD);
+ if(e.o){O=Object.assign({},DEF,cl(e.o));lss('sp_opts',O);drawOpts()}window._pre=e.n;drawPick();drawBan();drawQT();drawMood();drawPre();if(RES.s)showSingle(RES.s,true);toast('Loaded “'+e.n+'”')}
+function preRen(i){const e=PRE[i];if(!e)return;let v=typeof prompt==='function'?prompt('New name for this preset',e.n):null;if(v==null)v=document.getElementById('pren').value;v=(v||'').trim();if(!v)return toast('Type a name first');e.n=v;lss('sp_pre',PRE);drawPre()}
+function preDel(i){if(typeof confirm==='function'&&!confirm('Delete preset “'+PRE[i].n+'”?'))return;PRE.splice(i,1);lss('sp_pre',PRE);drawPre()}
+function drawPre(){const q=PRE.map((e,i)=>`<button class="tb${window._pre===e.n?' on':''}" onclick="preLoad(${i})">💾 ${esc(e.n)}</button>`).join('');
+ const a=document.getElementById('preq');if(a)a.innerHTML=q;const b=document.getElementById('prel');if(!b)return;
+ b.innerHTML=PRE.length?PRE.map((e,i)=>`<div class=item><b>${esc(e.n)}</b> <span class=muted>${Object.keys(e.lock||{}).length} picks · ${Object.values(e.ban||{}).reduce((a,v)=>a+(v||[]).length,0)} blocks${e.o?' · options':''}${e.mood&&e.mood!=='any'?' · '+MOODS[e.mood][0]:''}</span><br><button class=copy onclick="preLoad(${i})">Load</button><button class=cbtn onclick="preRen(${i})">✏️ Rename</button><button class=del onclick="preDel(${i})">🗑</button></div>`).join(''):'<p class=muted>No presets yet.</p>'}
+// mood / season / sisters style
+function setMood(m,q){MOOD=MOODS[m]?m:'any';lss('sp_mood',MOOD);drawMood();if(!q)toast('Mood: '+MOODS[MOOD][0])}
+function drawMood(){const e=document.getElementById('mood');if(!e)return;e.innerHTML=Object.keys(MOODS).map(k=>`<button class="tb${MOOD===k?' on':''}" onclick="setMood('${k}')">${MOODS[k][0]}</button>`).join('');
+ const s=seasonOf(new Date());document.getElementById('seas').checked=!!SEASON;document.getElementById('seasl').textContent=s[0];
+ document.getElementById('mcur').textContent=(MOOD!=='any'?MOODS[MOOD][0]:'')+(SEASON?' '+s[0]:'')}
+function setSeason(v){SEASON=!!v;lss('sp_season',SEASON);drawMood()}
+function setSis(v){SIS=v;lss('sp_sis',SIS)}
+function royal(b){const base=b||banFix(tune(apply(pick(mode,ti()))));const s=sisters(3,base,'fam'),R=['queen','elder','younger'];
+ s.forEach((x,i)=>{x.role=R[i];x.lab=ROLE[R[i]][0]+' · '+label(base)});drawBatch(s);const l=document.getElementById('list');if(l)l.scrollIntoView({behavior:'smooth'})}
+// quick toggles
+function qtNote(p,x){const k=p+'|'+x;if(!QTL.includes(k)){QTL.push(k);QTL=QTL.slice(-12);lss('sp_qt',QTL)}}
+function qtTog(p,x){bnTog(p,x)}
+function drawQT(){const e=document.getElementById('qt');if(!e)return;const ks=[...new Set(QTL.concat(...BNP.map(([n,p])=>(BAN[p]||[]).map(x=>p+'|'+x))))];
+ const blond=bn('hair','blonde');
+ e.innerHTML=`<span class=muted>Quick blocks:</span> `+ks.filter(k=>k!=='hair|blonde').map(k=>{const [p,x]=k.split('|'),on=bn(p,x);return `<button class="qb${on?' on':''}" onclick="qtTog('${p}','${x}')">${esc(x)} ${p} ${on?'🚫':'✅'}</button>`}).join('')+
+ `<button class="qb${blond?' on':''}" onclick="qtTog('hair','blonde')">${blond?'🚫 No blonde hair (on)':'🚫 No blonde hair'}</button>`}
+// daily challenge
+const CHAL=[['🍬 Only pastels today',()=>setMood('pastel')],['💚 Green hair princess',()=>pkSet('hair','green')],['🖤 Dark & royal day',()=>setMood('dark')],['🔥 Bold colors only',()=>setMood('bold')],['🧜 Mermaid gown day',()=>setO('ds','mermaid')],['🌙 Moonlit princess',()=>setO('tod','night')],['🔴 Polka dot party',()=>setO('pat','polka')],['💜 Purple dress day',()=>pkSet('dress','purple')],['🌸 Soft & sweet day',()=>setMood('soft')],['🌅 Sunset ball',()=>setO('tod','sunset')],['🩶 Silver hair, navy gown',()=>{pkSet('hair','silver');pkSet('dress','navy')}],['🎀 Hair bow day',()=>setO('orn','bow')],['🌼 Floral print day',()=>setO('pat','floral')],['🧡 Orange dress day',()=>pkSet('dress','orange')],['💗 Pink hair princess',()=>pkSet('hair','pink')],['🪜 Tiered skirt day',()=>setO('ds','tiered')]];
+const chalIdx=d=>Math.floor(rng('chal-'+ymd(d))()*CHAL.length);
+function drawChal(){const e=document.getElementById('chal');if(e)e.innerHTML=`<b>🏆 Daily challenge:</b> ${esc(CHAL[chalIdx(new Date())][0])} <button class=copy onclick="doChal()">▶️ Apply &amp; roll</button>`}
+function doChal(){CHAL[chalIdx(new Date())][1]();go();toast('Challenge applied: '+CHAL[chalIdx(new Date())][0])}
+// theme mixer
+function drawMix(){const o='<option value="-1">🎲 Random</option>'+TH.slice(0,NOLD).map((t,i)=>`<option value="${i}">${esc(t.g+' · '+t.name)}</option>`).join('');document.getElementById('xa').innerHTML=o;document.getElementById('xb').innerHTML=o}
+function mixT(ia,ib){const P=[...Array(NOLD).keys()];if(!(ia>=0&&ia<NOLD))ia=r(P);if(!(ib>=0&&ib<NOLD))ib=r(P.filter(i=>i!==ia));const A=TH[ia],B=TH[ib],ca=r(A.pal),cb=r(B.pal);
+ const c={hair:ca[0],eyes:ca[1],dress:cb[2],trim:cb[3],tiara:cb[4],gem:cb[5],pend:cb[6],bot:''};
+ if(!c.dress||c.dress==='white')c.dress='light blue';if(!HAIR.includes(c.hair)||c.hair===c.dress)c.hair=hairNot(c.dress);if(!EYES.includes(c.eyes))c.eyes=r(EYES);
+ const ex=[];let e=0;for(const x of shuf(A.ex).slice(0,2).concat(shuf(B.ex).slice(0,2))){if(ex.includes(x))continue;if(/earrings/.test(x)&&e++)continue;ex.push(x);if(ex.length===3)break}
+ c.extras=ex;c.bg=B.bg;c.lab='🧪 '+A.name+' + '+B.name;c.theme={g:'Mix',name:c.lab,ex,bg:B.bg};return rules(applyLocks(apply(c)))}
+function doMix(){showSingle(mixT(+document.getElementById('xa').value,+document.getElementById('xb').value))}
+// favorites remix + search
+const RMX=[['hair','Hair'],['eyes','Eyes'],['dress','Dress'],['trim','Trim'],['tiara','Tiara'],['gem','Gem'],['look','Pose, face, hairstyle, gown'],['ext','Theme extras & background']];
+function remixUI(i){const e=document.getElementById('fx'+i);if(!e)return;e.innerHTML=`<div class=sub><b>🔁 Keep these, re-roll the rest:</b><br>`+RMX.map(([p,l])=>`<label class=ck><input type=checkbox id="rk${i}${p}"${['hair','dress'].includes(p)?' checked':''}> ${l}</label>`).join('')+`<br><button class=copy onclick="remix(${i})">🔁 Remix</button></div>`}
+function remix(i){const f=FAV[i];let o;try{o=dec(f.code)}catch(x){return toast('Can\'t remix this one')}
+ const keep=RMX.map(x=>x[0]).filter(p=>{const e=document.getElementById('rk'+i+p);return e&&e.checked});const c=roll();
+ ['hair','eyes','dress','trim','tiara','gem'].forEach(p=>{if(keep.includes(p)&&o[p]){c[p]=o[p];if(p==='dress')c.bot=o.bot||'';if(p==='gem')c.pend=o.pend||o.gem}});
+ if(keep.includes('look'))['pose','expr','hs','h2','ds','pat','tod','orn','glove','vs'].forEach(k=>{if(o[k]!==undefined)c[k]=o[k]});
+ if(keep.includes('ext')){c.extras=(o.extras||[]).slice();c.bg=o.bg||c.bg;c.bgo=o.bgo||'';c.theme=o.theme;if(o.lab)c.lab=o.lab}
+ if(c.hair===c.dress){if(!keep.includes('hair'))c.hair=hairFor(c);else if(!keep.includes('dress'))c.dress=r(DRESS.filter(x=>x!==c.hair&&x!==c.trim))}
+ if(c.trim===c.dress&&!keep.includes('trim'))c.trim=r(ACOL.filter(x=>x!==c.dress));rules(c);delete c.nm;c.lab='🔁 Remix · '+(f.l||'').replace(/^🔁 Remix · /,'');showSingle(c);window.scrollTo&&window.scrollTo(0,0);toast('🔁 Remixed')}
+const fmatch=x=>{const e=document.getElementById('fq'),q=e?e.value.toLowerCase().trim():'';return !q||(x.l+' '+x.p).toLowerCase().includes(q)};
+// privacy
+function wipeAll(){if(typeof confirm==='function'&&!confirm('Hide my history? This erases History, Saved favorites, 👍/👎 ratings, presets and pins on this device.'))return;
+ HIST=[];FAV=[];RT={};PRE=[];PIN=[];UNDO=[];['sp_hist','sp_fav','sp_rate','sp_pre','sp_pin'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});window._pre='';drawSaved();drawPre();drawRT();drawCmp();toast('🧹 All gone')}
+function wipeHist(){if(typeof confirm==='function'&&!confirm('Wipe history only?'))return;HIST=[];UNDO=[];lss('sp_hist',HIST);drawSaved();toast('History wiped')}
+// export / import settings
+function expSet(){const s='PS1.'+b64e(JSON.stringify({O,LOCK,BAN,PRE,MOOD,SEASON,SIS,RT,LIGHT,QTL,SEED}));document.getElementById('sxo').value=s;wr(s);toast('⚙️ Settings code copied')}
+function impSet(){try{const o=JSON.parse(b64d(document.getElementById('sxo').value.trim().replace(/^PS1\./,'')));
+ if(o.O){O=Object.assign({},DEF,o.O);O.add=(O.add||[]).filter(k=>ADDONS[k]);lss('sp_opts',O)}if(o.LOCK){LOCK=o.LOCK;lss('sp_lock',LOCK)}if(o.BAN){BAN=o.BAN;lss('sp_ban2',BAN)}if(o.PRE){PRE=o.PRE;lss('sp_pre',PRE)}
+ if(o.MOOD)MOOD=MOODS[o.MOOD]?o.MOOD:'any';lss('sp_mood',MOOD);if('SEASON'in o){SEASON=!!o.SEASON;lss('sp_season',SEASON)}if(o.SIS){SIS=o.SIS;lss('sp_sis',SIS)}if(o.RT){RT=o.RT;lss('sp_rate',RT)}
+ if('LIGHT'in o){LIGHT=!!o.LIGHT;lss('sp_light',LIGHT)}if(o.QTL){QTL=o.QTL;lss('sp_qt',QTL)}if('SEED'in o){SEED=o.SEED||'';lss('sp_seed',SEED)}
+ drawOpts();drawPick();drawBan();drawQT();drawMood();drawPre();drawRT();drawSeed();applyDisp();toast('⚙️ Settings imported')}catch(e){toast('That settings code didn\'t work')}}
+// fixed seed
+function setSeed(v){SEED=String(v||'').trim();lss('sp_seed',SEED);drawSeed();toast(SEED?'🔒 Seed on: Surprise Me repeats the same roll':'Seed off')}
+function newSeed(){setSeed(Math.random().toString(36).slice(2,8))}
+function drawSeed(){const e=document.getElementById('seed');if(e)e.value=SEED;const s=document.getElementById('sdc');if(s)s.textContent=SEED?'(seed: '+SEED+')':''}
+// what's new
+function wnShow(){document.getElementById('wn').style.display='flex'}
+function wnClose(){document.getElementById('wn').style.display='none';lss('sp_wn4',true)}
+function initV4(){document.getElementById('sist').value=SIS;drawMood();drawPre();drawQT();drawChal();drawMix();drawCmp();drawRT();drawSeed();document.getElementById('fq').oninput=drawSaved;if(!lsg('sp_wn4',false))wnShow()}
+
+document.getElementById('go').onclick=go;drawThemes();drawChars();drawOpts();drawMash();drawSaved();drawDaily();drawPick();drawBan();initV4();applyDisp();if(DISG)document.getElementById('hoa').style.display='block';showSingle(apply(pick(mode,ti())),true);
 </script></body></html>
