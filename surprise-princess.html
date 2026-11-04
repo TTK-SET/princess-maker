@@ -587,7 +587,7 @@ function mash(ia,ib){if(!isCh(ia))ia=r(CIDX);if(!isCh(ib))ib=r(CIDX.filter(i=>i!
 // sisters
 const FAM={pink:'p','light pink':'p',blue:'b','light blue':'b',navy:'b',red:'r',orange:'r','light orange':'r','dark red':'r',yellow:'y',blonde:'y','light yellow':'y',purple:'u',lavender:'u','light purple':'u',green:'g','light green':'g','mint green':'g',teal:'g','dark green':'g',silver:'s',white:'s',gray:'s'};
 const fam=x=>FAM[x]||x;
-function sisters(k){const base=apply(pick(mode,ti()));const ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress))).slice(0,k-1)];
+function sisters(k,b){const base=b||apply(pick(mode,ti()));const ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress))).slice(0,k-1)];
  const used=new Set(),out=[];
  for(let i=0;i<k;i++){const d=ds[i];let h=i===0&&base.hair!==d&&fam(base.hair)!==fam(d)?base.hair:r(HAIR.filter(x=>x!==d&&fam(x)!==fam(d)&&!used.has(x)&&x!=='white'));used.add(h);
   const s=Object.assign({},base,{dress:d,bot:'',hair:h,trim:ds[(i+1)%k],extras:base.extras.slice(),add:base.add.slice()});
@@ -701,8 +701,9 @@ function drawMash(){const o='<option value="-1">🎲 Random</option>'+FRANS.map(
  document.getElementById('ma').innerHTML=o;document.getElementById('mb').innerHTML=o}
 function doMash(){const c=mash(+document.getElementById('ma').value,+document.getElementById('mb').value);showSingle(c)}
 function doSis(k){drawBatch(sisters(k))}
+function dSis(k){const ds=ymd(new Date());drawBatch(seeded('sis'+k+'-'+ds,()=>sisters(k,dailyC(ds))));const b=document.getElementById('list');if(b)b.scrollIntoView({behavior:'smooth'})}
 function drawDaily(){const d=new Date(),c=dailyC(ymd(d));RES.d=c;const [p]=build(c);
- document.getElementById('daily').innerHTML=`<b>👑 Princess of the day</b> <span class=muted>${ymd(d)}</span><br><span class=tname>${esc(label(c))}</span><div class=chips>${chips(c)}</div><pre id=bd>${esc(p)}</pre><button class=copy onclick="cpt('bd')">Copy</button><button class=fav onclick="fav('d')">⭐ Save</button><button class=vbtn onclick="vid('d')">🎬 Video</button><div id=xd></div>`;
+ document.getElementById('daily').innerHTML=`<b>👑 Princess of the day</b> <span class=muted>${ymd(d)}</span><br><span class=tname>${esc(label(c))}</span><div class=chips>${chips(c)}</div><pre id=bd>${esc(p)}</pre><button class=copy onclick="cpt('bd')">Copy</button><button class=fav onclick="fav('d')">⭐ Save</button><button class=vbtn onclick="vid('d')">🎬 Video</button><button class=copy onclick="dSis(2)">👭 2 sisters</button><button class=copy onclick="dSis(3)">👭👧 3 sisters</button><div id=xd></div>`;
  const w=weekTheme(d);if(w>=0)document.getElementById('week').innerHTML=`<button class="wk" onclick="setT(${w});toast('Theme set: ${esc(TH[w].name).replace(/'/g,"\\'")}')">🗓️ Theme of the week: <b>${esc(TH[w].name)}</b></button>`}
 // display: dark/light + disguise
 let LIGHT=lsg('sp_light',false),DISG=lsg('sp_disg',false),taps=0;
