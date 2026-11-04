@@ -47,7 +47,7 @@ body.light{background:#f6f3fb;color:#222}body.light details,body.light .item,bod
 <details><summary>👭 Sisters &amp; Mashup</summary><h4>Sister set (matching colors)</h4><button class=copy onclick="doSis(2)">👭 2 sisters</button><button class=copy onclick="doSis(3)">👭👧 3 sisters</button>
 <h4>Character mashup (hair, eyes, tiara from A; dress and trim from B)</h4><div class=row><label>Character A</label><select id="ma"></select></div><div class=row><label>Character B</label><select id="mb"></select></div><button class=copy onclick="doMash()">🔀 Make mashup</button></details>
 <details id="pkd"><summary>🎯 Pick my colors <span id="pkc" class="muted"></span></summary><p class=muted>Lock any part to the color you want. Surprise Me and batches will always use it.</p><div id="pk"></div><button class=copy onclick="pkClear()">Clear all</button></details>
-<details id="bnd"><summary>🚫 Never use these colors <span id="bnc" class="muted"></span></summary><p class=muted>Tap the colors you never want. Surprise Me, batches and sisters will skip them. A color you pick in 🎯 still wins.</p><div id="bn" class=chips></div><button class=copy onclick="bnClear()">Clear all</button></details>
+<details id="bnd"><summary>🚫 Never use these colors <span id="bnc" class="muted"></span></summary><p class=muted>Turn colors off for one part at a time (for example, no blonde hair). Surprise Me, batches and sisters skip them. A color you pick in 🎯 still wins.</p><div id="bn" class=chips style="display:block"></div><button class=copy onclick="bnClear()">Clear all</button></details>
 <button id="go">🎲 Surprise Me</button>
 <div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
 <div id="list"></div>
@@ -539,7 +539,7 @@ const DEF={pose:'pray',expr:'worried',bg:'theme',hs:'straight',grad:'off',add:[]
 function lsg(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
 function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let O=Object.assign({},DEF,lsg('sp_opts',{}));O.add=(O.add||[]).filter(k=>ADDONS[k]);
-let LOCK=lsg('sp_lock',{});let BAN=lsg('sp_ban',[]);
+let LOCK=lsg('sp_lock',{});let BAN=lsg('sp_ban2',{});
 const RES={};
 const rk=(m,v)=>v==='rand'?r(Object.keys(m)):(m[v]?v:Object.keys(m)[0]);
 function apply(c,o){o=o||O;
@@ -589,9 +589,9 @@ function mash(ia,ib){if(!isCh(ia))ia=r(CIDX);if(!isCh(ib))ib=r(CIDX.filter(i=>i!
 // sisters
 const FAM={pink:'p','light pink':'p',blue:'b','light blue':'b',navy:'b',red:'r',orange:'r','light orange':'r','dark red':'r',yellow:'y',blonde:'y','light yellow':'y',purple:'u',lavender:'u','light purple':'u',green:'g','light green':'g','mint green':'g',teal:'g','dark green':'g',silver:'s',white:'s',gray:'s'};
 const fam=x=>FAM[x]||x;
-function sisters(k,b){const base=b||banFix(apply(pick(mode,ti())));const ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress)&&!BAN.includes(x))).slice(0,k-1)];
+function sisters(k,b){const base=b||banFix(apply(pick(mode,ti())));const ds=[base.dress,...shuf(DRESS.filter(x=>x!==base.dress&&fam(x)!==fam(base.dress)&&!bn('dress',x))).slice(0,k-1)];
  const used=new Set(),out=[];
- for(let i=0;i<k;i++){const d=ds[i];let h=i===0&&base.hair!==d&&fam(base.hair)!==fam(d)?base.hair:r(HAIR.filter(x=>x!==d&&fam(x)!==fam(d)&&!used.has(x)&&x!=='white'&&!BAN.includes(x)));used.add(h);
+ for(let i=0;i<k;i++){const d=ds[i];let h=i===0&&base.hair!==d&&fam(base.hair)!==fam(d)?base.hair:r(HAIR.filter(x=>x!==d&&fam(x)!==fam(d)&&!used.has(x)&&x!=='white'&&!bn('hair',x)));used.add(h);
   const s=Object.assign({},base,{dress:d,bot:'',hair:h,trim:ds[(i+1)%k],extras:base.extras.slice(),add:base.add.slice()});
   if(s.h2&&(s.h2===h))s.h2=r(HAIR.filter(x=>x!==h&&x!==d));
   s.lab=`Sister ${i+1} of ${k} · ${label(base)}`;out.push(s)}
@@ -602,16 +602,18 @@ function applyLocks(c){banFix(c);const L=LOCK;if(!Object.keys(L).length)return c
  PARTS.forEach(p=>{if(L[p])c[p]=L[p]});if(L.gem&&!c.neck)c.pend=L.gem;
  if(c.hair===c.dress){if(!L.hair)c.hair=hairFor(c);else if(!L.dress)c.dress=r(DRESS.filter(x=>x!==c.hair&&x!==c.trim));else c.forced=true}
  if(c.h2===c.hair)c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress));return c}
-const ALLC=[...new Set(HAIR.concat(DRESS,GS))];
-function okc(pool,ex){const a=pool.filter(x=>!BAN.includes(x)&&!(ex||[]).includes(x));return a.length?r(a):null}
-function banFix(c){if(!BAN.length)return c;const B=x=>x&&BAN.includes(x);
- if(B(c.dress))c.dress=okc(DRESS,[c.hair])||c.dress;if(B(c.bot))c.bot=okc(DRESS,[c.hair,c.dress])||c.bot;
- if(B(c.hair))c.hair=okc(HAIR,[c.dress,'white'])||c.hair;if(B(c.h2))c.h2=okc(HAIR,[c.hair,c.dress])||c.h2;
- if(B(c.eyes))c.eyes=okc(EYES)||c.eyes;if(B(c.trim))c.trim=okc(ACOL,[c.dress])||c.trim;if(B(c.tiara))c.tiara=okc(GS)||c.tiara;
- if(B(c.gem))c.gem=okc(DRESS)||c.gem;if(B(c.pend))c.pend=c.gem;if(B(c.neck))c.neck=okc(ACOL)||c.neck;if(B(c.ear))c.ear=okc(ACOL)||c.ear;return c}
-function drawBan(){document.getElementById('bn').innerHTML=ALLC.map(x=>`<span class=rr onclick="bnTog('${x}')" style="background:${HEX[x]||'#ccc'};${BAN.includes(x)?'text-decoration:line-through;opacity:.45':''}">${BAN.includes(x)?'🚫 ':''}${x}</span>`).join('');document.getElementById('bnc').textContent=BAN.length?'('+BAN.join(', ')+')':''}
-function bnTog(x){BAN=BAN.includes(x)?BAN.filter(y=>y!==x):BAN.concat(x);lss('sp_ban',BAN);drawBan()}
-function bnClear(){BAN=[];lss('sp_ban',BAN);drawBan()}
+const BNP=[['Hair','hair',()=>HAIR],['Eyes','eyes',()=>EYES],['Dress','dress',()=>DRESS],['Trim','trim',()=>ACOL],['Tiara','tiara',()=>GS],['Gem','gem',()=>DRESS]];
+const bn=(p,x)=>!!x&&(BAN[p]||[]).includes(x);
+function okc(p,pool,ex){const a=pool.filter(x=>!bn(p,x)&&!(ex||[]).includes(x));return a.length?r(a):null}
+function banFix(c){if(!Object.values(BAN).some(v=>v&&v.length))return c;
+ if(bn('dress',c.dress))c.dress=okc('dress',DRESS,[c.hair])||c.dress;if(bn('dress',c.bot))c.bot=okc('dress',DRESS,[c.hair,c.dress])||c.bot;
+ if(bn('hair',c.hair))c.hair=okc('hair',HAIR,[c.dress,'white'])||c.hair;if(bn('hair',c.h2))c.h2=okc('hair',HAIR,[c.hair,c.dress])||c.h2;
+ if(bn('eyes',c.eyes))c.eyes=okc('eyes',EYES)||c.eyes;if(bn('trim',c.trim))c.trim=okc('trim',ACOL,[c.dress])||c.trim;if(bn('tiara',c.tiara))c.tiara=okc('tiara',GS)||c.tiara;
+ if(bn('gem',c.gem))c.gem=okc('gem',DRESS)||c.gem;if(bn('gem',c.pend))c.pend=c.gem;return c}
+function drawBan(){document.getElementById('bn').innerHTML=BNP.map(([n,p,f])=>`<h4>${n}</h4>`+f().map(x=>`<span class=rr onclick="bnTog('${p}','${x}')" style="background:${HEX[x]||'#ccc'};${bn(p,x)?'text-decoration:line-through;opacity:.45':''}">${bn(p,x)?'🚫 ':''}${x}</span>`).join('')).join('');
+ const t=BNP.filter(([n,p])=>(BAN[p]||[]).length).map(([n,p])=>n.toLowerCase()+': '+BAN[p].join(', '));document.getElementById('bnc').textContent=t.length?'('+t.join('; ')+')':''}
+function bnTog(p,x){const a=BAN[p]||[];BAN[p]=a.includes(x)?a.filter(y=>y!==x):a.concat(x);lss('sp_ban2',BAN);drawBan()}
+function bnClear(){BAN={};lss('sp_ban2',BAN);drawBan()}
 function lock(p){if(!RES.s)return;if(LOCK[p])delete LOCK[p];else LOCK[p]=RES.s[p];lss('sp_lock',LOCK);showSingle(RES.s,true);drawPick()}
 const PKL=[['Hair','hair',()=>HAIR],['Eyes','eyes',()=>EYES],['Dress','dress',()=>DRESS],['Trim','trim',()=>ACOL],['Tiara','tiara',()=>GS],['Gem','gem',()=>DRESS]];
 function drawPick(){document.getElementById('pk').innerHTML=PKL.map(([n,p,f])=>`<div class=row><label>${n}</label><select onchange="pkSet('${p}',this.value)"><option value=''>Any</option>${f().map(x=>`<option${LOCK[p]===x?' selected':''}>${x}</option>`).join('')}</select></div>`).join('');const k=Object.keys(LOCK).filter(x=>LOCK[x]);document.getElementById('pkc').textContent=k.length?'('+k.map(x=>x+': '+LOCK[x]).join(', ')+')':''}
