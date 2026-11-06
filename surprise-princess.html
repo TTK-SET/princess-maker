@@ -222,8 +222,8 @@ const COMP={pink:['mint green','light green','light blue','gold'],red:['gold','n
 const NEG='white dress, wedding dress, wedding veil, veil, bridal, tight bodice, corset, extra arms, long arms, choker, neck collar, sweatdrop';
 // Character extras: keep small flavor (fangs, little horns, ears, ornaments, props); drop big body traits and hair-style overrides
 const MHL='multicolor hair, color tip hairs, root hair color'; // Multi Colored Hair LoRA triggers
-const MKY='depth of field, scenery, high quality, masterpiece, sharp focus, fine detail, lineart, best quality, very aesthetic, perfect anatomy, perfect hands, five fingers, symmetrical eyes, beautiful eyes, detailed eyes, straight horizon line, clean horizon'; // MiKiYA (Haruka-v2) triggers, always
-const BCL='vibrant colors, high resolution, detailed, detailed accessories, fine lines, high styled, soft shading, 8k details'; // Better clothes triggers, solid hair only
+const MKY='(depth of field, scenery, high quality, masterpiece, sharp focus, fine detail, lineart, masterpiece, best quality, very aesthetic, perfect anatomy, perfect hands, five fingers, symmetrical eyes, beautiful eyes, detailed eyes, straight horizon line, clean horizon)'; // MiKiYA (Haruka-v2) paren blob as one unit (keeps duplicate masterpiece)
+const BCL='Vibrant colors, high resolution, detailed, detailed accessories, fine lines, high styled, soft shading, high quality, 8k details'; // Better clothes triggers, solid hair only
 const MHX=/multicolou?red hair|hair tips|hair streaks?|two-tone hair|streaked hair|gradient hair|multicolor hair/;
 const CXKEEP=/hair ornament|hair bow|hair ribbon|hair band|headband|earrings|brooch|pattern|print\b/;
 const CXBIG=/\b(wings?|winged|mermaid|tails?|fins?|tentacles?|lower body|armor|bodysuit|space suit|robot|hoodie|suspenders|apron|jester hood|pauldron|claws|fighting gloves|fingerless gloves|imp|ghost|penguin|turtle shell|tall slim figure|sweat ?drop)\b/;
@@ -583,12 +583,16 @@ function build(c){
  const multi=!!c.h2||ex.some(x=>MHX.test(x));
  const adds=(c.add||[]).map(k=>ADDONS[k][1]);if(adds.includes('heart earrings'))ear='heart earrings';if(c.ear)ear=c.ear+' earrings';
  const acc=adds.filter(x=>!/earrings/.test(x));if(c.br)acc.push(c.br+' bracelet');if(c.orn&&ORN[c.orn])acc.push(ORN[c.orn]);if(RAR[c.rar])acc.push(...RAR[c.rar]);if(c.role&&ROLE[c.role]&&ROLE[c.role][1])acc.unshift(ROLE[c.role][1]);
- const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',multi?MKY:MKY+', '+BCL,`${hair}${multi?', '+MHL:''}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}`,`${c.tiara} ${c.role==='queen'?'crown':'tiara'}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
+ const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${hair}${multi?', '+MHL:''}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}`,`${c.tiara} ${c.role==='queen'?'crown':'tiara'}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
  if(ex.length)parts.push(ex.join(', '));if(acc.length)parts.push(acc.join(', '));
  parts.push(EXPRS[c.expr||'worried'][1],POSES[c.pose||'pray'][1],'looking at viewer',c.bgo||c.bg);if(c.tod&&TOD[c.tod]&&TOD[c.tod][1])parts.push(TOD[c.tod][1]);parts.push('big breasts, ultrabody');
  let tags=[...new Set(parts.join(', ').split(', '))];
  if(c.vs)tags=tags.filter(t=>t!=='bare shoulders'&&t!=='big breasts');tags=tags.filter(t=>!/sweat/.test(t));
- tags=tags.filter(t=>t!=='ultrabody');tags.push('ultrabody');
+ tags=tags.filter(t=>t!=='ultrabody');
+ // Inject MiKiYA paren blob (and Better clothes on solid hair) after base 1girl tags, before rest; keep ultrabody last
+ const baseN=5; // 1girl, solo, close-up, three-quarter view, standing at an angle
+ const loraBits=[MKY];if(!multi)loraBits.push(BCL);
+ tags=[...tags.slice(0,baseN),...loraBits,...tags.slice(baseN),'ultrabody'];
  let n=NEG;if(c.theme&&c.theme.g==='Sports Colors')n+=', logo, letter, text, number';
  if(c.theme&&c.theme.ch)n+=', logo, letter, text, emblem, wings, mermaid, mermaid tail, fish tail, fins, short hair';
  if(hs==='wavy'&&!n.includes('short hair'))n+=', short hair';if(c.vs)n+=', cleavage, nsfw';
