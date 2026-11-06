@@ -69,7 +69,7 @@ body.light #mbar{background:#f6f3fbee;border-color:#ccc}body.light .info{color:#
 <details><summary>🕘 History (<span id="nhist">0</span>, last 50)</summary><button class=del onclick="clearHist()">🗑 Clear history</button><div id="hist"></div></details>
 <details><summary>🧰 Extras &amp; privacy <span id="sdc" class="muted"></span></summary><h4>🙈 Hide my history</h4><button class=del onclick="wipeAll()">🧹 Hide my history (wipe everything)</button><button class=cbtn onclick="wipeHist()">Wipe history only</button><h4>👍 Ratings</h4><p class=muted id="rtc"></p><button class=cbtn onclick="rtReset()">↩️ Reset ratings</button><h4>🔒 Fixed seed</h4><p class=muted>With a seed, Surprise Me gives the same roll every time (same settings). Clear it to go back to random.</p><input id="seed" class=tq placeholder="Seed (blank = off)" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box"><button class=copy onclick="setSeed(document.getElementById('seed').value)">Set seed</button><button class=cbtn onclick="newSeed()">🎲 New seed</button><button class=cbtn onclick="setSeed('')">Clear seed</button><h4>⚙️ Backup settings</h4><textarea id="sxo" style="height:70px" placeholder="Settings code (PS1.…)"></textarea><button class=copy onclick="expSet()">⬆️ Export settings code</button><button class=cbtn onclick="impSet()">⬇️ Import code</button><h4>ℹ️</h4><button class=cbtn onclick="wnShow()">✨ What's new</button></details>
 <div id="mbar"><button class=cbtn onclick="undo()">⬅️</button><button class=g onclick="go()">🎲 Surprise Me</button><button class=copy onclick="pixTop()">📋 Copy</button></div>
-<div id="wn" onclick="if(event.target===this)wnClose()"><div><h3>✨ What's new</h3><ul><li>💾 Presets for your picks and blocks</li><li>🌈 Moods (Pastel, Bold, Dark &amp; royal, Soft &amp; sweet) and 🍃 season mode</li><li>👭 Sister styles and 👑 Royal family</li><li>📋 Copy for PixAI (prompt + negative) and 🔢 Copy batch as list</li><li>👍/👎 ratings that gently steer the colors</li><li>🔁 Remix a favorite, 🔎 search favorites</li><li>👗 Dress styles, time of day, patterns, glove tint, hair accessories (in ⚙️ Options)</li><li>🧪 Theme mixer, 🏆 daily challenge, ⚖️ compare, 👯 twin, ⬅️ undo</li><li>🏷️ Princess names, 🎨 color tips and 📏 prompt length check</li><li>✨ Sparkle tags on rare rolls, 🍀 lucky streaks</li><li>🧹 Hide my history, ⚙️ settings backup, 🔒 fixed seed, 💍 re-roll accessories</li></ul><button class=copy onclick="wnClose()">Got it</button></div></div>
+<div id="wn" onclick="if(event.target===this)wnClose()"><div><h3>✨ What's new</h3><ul><li>🌈 Multi Colored Hair LoRA trigger words (multicolor hair, color tip hairs, root hair color) are auto-added whenever the hair is gradient or multi-colored</li><li>🧚 Character looks no longer add wings, mermaid tails, fins or hair-style changes; small touches like fangs and little horns stay</li><li>💧 Sweat drops removed for good</li><li>💾 Presets for your picks and blocks</li><li>🌈 Moods (Pastel, Bold, Dark &amp; royal, Soft &amp; sweet) and 🍃 season mode</li><li>👭 Sister styles and 👑 Royal family</li><li>📋 Copy for PixAI (prompt + negative) and 🔢 Copy batch as list</li><li>👍/👎 ratings that gently steer the colors</li><li>🔁 Remix a favorite, 🔎 search favorites</li><li>👗 Dress styles, time of day, patterns, glove tint, hair accessories (in ⚙️ Options)</li><li>🧪 Theme mixer, 🏆 daily challenge, ⚖️ compare, 👯 twin, ⬅️ undo</li><li>🏷️ Princess names, 🎨 color tips and 📏 prompt length check</li><li>✨ Sparkle tags on rare rolls, 🍀 lucky streaks</li><li>🧹 Hide my history, ⚙️ settings backup, 🔒 fixed seed, 💍 re-roll accessories</li></ul><button class=copy onclick="wnClose()">Got it</button></div></div>
 <details id="cmpd"><summary>⚖️ Compare (<span id="ncmp">0</span>/2)</summary><div id="cmp"></div></details>
 <details><summary>🔗 Enter a share code</summary><input id="codein" placeholder="Paste a code (PP1.…)"><button class=copy onclick="loadCode()">Recreate prompt</button></details>
 <script>
@@ -219,7 +219,14 @@ const EYES=['brown','blue','green','pink'];
 const DRESS=['pink','light pink','red','orange','light orange','yellow','green','light green','mint green','teal','blue','light blue','navy','purple','light purple','lavender'];
 const CUR=[['blonde','blue','pink','light pink','gold','blue','blue'],['brown','blue','yellow','orange','gold','light blue','light blue'],['blonde','blue','light blue','gold','silver','blue','blue'],['light pink','pink','lavender','silver','silver','pink','pink'],['silver','blue','navy','silver','silver','light blue','light blue'],['red','green','green','gold','gold','green','green'],['black','pink','red','gold','gold','red','red'],['light orange','green','mint green','pink','gold','pink','pink'],['brown','green','light green','yellow','gold','pink','pink'],['blonde','pink','light purple','pink','gold','purple','purple'],['light blue','blue','blue','light blue','silver','blue','blue'],['pink','blue','light blue','pink','silver','pink','pink'],['purple','pink','light pink','purple','silver','purple','purple'],['orange','brown','teal','orange','gold','orange','orange'],['white','blue','purple','gold','gold','purple','purple'],['yellow','blue','blue','yellow','gold','yellow','yellow'],['brown','brown','orange','light orange','gold','red','red'],['green','green','light pink','green','gold','green','green'],['black','blue','light blue','navy','silver','blue','blue'],['light pink','green','light green','light pink','gold','pink','pink'],['blonde','green','teal','gold','gold','green','green'],['red','blue','navy','red','gold','red','red'],['silver','pink','pink','silver','silver','pink','pink'],['blue','blue','light orange','blue','gold','blue','blue']];
 const COMP={pink:['mint green','light green','light blue','gold'],red:['gold','navy','silver'],orange:['teal','blue','gold'],yellow:['blue','purple','orange'],green:['pink','gold','yellow'],blue:['yellow','orange','gold','silver'],purple:['gold','yellow','light pink'],'light blue':['pink','silver','navy'],'light pink':['mint green','lavender','gold'],'light orange':['teal','mint green','gold'],'mint green':['pink','light pink','gold'],teal:['orange','gold','pink'],navy:['gold','silver','light blue'],'light green':['pink','yellow','gold'],'light purple':['pink','gold','silver'],lavender:['light pink','silver','gold']};
-const NEG='white dress, wedding dress, wedding veil, veil, bridal, tight bodice, corset, extra arms, long arms, choker, neck collar';
+const NEG='white dress, wedding dress, wedding veil, veil, bridal, tight bodice, corset, extra arms, long arms, choker, neck collar, sweatdrop';
+// Character extras: keep small flavor (fangs, little horns, ears, ornaments, props); drop big body traits and hair-style overrides
+const MHL='multicolor hair, color tip hairs, root hair color'; // Multi Colored Hair LoRA triggers
+const MHX=/multicolou?red hair|hair tips|hair streaks?|two-tone hair|streaked hair|gradient hair|multicolor hair/;
+const CXKEEP=/hair ornament|hair bow|hair ribbon|hair band|headband|earrings|brooch|pattern|print\b/;
+const CXBIG=/\b(wings?|winged|mermaid|tails?|fins?|tentacles?|lower body|armor|bodysuit|space suit|robot|hoodie|suspenders|apron|jester hood|pauldron|claws|fighting gloves|fingerless gloves|imp|ghost|penguin|turtle shell|tall slim figure|sweat ?drop)\b/;
+const CXHAIR=/\b(short|long|very long|curly|wavy|spiky|wild|flipped|puffy|pointy|tentacle) hair\b|\bhair buns?\b|\b(twin|side|three) (hair )?(buns|tails|braids)\b|twintails|ponytail|\bbraids?\b|side-swept bangs|odango|\bbob cut\b/;
+function charEx(x){if(MHX.test(x))return true;if(CXBIG.test(x)&&!(CXKEEP.test(x)&&!/wing|tail|mermaid/.test(x)))return false;if(CXHAIR.test(x)&&!/hair ornament/.test(x))return false;return true}
 const r=a=>a[Math.floor(Math.random()*a.length)];
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const TH=THEMES.map(([g,name,ex,bg,pal])=>({g,name,ex:ex.split(',').map(s=>s.trim()).filter(Boolean),bg,pal:pal.split(';').map(s=>s.split('/'))}));
@@ -275,7 +282,7 @@ const CHARS=[
 "Sonic|Big the Cat|purple|brown|yellow|-|purple|gold|purple|cat ears, fishing rod",
 "Pokémon|Pikachu|blonde|brown|yellow|-|brown|gold|red|lightning bolt hair ornament, red cheeks, pointy ears",
 "Pokémon|Eevee|brown|brown|light orange|-|brown|gold|orange|fox ears, fluffy tail",
-"Pokémon|Vaporeon|light blue|blue|blue|-|navy|silver|blue|fin hair ornament, mermaid tail",
+"Pokémon|Vaporeon|light blue|blue|blue|-|navy|silver|blue|fin hair ornament, bubbles",
 "Pokémon|Jolteon|blonde|brown|yellow|-|light orange|gold|yellow|spiky hair, lightning bolt hair ornament",
 "Pokémon|Flareon|orange|brown|red|-|yellow|gold|orange|fluffy tail, fox ears, fluffy fur trim",
 "Pokémon|Espeon|purple|pink|light purple|-|purple|gold|red|red forehead gem, forked tail",
@@ -346,10 +353,10 @@ const CHARS=[
 "Kingdom Hearts|Kairi|red|blue|pink|-|purple|silver|pink|star-shaped charm",
 "Crash & Spyro|Crash Bandicoot|orange|green|light orange|blue|red|gold|orange|animal ears, wide grin",
 "Crash & Spyro|Spyro|purple|brown|yellow|-|gold|gold|purple|small dragon horns, dragon wings",
-"Disney Princesses|Snow White|black|brown|blue|yellow|red|gold|red|red hair bow, short hair",
+"Disney Princesses|Snow White|black|brown|blue|yellow|red|gold|red|red hair bow, red apple",
 "Disney Princesses|Cinderella|blonde|blue|light blue|-|silver|silver|blue|hair bun, blue hair band, glass slippers",
 "Disney Princesses|Aurora|blonde|blue|pink|-|gold|gold|pink|long wavy hair",
-"Disney Princesses|Ariel|red|blue|purple|green|purple|gold|purple|seashell hair ornament, mermaid",
+"Disney Princesses|Ariel|red|blue|purple|green|purple|gold|purple|seashell hair ornament, pearls, starfish earrings",
 "Disney Princesses|Belle|brown|brown|yellow|-|gold|gold|yellow|hair bun, red rose",
 "Disney Princesses|Jasmine|black|brown|teal|-|gold|gold|blue|long ponytail, gold headband",
 "Disney Princesses|Pocahontas|black|brown|light orange|-|teal|gold|teal|feather hair ornament, very long hair",
@@ -366,7 +373,7 @@ const CHARS=[
 "Classic Disney|Daisy Duck|white|blue|purple|-|pink|gold|pink|big hair bow, long eyelashes",
 "Classic Disney|Goofy|black|brown|orange|blue|black|gold|green|dog ears",
 "Classic Disney|Stitch|blue|brown|light blue|-|pink|silver|pink|big floppy ears, fluffy",
-"Classic Disney|Tinker Bell|blonde|blue|green|-|light green|gold|green|fairy wings, hair bun, pom pom shoes",
+"Classic Disney|Tinker Bell|blonde|blue|green|-|light green|gold|green|sparkles, leaf hair ornament, pom pom shoes",
 "Classic Disney|Alice|blonde|blue|light blue|-|black|silver|black|black headband, apron",
 "Classic Disney|Maleficent|black|green|purple|-|black|gold|green|black horns, crow",
 "Classic Disney|Ursula|white|blue|black|-|purple|gold|purple|octopus tentacles, beauty mark",
@@ -376,20 +383,20 @@ const CHARS=[
 "Pixar|Woody|brown|brown|yellow|blue|red|gold|red|cow print, star badge",
 "Pixar|Jessie|red|green|yellow|blue|red|gold|red|cow print, single braid",
 "Pixar|Buzz Lightyear|purple|blue|green|-|purple|silver|green|space suit, wings",
-"Pixar|Nemo|orange|brown|light orange|-|black|gold|orange|stripes, fins",
-"Pixar|Dory|blue|brown|yellow|-|black|silver|blue|fins",
+"Pixar|Nemo|orange|brown|light orange|-|black|gold|orange|stripes, seashell hair ornament",
+"Pixar|Dory|blue|brown|yellow|-|black|silver|blue|bubbles, seashell hair ornament",
 "Sanrio|Hello Kitty|white|brown|yellow|blue|red|gold|red|big red hair bow, cat ears",
 "Sanrio|My Melody|white|brown|pink|-|light pink|gold|pink|long rabbit ears, flower hair ornament",
 "Sanrio|Kuromi|white|brown|black|-|pink|silver|pink|jester hood, devil tail, skull hair ornament",
 "Sanrio|Cinnamoroll|white|blue|light blue|-|pink|silver|light blue|long floppy ears, fluffy curled tail",
 "My Little Pony|Twilight Sparkle|purple|pink|lavender|-|pink|gold|pink|unicorn horn, star hair ornament",
-"My Little Pony|Rainbow Dash|red|pink|light blue|-|yellow|gold|blue|multicolored hair, pegasus wings, lightning bolt",
+"My Little Pony|Rainbow Dash|red|pink|light blue|-|yellow|gold|blue|multicolored hair, lightning bolt hair ornament",
 "My Little Pony|Pinkie Pie|pink|blue|light pink|-|blue|gold|blue|curly hair, balloon",
-"My Little Pony|Fluttershy|light pink|green|yellow|-|pink|gold|pink|pegasus wings, butterfly hair ornament",
+"My Little Pony|Fluttershy|light pink|green|yellow|-|pink|gold|pink|butterfly hair ornament, butterfly earrings",
 "My Little Pony|Rarity|purple|blue|lavender|-|blue|silver|blue|curly hair, unicorn horn, diamond",
 "My Little Pony|Applejack|blonde|green|orange|-|brown|gold|brown|freckles, ponytail",
-"My Little Pony|Princess Celestia|light blue|pink|light pink|-|gold|gold|purple|unicorn horn, pegasus wings",
-"My Little Pony|Princess Luna|blue|blue|navy|-|silver|silver|blue|crescent moon, unicorn horn, pegasus wings",
+"My Little Pony|Princess Celestia|light blue|pink|light pink|-|gold|gold|purple|unicorn horn, sun hair ornament, multicolored hair",
+"My Little Pony|Princess Luna|blue|blue|navy|-|silver|silver|blue|crescent moon, unicorn horn, moon earrings",
 "Care Bears|Tenderheart Bear|brown|brown|red|-|gold|gold|red|bear ears, heart hair ornament",
 "Care Bears|Cheer Bear|pink|brown|light blue|-|yellow|gold|pink|bear ears, rainbow",
 "Care Bears|Grumpy Bear|blue|brown|light blue|-|navy|silver|blue|bear ears, raincloud hair ornament",
@@ -442,8 +449,8 @@ const CHARS=[
 "Star Wars|Grogu|green|brown|light orange|-|brown|gold|green|big pointed ears",
 "Star Wars|R2-D2|white|blue|blue|-|silver|silver|blue|robot",
 "Star Wars|C-3PO|blonde|blue|yellow|-|silver|gold|yellow|robot",
-"Sailor Moon|Sailor Moon|blonde|blue|blue|-|red|gold|red|twin buns, long twin tails, red bow, crescent moon",
-"Sailor Moon|Sailor Mercury|blue|blue|light blue|-|blue|gold|blue|short hair, blue bow",
+"Sailor Moon|Sailor Moon|blonde|blue|blue|-|red|gold|red|red bow, crescent moon hair ornament, crescent moon earrings",
+"Sailor Moon|Sailor Mercury|blue|blue|light blue|-|blue|gold|blue|blue bow, water drop earrings",
 "Sailor Moon|Sailor Mars|black|brown|red|-|purple|gold|red|very long hair, purple bow",
 "Sailor Moon|Sailor Jupiter|brown|green|green|-|pink|gold|green|ponytail, rose earrings, pink bow",
 "Sailor Moon|Sailor Venus|blonde|blue|orange|-|blue|gold|orange|big red hair bow, blue bow",
@@ -453,7 +460,7 @@ const CHARS=[
 "Dragon Ball|Bulma|blue|blue|pink|-|purple|gold|pink|goggles",
 "Dragon Ball|Piccolo|green|brown|purple|-|light blue|silver|purple|pointed ears, antennae, cape",
 "Dragon Ball|Frieza|purple|pink|silver|-|purple|silver|purple|small horns, long tail",
-"Dragon Ball|Android 18|blonde|blue|blue|-|black|silver|blue|hoop earrings, short hair",
+"Dragon Ball|Android 18|blonde|blue|blue|-|black|silver|blue|hoop earrings",
 "Naruto|Naruto Uzumaki|blonde|blue|orange|-|navy|silver|blue|whisker marks, ninja headband",
 "Naruto|Sasuke Uchiha|black|brown|navy|-|silver|silver|blue|ninja headband",
 "Naruto|Sakura Haruno|pink|green|red|-|light pink|silver|blue|ninja headband",
@@ -543,7 +550,7 @@ function cp(id){wr(document.getElementById(id).value)}
 // ===== v3 extensions =====
 const GS=['gold','silver'],ACOL=DRESS.concat(GS);
 const POSES={pray:['Praying hands','own hands together, hands clasped, praying hands, hands near chest'],cheek:['Hand on cheek','hand on own cheek'],curtsy:['Curtsy','curtsey, holding skirt'],rose:['Holding a rose','holding flower, rose'],heart:['Hand on heart','hand on own chest']};
-const EXPRS={worried:['Worried and pleading','worried, pleading expression, blush, sweatdrop'],happy:['Happy','smile, happy, blush'],shy:['Shy','shy, blush'],cry:['Crying','tears, teary eyes, worried, blush'],surp:['Surprised','surprised, open mouth, blush']};
+const EXPRS={worried:['Worried and pleading','worried, pleading expression, blush'],happy:['Happy','smile, happy, blush'],shy:['Shy','shy, blush'],cry:['Crying','tears, teary eyes, worried, blush'],surp:['Surprised','surprised, open mouth, blush']};
 const BGS={hall:['Castle hall','castle hall'],throne:['Throne room','throne room'],balcony:['Castle balcony with sunset','castle balcony, sunset'],garden:['Flower garden','flower garden'],ball:['Ballroom','ballroom'],stars:['Starry night sky','starry sky, night sky']};
 const HSTY={straight:['Straight with bangs'],pony:['Ponytail'],twin:['Twin tails'],wavy:['Long wavy, side-swept bangs']};
 const ADDONS={heart:['Heart earrings','heart earrings'],bracelet:['Gold bracelet','gold bracelet'],sparkles:['Sparkles','sparkles'],ribbon:['Ribbon','ribbon'],rose:['Rose','rose'],flower:['Flower hair ornament','flower hair ornament'],cape:['Cape','cape']};
@@ -570,18 +577,19 @@ function build(c){
  const hair=hs==='wavy'?`${g}, very long hair, wavy hair, side-swept bangs, hair over one eye, asymmetrical bangs, sidelocks, voluminous hair`:`${h} ${hs==='pony'?'ponytail':hs==='twin'?'twintails':'straight hair'} with bangs, ${g}`;
  const top=c.vs?`${c.dress} dress, covered bodice, high neckline`:`${c.dress} off-shoulder dress`;
  const dp=c.bot?`${top}, ${c.dress} bodice, ${c.bot} skirt, two-tone dress`:c.vs?top:`${top}, ${c.dress} dress`;
- const bgt=(c.bgo||c.bg).split(', ');let ear=c.extras.find(x=>/earrings/.test(x));const ex=c.extras.filter(x=>!/earrings/.test(x)&&!bgt.includes(x));
+ const bgt=(c.bgo||c.bg).split(', ');let ear=c.extras.find(x=>/earrings/.test(x));const ch=!!(c.theme&&c.theme.ch);const ex=c.extras.filter(x=>!/earrings/.test(x)&&!bgt.includes(x)&&(!ch||charEx(x)));if(ear&&ch&&!charEx(ear))ear=undefined;
+ const multi=!!c.h2||ex.some(x=>MHX.test(x));
  const adds=(c.add||[]).map(k=>ADDONS[k][1]);if(adds.includes('heart earrings'))ear='heart earrings';if(c.ear)ear=c.ear+' earrings';
  const acc=adds.filter(x=>!/earrings/.test(x));if(c.br)acc.push(c.br+' bracelet');if(c.orn&&ORN[c.orn])acc.push(ORN[c.orn]);if(RAR[c.rar])acc.push(...RAR[c.rar]);if(c.role&&ROLE[c.role]&&ROLE[c.role][1])acc.unshift(ROLE[c.role][1]);
- const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${hair}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}`,`${c.tiara} ${c.role==='queen'?'crown':'tiara'}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
+ const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${hair}${multi?', '+MHL:''}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim, short puffy sleeves, bare shoulders, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}`,`${c.tiara} ${c.role==='queen'?'crown':'tiara'}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
  if(ex.length)parts.push(ex.join(', '));if(acc.length)parts.push(acc.join(', '));
  parts.push(EXPRS[c.expr||'worried'][1],POSES[c.pose||'pray'][1],'looking at viewer',c.bgo||c.bg);if(c.tod&&TOD[c.tod]&&TOD[c.tod][1])parts.push(TOD[c.tod][1]);parts.push('big breasts, ultrabody');
  let tags=[...new Set(parts.join(', ').split(', '))];
- if(c.vs)tags=tags.filter(t=>t!=='bare shoulders'&&t!=='big breasts');
+ if(c.vs)tags=tags.filter(t=>t!=='bare shoulders'&&t!=='big breasts');tags=tags.filter(t=>!/sweat/.test(t));
  tags=tags.filter(t=>t!=='ultrabody');tags.push('ultrabody');
  let n=NEG;if(c.theme&&c.theme.g==='Sports Colors')n+=', logo, letter, text, number';
- if(c.theme&&c.theme.ch)n+=', logo, letter, text, emblem';
- if(hs==='wavy')n+=', short hair';if(c.vs)n+=', cleavage, nsfw';
+ if(c.theme&&c.theme.ch)n+=', logo, letter, text, emblem, wings, mermaid, mermaid tail, fish tail, fins, short hair';
+ if(hs==='wavy'&&!n.includes('short hair'))n+=', short hair';if(c.vs)n+=', cleavage, nsfw';
  return [tags.join(', '),n]}
 // share codes
 const KEYS=['hair','eyes','dress','bot','trim','tiara','gem','pend','extras','bg','pose','expr','bgo','hs','h2','add','ear','neck','br','orn','vs','rar','lab','forced','ds','tod','pat','glove','role','nm'];
@@ -732,7 +740,7 @@ function drawOpts(){const R=['rand','🎲 Random'];
  document.getElementById('opts').innerHTML=
  `<div class=row><label>Pose</label>${sel('pose',[...lst(POSES),R])}</div><div class=row><label>Expression</label>${sel('expr',[...lst(EXPRS),R])}</div>`+
  `<div class=row><label>Background</label>${sel('bg',[['theme','Theme default'],...lst(BGS),R])}</div><div class=row><label>Hairstyle</label>${sel('hs',[...lst(HSTY),R])}</div>`+
- `<h4>👗 Dress &amp; scene</h4><div class=row><label>Dress style</label>${sel('ds',[...lst(DST),R])}</div><div class=row><label>Time of day</label>${sel('tod',[...lst(TOD),R])}</div>`+`<div class=row><label>Pattern add-on</label>${sel('pat',[...lst(PAT),R])}</div><div class=row><label>Gloves</label>${sel('glove',[['white','White gloves (default)'],['trim','Tinted to match the trim']])}</div>`+`<div class=row><label>Gradient hair (2nd color)</label>${sel('grad',[['off','Off'],R,...colOpts(HAIR)])}</div>`+
+ `<h4>👗 Dress &amp; scene</h4><div class=row><label>Dress style</label>${sel('ds',[...lst(DST),R])}</div><div class=row><label>Time of day</label>${sel('tod',[...lst(TOD),R])}</div>`+`<div class=row><label>Pattern add-on</label>${sel('pat',[...lst(PAT),R])}</div><div class=row><label>Gloves</label>${sel('glove',[['white','White gloves (default)'],['trim','Tinted to match the trim']])}</div>`+`<div class=row><label>Gradient hair (2nd color)</label>${sel('grad',[['off','Off'],R,...colOpts(HAIR)])}</div><p class=muted>🌈 Gradient/multi-color hair auto-adds the Multi Colored Hair LoRA words (multicolor hair, color tip hairs, root hair color). Equip that LoRA in PixAI.</p>`+
  `<h4>Add-ons</h4><div class=cks>`+Object.keys(ADDONS).map(k=>`<label class=ck><input type=checkbox${O.add.includes(k)?' checked':''} onchange="setAdd('${k}',this.checked)"> ${ADDONS[k][0]}</label>`).join('')+'</div>'+
  `<h4>Accessories</h4><div class=row><label>Earrings</label>${sel('ear',[['','Theme / gem default'],...EARS.map(x=>[x,x[0].toUpperCase()+x.slice(1)]),R,...ACOL.map(x=>[x,x+' earrings'])])}</div>`+
  `<div class=row><label>Necklace / pendant color</label>${sel('neck',[['','Default'],R,...colOpts(ACOL)])}</div>`+
