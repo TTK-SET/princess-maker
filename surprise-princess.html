@@ -34,6 +34,12 @@ body.light{background:#f6f3fb;color:#222}body.light details,body.light .item,bod
 #wn{display:none;position:fixed;inset:0;background:#000a;z-index:60;align-items:center;justify-content:center;padding:16px}#wn>div{background:#26233a;color:#eee;border-radius:14px;padding:16px;max-width:520px;max-height:80vh;overflow:auto}#wn li{margin:4px 0;font-size:14px}
 .item details.more{background:transparent;padding:0;margin:4px 0}.item details.more summary{font-size:15px}#gobar button{font-size:15px}
 body.light #mbar{background:#f6f3fbee;border-color:#ccc}body.light .info{color:#5a4a8a}body.light .qb{background:#e6e0f3;color:#222}body.light .qb.on{background:#c62828;color:#fff}body.light #chal{background:linear-gradient(135deg,#e0f2ff,#fff)}body.light #wn>div{background:#fff;color:#222}body.light .lwarn{color:#8a5a00}
+.inp{width:100%;font-size:17px;padding:10px;box-sizing:border-box;border-radius:8px;border:1px solid #555;background:#2a2738;color:#fff;margin:3px 0}body.light .inp{background:#fff;color:#222;border-color:#bbb}
+.pill{display:inline-block;background:#3a3650;color:#cfc6ff;border-radius:12px;padding:3px 9px;margin:2px;font-size:12px;vertical-align:middle}.pill.w{background:#4a3b12;color:#ffd77a}.pill.g{background:#1f4a2a;color:#a8f0c0}body.light .pill{background:#ece6fb;color:#4a3a7a}body.light .pill.w{background:#fff1c9;color:#6b4e00}body.light .pill.g{background:#dcf5e3;color:#1f5a2f}
+.tagp{display:inline-block;background:#3a3650;color:#eee;border-radius:12px;padding:8px 10px;margin:3px;font-size:13px;border:0;min-height:0}.tagp.k{opacity:.6}body.light .tagp{background:#e6e0f3;color:#222}
+.item.done{opacity:.55}.bk{transform:scale(1.4);margin:0 8px}.sw{vertical-align:middle;margin-right:6px}.trt{font-size:13px;padding:4px 8px;min-height:0;margin:2px}#opts details{background:rgba(255,255,255,.04)}#bnum{width:72px;font-size:17px;padding:8px;border-radius:8px;border:1px solid #555;background:#2a2738;color:#fff}
+body.amoled{background:#000}body.amoled details,body.amoled .item,body.amoled .sub,body.amoled textarea,body.amoled #mbar{background:#0b0b0e}
+body.pinkui{background:#fff0f6}body.pinkui details,body.pinkui .item,body.pinkui .sub{background:#ffe3f0}body.pinkui #mbar{background:#fff0f6ee}
 </style></head><body>
 <button id="panic" onclick="panic()" title="Panic (Esc)">🏠</button><div id="hoa"><h2 onclick="hoaTap()">Maple Ridge HOA: Meeting Minutes</h2><p><i>Regular monthly meeting, Community Room, 7:00 PM</i></p><p>1. Call to order at 7:04 PM. Quorum confirmed (5 of 7 board members present).</p><p>2. Minutes of the previous meeting approved as amended (typo in item 4b).</p><p>3. Treasurer's report: reserve fund balance unchanged. Landscaping invoice for October under review.</p><p>4. Old business: the mailbox cluster repaint is tabled until spring. The pool cover quote is still pending.</p><p>5. New business: residents are reminded that trash bins must be stored out of street view. Discussion of holiday light guidelines was deferred to a committee.</p><p>6. Open forum: one comment regarding speed bumps on Birchwood Ln.</p><p>7. Adjourned at 8:12 PM. Next meeting: second Tuesday of the month.</p></div>
 <div id="toast"></div>
@@ -53,26 +59,28 @@ body.light #mbar{background:#f6f3fbee;border-color:#ccc}body.light .info{color:#
 <input id="cq" class="tq" placeholder="Search characters or franchises (e.g. mario, sonic, pikachu)…">
 <select id="ccat" onchange="if(this.value)setT(this.value)" aria-label="Pick a character franchise"></select>
 <div id="cgrid"></div></details>
+<details id="mcd"><summary>🎛️ Multi-category mix <span id="mcc" class="muted"></span></summary><p class=muted>Check any theme groups and character franchises, then tap Use this mix. Surprise Me, batches and sisters roll from all of them together.</p><div id="mcat"></div><button class=copy onclick="mcUse()">🎲 Use this mix</button><button class=cbtn onclick="mcClear()">Clear</button></details>
 <details><summary>🌈 Mood &amp; season <span id="mcur" class="muted"></span></summary><p class=muted>Mood limits the colors Surprise Me and batches use (characters keep their own colors).</p><div id="mood"></div><label class=ck><input type=checkbox id="seas" onchange="setSeason(this.checked)"> 🍃 Season auto-mode: lean toward <b id="seasl"></b> colors</label></details>
 <details><summary>⚙️ Options <span id="ocur" class="muted"></span></summary><div id="opts"></div></details>
 <details><summary>👭 Sisters &amp; Mashup</summary><h4>Sister set (matching colors)</h4><div class=row><label>Sister style (all sister buttons)</label><select id="sist" onchange="setSis(this.value)"><option value="def">Classic (different dress families)</option><option value="fam">Matching dress family</option><option value="hair">Matching hair</option><option value="opp">Total opposites</option></select></div><button class=copy onclick="doSis(2)">👭 2 sisters</button><button class=copy onclick="doSis(3)">👭👧 3 sisters</button><button class=fav onclick="royal()">👑 Royal family (Queen + 2 princesses)</button>
 <h4>Character mashup (hair, eyes, tiara from A; dress and trim from B)</h4><div class=row><label>Character A</label><select id="ma"></select></div><div class=row><label>Character B</label><select id="mb"></select></div><button class=copy onclick="doMash()">🔀 Make mashup</button></details>
-<details><summary>🧪 Theme mixer</summary><p class=muted>Hair and eyes from theme A, dress and trim from theme B, extras from both.</p><div class=row><label>Theme A (hair, eyes)</label><select id="xa"></select></div><div class=row><label>Theme B (dress, trim)</label><select id="xb"></select></div><button class=copy onclick="doMix()">🧪 Mix themes</button></details>
+<details><summary>🧪 Theme mixer &amp; mashups</summary><p class=muted>Hair and eyes from theme A, dress and trim from theme B, extras from both.</p><div class=row><label>Theme A (hair, eyes)</label><select id="xa"></select></div><div class=row><label>Theme B (dress, trim)</label><select id="xb"></select></div><button class=copy onclick="doMix()">🧪 Mix themes</button><h4>👸 × 🎨 Character × Theme</h4><p class=muted>Hair, eyes, tiara and little traits from the character; dress, trim, props and background from the theme (like Peach × Baker).</p><div class=row><label>Character</label><select id="ca"></select></div><div class=row><label>Theme</label><select id="cb"></select></div><button class=copy onclick="doCT()">✨ Make Character × Theme</button></details>
 <details><summary>💾 Presets</summary><p class=muted>Save your 🎯 picks, 🚫 blocks and mood under a name. Tap a preset to switch.</p><input id="pren" class=tq placeholder="Preset name (e.g. No blonde, pastel)" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box"><label class=ck><input type=checkbox id="preo"> Also save Options</label><button class=copy onclick="preSave()">💾 Save preset</button><div id="prel"></div></details>
 <details id="pkd"><summary>🎯 Pick my colors <span id="pkc" class="muted"></span></summary><p class=muted>Lock any part to the color you want. Surprise Me and batches will always use it.</p><div id="pk"></div><button class=copy onclick="pkClear()">Clear all</button></details>
 <details id="bnd"><summary>🚫 Never use these colors <span id="bnc" class="muted"></span></summary><p class=muted>Turn colors off for one part at a time (for example, no blonde hair). Surprise Me, batches and sisters skip them. A color you pick in 🎯 still wins.</p><div id="bn" class=chips style="display:block"></div><button class=copy onclick="bnClear()">Clear all</button></details>
-<div id="preq"></div><div id="qt"></div><button id="go">🎲 Surprise Me</button><div class=tools id="gobar"><button class=cbtn onclick="undo()">⬅️ Undo</button><button class=copy onclick="pixTop()">📋 Copy for PixAI</button></div>
-<div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button></div>
+<div id="preq"></div><div id="qt"></div><button id="go">🎲 Surprise Me</button><div class=tools id="gobar"><button class=cbtn onclick="undo()">⬅️ Undo</button><button class=copy onclick="pixTop()">📋 Copy for PixAI</button><button class=cbtn onclick="cpTopNeg()">🚫 Copy negative</button><button class=vbtn onclick="openPix('s')">🌐 Open PixAI</button><button id="rbq" class=cbtn onclick="rbwQuick()">🌈 GIF prep: off</button></div>
+<div class="batch">Make a batch: <button onclick="batch(3)">3</button><button onclick="batch(5)">5</button><button onclick="batch(10)">10</button><button onclick="batch(20)">20</button><button onclick="batch(50)">50</button><span style="white-space:nowrap"><input id="bnum" type=number min=1 max=100 value=8 aria-label="Custom batch size (1 to 100)"><button onclick="batchN()">▶️ Make</button></span></div>
 <div id="list"></div>
 <div class="chips" id="chips"></div><div id="sx"></div>
 <h3>Prompt</h3><textarea id="p"></textarea><button class="copy" onclick="cp('p')">Copy prompt</button>
 <h3>Negative</h3><textarea id="n" style="height:70px"></textarea><button class="copy" onclick="cp('n')">Copy negative</button>
 <details><summary>⭐ Saved: My Favorites (<span id="nfav">0</span>)</summary><button class=copy onclick="cpFavs()">📋 Copy all favorites</button><button class=vbtn onclick="dlFavs()">⬇️ Download .txt</button><input id="fq" class=tq placeholder="🔎 Search favorites…" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box;margin-top:6px"><div id="favs"></div></details>
+<details id="undd"><summary>⏪ Undo history (<span id="nund">0</span>)</summary><p class=muted>Jump back to any earlier roll from this visit.</p><div id="undl"></div></details>
 <details><summary>🕘 History (<span id="nhist">0</span>, last 50)</summary><button class=del onclick="clearHist()">🗑 Clear history</button><div id="hist"></div></details>
-<details><summary>🧰 Extras &amp; privacy <span id="sdc" class="muted"></span></summary><h4>🙈 Hide my history</h4><button class=del onclick="wipeAll()">🧹 Hide my history (wipe everything)</button><button class=cbtn onclick="wipeHist()">Wipe history only</button><h4>👍 Ratings</h4><p class=muted id="rtc"></p><button class=cbtn onclick="rtReset()">↩️ Reset ratings</button><h4>🔒 Fixed seed</h4><p class=muted>With a seed, Surprise Me gives the same roll every time (same settings). Clear it to go back to random.</p><input id="seed" class=tq placeholder="Seed (blank = off)" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box"><button class=copy onclick="setSeed(document.getElementById('seed').value)">Set seed</button><button class=cbtn onclick="newSeed()">🎲 New seed</button><button class=cbtn onclick="setSeed('')">Clear seed</button><h4>⚙️ Backup settings</h4><textarea id="sxo" style="height:70px" placeholder="Settings code (PS1.…)"></textarea><button class=copy onclick="expSet()">⬆️ Export settings code</button><button class=cbtn onclick="impSet()">⬇️ Import code</button><h4>ℹ️</h4><button class=cbtn onclick="wnShow()">✨ What's new</button></details>
+<details><summary>🧰 Extras &amp; privacy <span id="sdc" class="muted"></span></summary><h4>🙈 Hide my history</h4><button class=del onclick="wipeAll()">🧹 Hide my history (wipe everything)</button><button class=cbtn onclick="wipeHist()">Wipe history only</button><h4>👍 Ratings</h4><p class=muted id="rtc"></p><button class=cbtn onclick="rtReset()">↩️ Reset ratings</button><h4>🔒 Fixed seed</h4><p class=muted>With a seed, Surprise Me gives the same roll every time (same settings). Clear it to go back to random.</p><input id="seed" class=tq placeholder="Seed (blank = off)" style="width:100%;font-size:17px;padding:10px;box-sizing:border-box"><button class=copy onclick="setSeed(document.getElementById('seed').value)">Set seed</button><button class=cbtn onclick="newSeed()">🎲 New seed</button><button class=cbtn onclick="setSeed('')">Clear seed</button><h4>⚙️ Backup settings</h4><textarea id="sxo" style="height:70px" placeholder="Settings code (PS1.…)"></textarea><button class=copy onclick="expSet()">⬆️ Export settings code</button><button class=cbtn onclick="impSet()">⬇️ Import code</button><h4>🎨 Look &amp; disguise</h4><div class=row><label>UI skin</label><select id="skin" onchange="setSkin(this.value)"><option value="dark">🌙 Dark (default)</option><option value="light">☀️ Light</option><option value="amoled">🖤 Midnight AMOLED</option><option value="pink">🌸 Pastel Pink</option></select></div><div class=row><label>🕵️ Disguise screen</label><select id="dsc" onchange="setDsc(this.value)"><option value="hoa">🏘️ HOA meeting minutes (default)</option><option value="grocery">🛒 Grocery list</option><option value="weather">🌦️ Weather log</option><option value="notes">📝 Notes</option></select></div><h4>👍 Theme &amp; character ratings</h4><p class=muted id="trtc"></p><button class=cbtn onclick="trReset()">↩️ Reset theme 👍/👎</button><h4>💾 Full backup (.json)</h4><p class=muted>Favorites, history, presets, ratings, picks, blocks, options, custom LoRAs and outfits in one file. You can also paste a backup into the settings box above and tap Import.</p><button class=copy onclick="bkExp()">⬇️ Download backup</button><label class=ck>⬆️ Import backup file <input type=file id="bkf" accept=".json,application/json" onchange="bkFile(this)"></label><h4>⌨️ Keyboard shortcuts</h4><p class=muted>Space = Surprise Me · C = Copy for PixAI · Z = Undo · S = Save favorite · Esc = Disguise</p><h4>ℹ️</h4><button class=cbtn onclick="wnShow()">✨ What's new</button></details>
 <div id="mbar"><button class=cbtn onclick="undo()">⬅️</button><button class=g onclick="go()">🎲 Surprise Me</button><button class=copy onclick="pixTop()">📋 Copy</button></div>
-<div id="wn" onclick="if(event.target===this)wnClose()"><div><h3>✨ What's new</h3><ul><li>📂 Pick a whole category: choose 🎲 Any Jobs / Occupations theme (or any theme group) or 🎲 Any Super Mario character (or any franchise) from the new dropdowns or inside each group. Surprise Me, batches, sisters and Royal family then only make princesses from that category. Theme groups now fold up like Characters.</li><li>💼 81 more jobs in Jobs / Occupations (105 total). ⚓ Water jobs: Ship Captain, Pirate, Lighthouse Keeper, Marine Biologist, Pearl Diver, Lifeguard, Gondolier, Aquarium Trainer, Surfer, Submarine Explorer, Harbor Angler, Cruise Hostess, Coast Guard, Harbor Master, Riverboat Captain and Deep Sea Diver. Plus Astronaut, Inventor, Programmer, Film Director, Zookeeper, Toymaker, Jeweler, Clockmaker, Potter, Beekeeper, Farmer, Park Ranger, Archaeologist, Botanist, Cartographer, Treasure Hunter, Figure Skater, Flamenco Dancer, Acrobat, Fortune Teller, Alchemist, Harpist, Opera Singer, Court Jester, Bard, Blacksmith, Archer, Fencer, Falconer, Secret Agent and many more. Find them in 🎨 Theme or search a job name.</li><li>💼 New theme group: Jobs / Occupations. 24 cute job princesses in the ballgown, each with her own props, trim and background, like Baker, Librarian, Artist, Ballerina, Detective, Astronomer, Pilot, Florist, Nurse, Magician and Royal Knight. Find them in 🎨 Theme or search a job name.</li><li>🎀 Every theme now has its own matching dress trim, like fur trim on Winter, heart lace trim on Valentine's Day, pearl trim on Mermaid and starry trim on Starry Night. It goes right after the trim color. Turn it off with 🎀 Theme dress trim in ⚙️ Options → Switches.</li><li>👑 Princess of the day now has her own Pose picker (Tied to tree too), and her 2 or 3 sisters use that pose.</li><li>🌳 New pose: Tied to tree. It uses hands behind back and tied up, and adds the LoRA words tied to tree, tied to pole after ultrabody. Pick it from Pose. Random never picks it.</li><li>✨ Extra LoRAs in ⚙️ Options: optional toggles for Detailed anime style (SDXL_pony), anime screencap xl (adds "anime screencap"), and Anime Enchancer XL-v5. Equip the checked ones in PixAI (usually ~3 LoRA slots)</li><li>📝 Prompts are back to the short classic template. Anime style enhancer and Better clothes words are no longer auto-added — equip those LoRAs in PixAI if you use them</li><li>🌈 Multi Colored Hair LoRA trigger words (multicolor hair, color tip hairs, root hair color) are auto-added whenever the hair is gradient or multi-colored</li><li>🧚 Character looks no longer add wings, mermaid tails, fins or hair-style changes; small touches like fangs and little horns stay</li><li>💧 Sweat drops removed for good</li><li>💾 Presets for your picks and blocks</li><li>🌈 Moods (Pastel, Bold, Dark &amp; royal, Soft &amp; sweet) and 🍃 season mode</li><li>👭 Sister styles and 👑 Royal family</li><li>📋 Copy for PixAI (prompt + negative) and 🔢 Copy batch as list</li><li>👍/👎 ratings that gently steer the colors</li><li>🔁 Remix a favorite, 🔎 search favorites</li><li>👗 Dress styles, time of day, patterns, glove tint, hair accessories (in ⚙️ Options)</li><li>🧪 Theme mixer, 🏆 daily challenge, ⚖️ compare, 👯 twin, ⬅️ undo</li><li>🏷️ Princess names, 🎨 color tips and 📏 prompt length check</li><li>✨ Sparkle tags on rare rolls, 🍀 lucky streaks</li><li>🧹 Hide my history, ⚙️ settings backup, 🔒 fixed seed, 💍 re-roll accessories</li></ul><button class=copy onclick="wnClose()">Got it</button></div></div>
-<details id="cmpd"><summary>⚖️ Compare (<span id="ncmp">0</span>/2)</summary><div id="cmp"></div></details>
+<div id="wn" onclick="if(event.target===this)wnClose()"><div><h3>✨ What's new</h3><ul><li>🚀 Big upgrade, part 1. ✋ Hands-free Praying &amp; Tied poses: hand-held props drop out so hands stay clean. New poses (kneeling, sitting on throne, holding skirt hem, tiara touch, hands at waist), what she's tied to and rope color, 7 new expressions, blush, eyebrows, framing (full body shows the whole gown), camera angle, gaze and wind. All in ⚙️ Options.</li><li>💇 7 new hairstyles, hair length, bangs, ahoge, heterochromia and 🌈 rainbow hair. 👗 Trim style (any of the theme trims), two-tone skirt, neckline, sleeves, fabric, glove length, cape, waist ribbon, tiara style, jewelry sync, 🖤 villainess mode and saved outfits.</li><li>🌈 GIF prep (white or silver hair, no sparkles) plus smarter 🎬 Video prompts: Tied-safe and hands-still automatically, 🌈 Rainbow Hair GIF, background-only, action-matched and hero reveal.</li><li>🧩 LoRA recipe and ✅ prompt health on every card, custom LoRAs, 🌐 Open PixAI, Copy negative, Copy PixAI + Video, color emphasis, negative presets and banned tags.</li><li>🃏 Under ➕ More: same girl/new outfit, same outfit/new girl, swap hair &amp; dress, re-roll trim, clean for Rainbow GIF and 🏷️ tag inspector. 👍/👎 whole themes and characters, 🎛️ multi-category mix, Character × Theme, any batch size with pick, mark used, re-roll one and export, 4-way compare, undo history, auto-restore, full backup, skins, disguise screens and keyboard shortcuts.</li><li>📂 Pick a whole category: choose 🎲 Any Jobs / Occupations theme (or any theme group) or 🎲 Any Super Mario character (or any franchise) from the new dropdowns or inside each group. Surprise Me, batches, sisters and Royal family then only make princesses from that category. Theme groups now fold up like Characters.</li><li>💼 81 more jobs in Jobs / Occupations (105 total). ⚓ Water jobs: Ship Captain, Pirate, Lighthouse Keeper, Marine Biologist, Pearl Diver, Lifeguard, Gondolier, Aquarium Trainer, Surfer, Submarine Explorer, Harbor Angler, Cruise Hostess, Coast Guard, Harbor Master, Riverboat Captain and Deep Sea Diver. Plus Astronaut, Inventor, Programmer, Film Director, Zookeeper, Toymaker, Jeweler, Clockmaker, Potter, Beekeeper, Farmer, Park Ranger, Archaeologist, Botanist, Cartographer, Treasure Hunter, Figure Skater, Flamenco Dancer, Acrobat, Fortune Teller, Alchemist, Harpist, Opera Singer, Court Jester, Bard, Blacksmith, Archer, Fencer, Falconer, Secret Agent and many more. Find them in 🎨 Theme or search a job name.</li><li>💼 New theme group: Jobs / Occupations. 24 cute job princesses in the ballgown, each with her own props, trim and background, like Baker, Librarian, Artist, Ballerina, Detective, Astronomer, Pilot, Florist, Nurse, Magician and Royal Knight. Find them in 🎨 Theme or search a job name.</li><li>🎀 Every theme now has its own matching dress trim, like fur trim on Winter, heart lace trim on Valentine's Day, pearl trim on Mermaid and starry trim on Starry Night. It goes right after the trim color. Turn it off with 🎀 Theme dress trim in ⚙️ Options → Switches.</li><li>👑 Princess of the day now has her own Pose picker (Tied to tree too), and her 2 or 3 sisters use that pose.</li><li>🌳 New pose: Tied to tree. It uses hands behind back and tied up, and adds the LoRA words tied to tree, tied to pole after ultrabody. Pick it from Pose. Random never picks it.</li><li>✨ Extra LoRAs in ⚙️ Options: optional toggles for Detailed anime style (SDXL_pony), anime screencap xl (adds "anime screencap"), and Anime Enchancer XL-v5. Equip the checked ones in PixAI (usually ~3 LoRA slots)</li><li>📝 Prompts are back to the short classic template. Anime style enhancer and Better clothes words are no longer auto-added — equip those LoRAs in PixAI if you use them</li><li>🌈 Multi Colored Hair LoRA trigger words (multicolor hair, color tip hairs, root hair color) are auto-added whenever the hair is gradient or multi-colored</li><li>🧚 Character looks no longer add wings, mermaid tails, fins or hair-style changes; small touches like fangs and little horns stay</li><li>💧 Sweat drops removed for good</li><li>💾 Presets for your picks and blocks</li><li>🌈 Moods (Pastel, Bold, Dark &amp; royal, Soft &amp; sweet) and 🍃 season mode</li><li>👭 Sister styles and 👑 Royal family</li><li>📋 Copy for PixAI (prompt + negative) and 🔢 Copy batch as list</li><li>👍/👎 ratings that gently steer the colors</li><li>🔁 Remix a favorite, 🔎 search favorites</li><li>👗 Dress styles, time of day, patterns, glove tint, hair accessories (in ⚙️ Options)</li><li>🧪 Theme mixer, 🏆 daily challenge, ⚖️ compare, 👯 twin, ⬅️ undo</li><li>🏷️ Princess names, 🎨 color tips and 📏 prompt length check</li><li>✨ Sparkle tags on rare rolls, 🍀 lucky streaks</li><li>🧹 Hide my history, ⚙️ settings backup, 🔒 fixed seed, 💍 re-roll accessories</li></ul><button class=copy onclick="wnClose()">Got it</button></div></div>
+<details id="cmpd"><summary>⚖️ Compare (<span id="ncmp">0</span>/4)</summary><div id="cmp"></div></details>
 <details><summary>🔗 Enter a share code</summary><input id="codein" placeholder="Paste a code (PP1.…)"><button class=copy onclick="loadCode()">Recreate prompt</button></details>
 <script>
 // [group, name, extras, background, palettes "hair/eyes/dress/trim/tiara/gem/pendant;..."]
@@ -642,25 +650,25 @@ function catSel(id,ph,opts){const el=document.getElementById(id);if(!el)return;e
 function drawThemes(){const q=document.getElementById('tq').value.toLowerCase().trim();let h='';
  catSel('tcat','📂 Pick a theme category…',TGRPS.map(g=>['tg:'+g,'🎲 Any '+g+' theme ('+tgIdx(g).length+')']));
  h+=`<button class="tb${theme===-1?' on':''}" onclick="setT(-1)">🚫 No theme</button><button class="tb${theme===-2?' on':''}" onclick="setT(-2)">🎲 Any theme (random)</button>`;
- TGRPS.forEach((g,gi)=>{const gm=g.toLowerCase().includes(q);const items=tgIdx(g).filter(i=>{const t=TH[i];return !q||gm||(t.name+' '+t.ex.join(' ')).toLowerCase().includes(q)});if(!items.length)return;
+ TGRPS.forEach((g,gi)=>{const gm=g.toLowerCase().includes(q);const items=tgIdx(g).filter(i=>{const t=TH[i];return !q||gm||(t.name+' '+t.ex.join(' ')+' '+t.dt).toLowerCase().includes(q)});if(!items.length)return;
   const open=q||theme==='tg:'+g||items.includes(theme);
   h+=`<details${open?' open':''}><summary>${esc(g)} (${items.length})</summary><button class="tb${theme==='tg:'+g?' on':''}" onclick="setT('tg:'+TGRPS[${gi}])">🎲 Any ${esc(g)} theme</button>`+items.map(i=>`<button class="tb${theme===i?' on':''}" onclick="setT(${i})">${esc(TH[i].name)}</button>`).join('')+'</details>'});
  document.getElementById('tgrid').innerHTML=h}
 function setT(i){if(isTG(i)&&!TGRPS.includes(i.slice(3)))i=-2;if(isFR(i)&&!FRANS.includes(i))i=-3;theme=i;const ch=isFR(i)||i===-3||(typeof i==='number'&&i>=0&&TH[i].ch);
- document.getElementById('tcur').textContent=ch?'(character selected)':i===-1?'No theme':i===-2?'Any theme (random)':isTG(i)?'Any '+i.slice(3)+' theme':TH[i].name;
- document.getElementById('ccur').textContent=!ch?'None':i===-3?'Any character (random)':isFR(i)?'Any '+i+' character':TH[i].name+' ('+TH[i].g+')';
+ document.getElementById('tcur').textContent=ch?'(character selected)':i===-4?mcLabel():i===-1?'No theme':i===-2?'Any theme (random)':isTG(i)?'Any '+i.slice(3)+' theme':TH[i].name;
+ document.getElementById('ccur').textContent=!ch?(i===-4?'🎛️ (in your mix)':'None'):i===-3?'Any character (random)':isFR(i)?'Any '+i+' character':TH[i].name+' ('+TH[i].g+')';
  drawThemes();drawChars()}
 function drawChars(){const q=document.getElementById('cq').value.toLowerCase().trim();let h=`<button class="tb${theme===-3?' on':''}" onclick="setT(-3)">🎲 Any character (random)</button>`;
  catSel('ccat','📂 Pick a character franchise…',FRANS.map(f=>[f,'🎲 Any '+f+' character ('+TH.filter(t=>t.ch&&t.g===f).length+')']));
- FRANS.forEach((f,fi)=>{const fm=f.toLowerCase().includes(q);const items=TH.map((t,i)=>[t,i]).filter(([t])=>t.ch&&t.g===f&&(!q||fm||t.name.toLowerCase().includes(q)));if(!items.length)return;
+ FRANS.forEach((f,fi)=>{const fm=f.toLowerCase().includes(q);const items=TH.map((t,i)=>[t,i]).filter(([t])=>t.ch&&t.g===f&&(!q||fm||(t.name+' '+t.ex.join(' ')).toLowerCase().includes(q)));if(!items.length)return;
   const open=q||theme===f||items.some(([t,i])=>i===theme);
   h+=`<details${open?' open':''}><summary>${esc(f)} (${items.length})</summary><button class="tb${theme===f?' on':''}" onclick="setT(FRANS[${fi}])">🎲 Any ${esc(f)} character</button>`+items.map(([t,i])=>`<button class="tb${theme===i?' on':''}" onclick="setT(${i})">${esc(t.name)}</button>`).join('')+'</details>'});
  document.getElementById('cgrid').innerHTML=h}
 document.getElementById('cq').oninput=drawChars;
 document.getElementById('tq').oninput=drawThemes;
 const CIDX=TH.map((t,i)=>t.ch?i:-1).filter(i=>i>=0);
-const tPool=()=>theme===-2?[...Array(NOLD).keys()]:theme===-3?CIDX:isTG(theme)?tgIdx(theme.slice(3)):isFR(theme)?CIDX.filter(i=>TH[i].g===theme):null;
-const ti=()=>{const p=tPool();return p?(p.length?r(p):-1):theme};
+const tPool=()=>theme===-4?mcPool():theme===-2?[...Array(NOLD).keys()]:theme===-3?CIDX:isTG(theme)?tgIdx(theme.slice(3)):isFR(theme)?CIDX.filter(i=>TH[i].g===theme):null;
+const ti=()=>{const p=tPool();return p?(p.length?tpick(p):-1):theme};
 const label=c=>c.lab||(c.theme?(c.theme.ch?c.theme.name+' ('+c.theme.g+')':c.theme.name):'No theme');
 function wr(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
 function cpt(id){wr(document.getElementById(id).textContent)}
@@ -668,15 +676,15 @@ function cpAll(){wr(window._all)}
 function cp(id){wr(document.getElementById(id).value)}
 // ===== v3 extensions =====
 const GS=['gold','silver'],ACOL=DRESS.concat(GS);
-const POSES={pray:['Praying hands','own hands together, hands clasped, praying hands, hands near chest'],cheek:['Hand on cheek','hand on own cheek'],curtsy:['Curtsy','curtsey, holding skirt'],rose:['Holding a rose','holding flower, rose'],heart:['Hand on heart','hand on own chest'],tied:['Tied to tree','hands behind back, hands clasped']};
-const EXPRS={worried:['Worried and pleading','worried, pleading expression, blush'],happy:['Happy','smile, happy, blush'],shy:['Shy','shy, blush'],cry:['Crying','tears, teary eyes, worried, blush'],surp:['Surprised','surprised, open mouth, blush']};
+const POSES={pray:['Praying hands','own hands together, hands clasped, praying hands, hands near chest'],cheek:['Hand on cheek','hand on own cheek'],curtsy:['Curtsy','curtsey, holding skirt'],rose:['Holding a rose','holding flower, rose'],heart:['Hand on heart','hand on own chest'],tied:['Tied to tree','hands behind back, hands clasped'],kneel:['Kneeling','kneeling, hands on own lap'],throne:['Sitting on throne','sitting on throne, hands on own lap'],hem:['Holding skirt hem','holding own skirt, skirt hem'],tiara:['Tiara touch','hand on own head, touching tiara'],waist:['Hands at waist','own hands together, hands at waist']};
+const EXPRS={worried:['Worried and pleading','worried, pleading expression, blush'],happy:['Happy','smile, happy, blush'],shy:['Shy','shy, blush'],cry:['Crying','tears, teary eyes, worried, blush'],surp:['Surprised','surprised, open mouth, blush'],det:['Determined','determined, serious, blush'],sleepy:['Sleepy','sleepy, half-closed eyes, blush'],nerv:['Nervous smile','nervous smile, blush'],pout:['Pout','pout, blush'],emb:['Embarrassed','embarrassed, blush'],smirk:['Confident smirk','smirk, confident, blush'],wide:['Wide-eyed','wide-eyed, surprised, blush']};
 const BGS={hall:['Castle hall','castle hall'],throne:['Throne room','throne room'],balcony:['Castle balcony with sunset','castle balcony, sunset'],garden:['Flower garden','flower garden'],ball:['Ballroom','ballroom'],stars:['Starry night sky','starry sky, night sky']};
-const HSTY={straight:['Straight with bangs'],pony:['Ponytail'],twin:['Twin tails'],wavy:['Long wavy, side-swept bangs']};
+const HSTY={straight:['Straight with bangs'],pony:['Ponytail'],twin:['Twin tails'],wavy:['Long wavy, side-swept bangs'],crown:['Braided crown'],spony:['Side ponytail'],half:['Half updo'],drill:['Drill hair'],hime:['Hime cut'],lbun:['Low bun'],odango:['Odango (double buns)']};
 const ADDONS={heart:['Heart earrings','heart earrings'],bracelet:['Gold bracelet','gold bracelet'],sparkles:['Sparkles','sparkles'],ribbon:['Ribbon','ribbon'],rose:['Rose','rose'],flower:['Flower hair ornament','flower hair ornament'],cape:['Cape','cape']};
 const EARS=['heart','star','flower','pearl','crystal'];
 const ORN={bow:'hair bow',flower:'hair flower',star:'star hair ornament',ribbon:'hair ribbon',braid:'side braid'};
 const RAR={R:['sparkles','glowing gem','glowing tiara','sparkling gown'],L:['sparkles','glowing gem','glowing tiara','sparkling gown','starry dress pattern','light particles']},RARN={C:'Common',R:'💎 Rare',L:'🌟 Legendary'};
-const DEF={pose:'pray',expr:'worried',bg:'theme',hs:'straight',grad:'off',add:[],ear:'',neck:'',br:'',orn:'',ds:'ballgown',tod:'none',pat:'none',glove:'white',vs:false,rar:false,norep:false,loraDas:false,loraAsx:false,loraAex:false,dpose:'pray',ttrim:true};
+const DEF={pose:'pray',expr:'worried',bg:'theme',hs:'straight',grad:'off',add:[],ear:'',neck:'',br:'',orn:'',ds:'ballgown',tod:'none',pat:'none',glove:'white',vs:false,rar:false,norep:false,loraDas:false,loraAsx:false,loraAex:false,dpose:'pray',ttrim:true,frm:'close',cam:'tq',gaze:'viewer',wind:'none',tanc:'up',trope:'def',blush:'normal',brow:'auto',freeHands:true,bgPropsOnly:false,hlen:'def',bang:'def',aho:false,het:'',rbw:false,rbwHair:'white',tov:'',skirt:'',neckl:'off',slv:'short',glen:'def',fab:'def',cape:'none',waist:'none',tst:'tiara',jsync:false,vil:false,emph:'off',negp:'std',btags:''};
 function lsg(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
 function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 let O=Object.assign({},DEF,lsg('sp_opts',{}));O.add=(O.add||[]).filter(k=>ADDONS[k]);
@@ -690,41 +698,72 @@ function apply(c,o){o=o||O;
  c.add=(o.add||[]).filter(k=>ADDONS[k]);c.ear=o.ear==='rand'?r(EARS.concat(ACOL)):o.ear||'';c.neck=o.neck==='rand'?r(ACOL):o.neck||'';c.br=o.br||'';c.orn=o.orn==='rand'?r(Object.keys(ORN)):ORN[o.orn]?o.orn:'';c.ds=rk(DST,o.ds||'ballgown');c.tod=o.tod&&o.tod!=='none'?rk(TOD,o.tod):'';if(c.tod==='none')c.tod='';c.pat=o.pat&&o.pat!=='none'?rk(PAT,o.pat):'';if(c.pat==='none')c.pat='';c.glove=o.glove==='trim'?'trim':'';c.vs=!!o.vs;
  c.rar=o.rar?(x=>x<.05?'L':x<.30?'R':'C')(Math.random()):'';
  c.loraDas=!!o.loraDas;c.loraAsx=!!o.loraAsx;c.loraAex=!!o.loraAex;c.ttrim=o.ttrim!==false;
- return c}
+ applyV5(c,o);return c}
 function hairFor(c){return r(HAIR.filter(x=>x!==c.dress&&x!==c.hair))}
 function build(c){
- const h=c.hair,hs=c.hs||'straight',g=c.h2?`${h} and ${c.h2} gradient hair`:`${h} hair`;
- const hair=hs==='wavy'?`${g}, very long hair, wavy hair, side-swept bangs, hair over one eye, asymmetrical bangs, sidelocks, voluminous hair`:`${h} ${hs==='pony'?'ponytail':hs==='twin'?'twintails':'straight hair'} with bangs, ${g}`;
- const top=c.vs?`${c.dress} dress, covered bodice, high neckline`:`${c.dress} off-shoulder dress`;
- const dp=c.bot?`${top}, ${c.dress} bodice, ${c.bot} skirt, two-tone dress`:c.vs?top:`${top}, ${c.dress} dress`;
- const bgt=(c.bgo||c.bg).split(', ');let ear=c.extras.find(x=>/earrings/.test(x));const ch=!!(c.theme&&c.theme.ch);const ex=c.extras.filter(x=>!/earrings/.test(x)&&!bgt.includes(x)&&(!ch||charEx(x)));if(ear&&ch&&!charEx(ear))ear=undefined;
- const multi=!!c.h2||ex.some(x=>MHX.test(x));
+ const rb=!!c.rbh&&!c.rbw,h=rb?'rainbow':c.hair,hs=c.hs||'straight',g=rb?'rainbow hair':(c.h2&&!c.rbw?`${h} and ${c.h2} gradient hair`:`${h} hair`);
+ const bang=BANG[c.bang]?BANG[c.bang][1]:'',hl=HLEN[c.hlen]?HLEN[c.hlen][1]:'';
+ let hair=hs==='wavy'?`${g}, ${hl||'very long hair'}, wavy hair, ${bang||'side-swept bangs, hair over one eye, asymmetrical bangs'}, sidelocks, voluminous hair`
+  :HSTYT[hs]?`${HSTYT[hs]}, ${g}${bang?', '+bang:''}`
+  :`${h} ${hs==='pony'?'ponytail':hs==='twin'?'twintails':'straight hair'} with ${bang||'bangs'}, ${g}`;
+ if(hl&&hs!=='wavy')hair+=', '+hl;if(c.aho)hair+=', ahoge';if(c.rbw)hair+=', hair behind shoulders';
+ const nk=NECK[c.neckl]?c.neckl:'off',bare=!c.vs&&(nk==='off'||nk==='sweet');
+ const top=c.vs?`${c.dress} dress, covered bodice, high neckline`:nk==='off'?`${c.dress} off-shoulder dress`:`${c.dress} dress, ${NECK[nk][1]}`;
+ const dp=c.bot?`${top}, ${c.dress} bodice, ${c.bot} skirt, two-tone dress`:(c.vs||nk!=='off')?top:`${top}, ${c.dress} dress`;
+ const bgt=(c.bgo||c.bg).split(', ');let ear=c.extras.find(x=>/earrings/.test(x));const ch=!!(c.theme&&c.theme.ch);
+ const fh=!c.nfh&&(c.pose==='pray'||c.pose==='tied'),cut=x=>(fh||c.bgp)&&handProp(x);
+ let ex=c.extras.filter(x=>!/earrings/.test(x)&&!bgt.includes(x)&&(!ch||charEx(x))&&!cut(x));if(ear&&ch&&!charEx(ear))ear=undefined;
+ if(c.rbw)ex=ex.filter(x=>!MHX.test(x)&&!/hair tips|hair streak/.test(x));
+ const multi=rb||(!c.rbw&&(!!c.h2||ex.some(x=>MHX.test(x))));
  const adds=(c.add||[]).map(k=>ADDONS[k][1]);if(adds.includes('heart earrings'))ear='heart earrings';if(c.ear)ear=c.ear+' earrings';
- const acc=adds.filter(x=>!/earrings/.test(x));if(c.br)acc.push(c.br+' bracelet');if(c.orn&&ORN[c.orn])acc.push(ORN[c.orn]);if(RAR[c.rar])acc.push(...RAR[c.rar]);if(c.role&&ROLE[c.role]&&ROLE[c.role][1])acc.unshift(ROLE[c.role][1]);
- const parts=['1girl, solo, close-up, three-quarter view, standing at an angle',`${hair}${multi?', '+MHL:''}, ${c.eyes} eyes`,`${dp}, ${c.trim} trim${c.dt&&c.ttrim!==false?', '+c.dt:''}, short puffy sleeves, bare shoulders, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}`,`${c.tiara} ${c.role==='queen'?'crown':'tiara'}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${c.neck||c.pend} pendant`];
+ const met=c.jsync?c.tiara:'';if(met&&!ear)ear=met+' earrings';
+ const acc=adds.filter(x=>!/earrings/.test(x)&&!cut(x));if(c.br)acc.push((met||c.br)+' bracelet');if(c.orn&&ORN[c.orn])acc.push(ORN[c.orn]);if(RAR[c.rar])acc.push(...RAR[c.rar]);if(c.role&&ROLE[c.role]&&ROLE[c.role][1])acc.unshift(ROLE[c.role][1]);if(c.vil)acc.push('villainess');
+ const tied=c.pose==='tied';const stand=(c.pose==='kneel'||c.pose==='throne'||(tied&&c.tanc==='chair'))?'':', standing at an angle';
+ const cape=CAPE[c.cape]&&c.cape!=='none'?CAPE[c.cape][1](c):'',waist=WAIST[c.waist]&&c.waist!=='none'?WAIST[c.waist][1](c):'';
+ const dsx=`${dp}, ${c.trim} trim${c.dt&&c.ttrim!==false?', '+c.dt:''}, ${(SLV[c.slv]||SLV.short)[1]}${bare?', bare shoulders':''}, long dress, ${(DST[c.ds]||DST.ballgown)[1]}${FAB[c.fab]&&FAB[c.fab][1]?', '+FAB[c.fab][1]:''}${c.pat&&PAT[c.pat]&&PAT[c.pat][1]?', '+PAT[c.pat][1]:''}, no neck collar, ${c.glove==='trim'?c.trim+' gloves':'white gloves'}${GLEN[c.glen]&&GLEN[c.glen][1]?', '+GLEN[c.glen][1]:''}${cape?', '+cape:''}${waist?', '+waist:''}`;
+ const tw=c.role==='queen'?'crown':(TST[c.tst]||TST.tiara)[1],tia=c.tst==='fcrown'&&c.role!=='queen'?'flower crown':`${c.tiara} ${tw}`;
+ const parts=[`1girl, solo, ${(FRM[c.frm]||FRM.close)[1]}, ${(CAM[c.cam]||CAM.tq)[1]}${stand}`,`${hair}${multi?', '+MHL:''}, ${c.het?`heterochromia, ${c.eyes} eyes, ${c.het} eyes`:c.eyes+' eyes'}`,dsx,`${tia}, ${c.gem} gem, ${ear||c.gem+' earrings'}, ${met||c.neck||c.pend} pendant`];
  if(ex.length)parts.push(ex.join(', '));if(acc.length)parts.push(acc.join(', '));
- const tied=c.pose==='tied';parts.push(EXPRS[c.expr||'worried'][1],POSES[c.pose||'pray'][1],'looking at viewer',tied?'tied up':(c.bgo||c.bg));if(c.tod&&TOD[c.tod]&&TOD[c.tod][1])parts.push(TOD[c.tod][1]);parts.push('big breasts, ultrabody');
+ let xs=(EXPRS[c.expr]||EXPRS.worried)[1].split(', ');
+ if(c.blush==='none')xs=xs.filter(t=>t!=='blush');else if(BLUSH[c.blush]&&BLUSH[c.blush][1]){const b=BLUSH[c.blush][1];xs=xs.includes('blush')?xs.map(t=>t==='blush'?b:t):xs.concat(b)}
+ if(BROW[c.brow]&&BROW[c.brow][1])xs.push(BROW[c.brow][1]);
+ let pz=(POSES[c.pose]||POSES.pray)[1];if(tied&&TROPE[c.trope]&&TROPE[c.trope][1])pz+=', '+TROPE[c.trope][1];
+ parts.push(xs.join(', '),pz,(GAZE[c.gaze]||GAZE.viewer)[1],tied?(TANC[c.tanc]||TANC.up)[1]:(c.vil&&!c.bgo?'dark castle':(c.bgo||c.bg)));
+ if(c.tod&&TOD[c.tod]&&TOD[c.tod][1])parts.push(TOD[c.tod][1]);if(WIND[c.wind]&&WIND[c.wind][1])parts.push(WIND[c.wind][1]);parts.push('big breasts, ultrabody');
  let tags=[...new Set(parts.join(', ').split(', '))];
  if(c.vs)tags=tags.filter(t=>t!=='bare shoulders'&&t!=='big breasts');tags=tags.filter(t=>!/sweat/.test(t));
  tags=tags.filter(t=>t!=='ultrabody');
- // Short classic prompt: do not auto-inject ASE/Better clothes. Optional Extra LoRA keywords only when toggled; ultrabody last
- if(c.loraAsx&&XLORA.asx[1])tags.push(XLORA.asx[1]);
- if(c.loraDas&&XLORA.das[1])tags.push(XLORA.das[1]);
- if(c.loraAex&&XLORA.aex[1])tags.push(XLORA.aex[1]);
+ if(c.rbw)tags=tags.filter(t=>!RBX.test(t));
+ const drop=c.drop&&c.drop.length?c.drop:null;if(drop)tags=tags.filter(t=>!drop.includes(t));
+ const bt=btags();if(bt.length)tags=tags.filter(t=>CORE.has(t)||!bt.some(b=>tagHit(t,b)));
+ const em=O.emph||'off';if(em!=='off'){const W=x=>`(${x}:1.2)`;
+  if(em==='hair'||em==='both'){const j=tags.indexOf(g);if(j>=0)tags[j]=W(g)}
+  if(em==='dress'||em==='both'){const j=tags.findIndex(t=>t===`${c.dress} dress`||t===`${c.dress} off-shoulder dress`||t===`${c.dress} bodice`);if(j>=0)tags[j]=W(tags[j])}}
+ // Short classic prompt: no ASE/Better clothes. Optional LoRA trigger words only when toggled; ultrabody last
+ const tr=[];if(c.loraAsx&&XLORA.asx[1])tr.push(XLORA.asx[1]);if(c.loraDas&&XLORA.das[1])tr.push(XLORA.das[1]);if(c.loraAex&&XLORA.aex[1])tr.push(XLORA.aex[1]);
+ CLORA.forEach(l=>{if(l&&l.on&&l.t)String(l.t).split(',').map(s=>s.trim()).filter(Boolean).forEach(x=>tr.push(x))});
+ tr.forEach(x=>{if(!tags.includes(x)&&!CORE.has(x)&&!(drop&&drop.includes(x))&&!bt.some(b=>tagHit(x,b)))tags.push(x)});
  tags.push('ultrabody');
  if(tied)tags.push('tied to tree','tied to pole');
  let n=NEG;if(c.theme&&c.theme.g==='Sports Colors')n+=', logo, letter, text, number';
  if(c.theme&&c.theme.ch)n+=', logo, letter, text, emblem, wings, mermaid, mermaid tail, fish tail, fins, short hair';
  if(hs==='wavy'&&!n.includes('short hair'))n+=', short hair';if(c.vs)n+=', cleavage, nsfw';
+ const np=O.negp||'std';
+ if(np==='strict'){n+=', color bleed, multicolored dress, mismatched colors';if(!rb&&c.dress!==c.hair)n+=`, ${c.dress} hair`;if(c.hair!=='white'&&c.hair!==c.dress&&!rb)n+=`, ${c.hair} dress`}
+ if(np==='video'||c.rbw)n+=', sparkles, glitter';if(np==='video')n+=', light particles, glowing, lens flare, bokeh';
+ if(c.rbw)n+=', multicolored hair, gradient hair, streaked hair';
+ if(np==='limbs')n+=', extra hands, extra fingers, fused fingers, bad hands, missing fingers, extra legs';
+ if(bt.length)n+=', '+bt.join(', ');
+ n=[...new Set(n.split(', '))].join(', ');
  return [tags.join(', '),n]}
 // share codes
-const KEYS=['hair','eyes','dress','bot','trim','tiara','gem','pend','extras','bg','pose','expr','bgo','hs','h2','add','ear','neck','br','orn','vs','rar','lab','forced','ds','tod','pat','glove','role','nm','dt','ttrim'];
+const KEYS=['hair','eyes','dress','bot','trim','tiara','gem','pend','extras','bg','pose','expr','bgo','hs','h2','add','ear','neck','br','orn','vs','rar','lab','forced','ds','tod','pat','glove','role','nm','dt','ttrim','frm','cam','gaze','wind','tanc','trope','blush','brow','nfh','bgp','hlen','bang','aho','het','rbh','rbw','neckl','slv','glen','fab','cape','waist','tst','jsync','vil','drop'];
 const b64e=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return decodeURIComponent(escape(atob(s)))};
 function enc(c){const o={t:c.mx||(c.theme?TH.indexOf(c.theme):-1)};if(c.theme&&!c.mx&&TH.includes(c.theme))o.tn=c.theme.g+'|'+c.theme.name;KEYS.forEach(k=>{const v=c[k];if(v!==undefined&&v!==''&&v!==false&&!(Array.isArray(v)&&!v.length))o[k]=v});if(c.ttrim===false)delete o.dt;return 'PP1.'+b64e(JSON.stringify(o))}
 function dec(code){code=String(code).trim().replace(/^PP1\./,'');const o=JSON.parse(b64d(code));const c={};
  KEYS.forEach(k=>{if(o[k]!==undefined)c[k]=o[k]});c.extras=c.extras||[];c.bot=c.bot||'';c.add=c.add||[];
- if(Array.isArray(o.t)){c.mx=o.t;c.theme=mashTheme(o.t[0],o.t[1],c.extras)}else{let ti=o.t;if(o.tn){const k=TH.findIndex(t=>t.g+'|'+t.name===o.tn);if(k>=0)ti=k}else if(ti>=OLDN)ti+=NOLD-OLDN;if(ti>=0&&TH[ti])c.theme=TH[ti]}
+ if(Array.isArray(o.t)){c.mx=o.t;c.theme=o.t[2]==='ct'&&TH[o.t[0]]&&TH[o.t[1]]?ctTheme(o.t[0],o.t[1],c.extras):mashTheme(o.t[0],o.t[1],c.extras)}else{let ti=o.t;if(o.tn){const k=TH.findIndex(t=>t.g+'|'+t.name===o.tn);if(k>=0)ti=k}else if(ti>=OLDN)ti+=NOLD-OLDN;if(ti>=0&&TH[ti])c.theme=TH[ti]}
  if(!c.hair||!c.dress||!c.eyes)throw new Error('bad code');return c}
 // mashup
 function mashTheme(ia,ib,ex){const A=TH[ia],B=TH[ib];return{g:'Mashup',name:A.name+' × '+B.name,ch:true,ex:ex,bg:A.bg}}
@@ -755,7 +794,7 @@ function sisters(k,b,st){st=st||SIS;const base=b||banFix(tune(apply(pick(mode,ti
   let tr=ds[(i+1)%k];if(tr===d||bn('trim',tr))tr=r(ACOL.filter(x=>x!==d&&!bn('trim',x)));
   const s=Object.assign({},base,{dress:d,bot:'',hair:h,trim:tr,extras:base.extras.slice(),add:(base.add||[]).slice()});delete s.nm;
   if(s.h2&&(s.h2===h||s.h2===d))s.h2=r(HAIR.filter(x=>x!==h&&x!==d));
-  s.lab=`Sister ${i+1} of ${k} · ${label(base)}`;out.push(s)}
+  s.lab=`Sister ${i+1} of ${k} · ${label(base)}`;out.push(rbwPost(trimPost(s)))}
  return out}
 // locks & re-roll
 const PARTS=['hair','eyes','dress','trim','tiara','gem'];
@@ -777,7 +816,7 @@ function bnTog(p,x){const a=BAN[p]||[];BAN[p]=a.includes(x)?a.filter(y=>y!==x):a
 function bnClear(){BAN={};lss('sp_ban2',BAN);drawBan();drawQT()}
 function lock(p){if(!RES.s)return;if(LOCK[p])delete LOCK[p];else LOCK[p]=RES.s[p];lss('sp_lock',LOCK);showSingle(RES.s,true);drawPick()}
 const PKL=[['Hair','hair',()=>HAIR],['Eyes','eyes',()=>EYES],['Dress','dress',()=>DRESS],['Trim','trim',()=>ACOL],['Tiara','tiara',()=>GS],['Gem','gem',()=>DRESS]];
-function drawPick(){document.getElementById('pk').innerHTML=PKL.map(([n,p,f])=>`<div class=row><label>${n}</label><select onchange="pkSet('${p}',this.value)"><option value=''>Any</option>${f().map(x=>`<option${LOCK[p]===x?' selected':''}>${x}</option>`).join('')}</select></div>`).join('');const k=Object.keys(LOCK).filter(x=>LOCK[x]);document.getElementById('pkc').textContent=k.length?'('+k.map(x=>x+': '+LOCK[x]).join(', ')+')':''}
+function drawPick(){document.getElementById('pk').innerHTML=PKL.map(([n,p,f])=>`<div class=row><label>${n}</label><select onchange="pkSet('${p}',this.value)"><option value=''>Any</option>${f().map(x=>`<option${LOCK[p]===x?' selected':''}>${x}</option>`).join('')}</select></div>`).join('')+`<div class=row><label>Skirt (two-tone dress)</label><select onchange="setO('skirt',this.value)"><option value=''${!O.skirt?' selected':''}>One color (default)</option><option value='rand'${O.skirt==='rand'?' selected':''}>🎲 Random accent</option>${DRESS.map(x=>`<option${O.skirt===x?' selected':''}>${x}</option>`).join('')}</select></div>`;const k=Object.keys(LOCK).filter(x=>LOCK[x]);const t=k.map(x=>x+': '+LOCK[x]).concat(O.skirt?['skirt: '+O.skirt]:[]);document.getElementById('pkc').textContent=t.length?'('+t.join(', ')+')':''}
 function pkSet(p,v){if(v)LOCK[p]=v;else delete LOCK[p];lss('sp_lock',LOCK);drawPick();if(RES.s)showSingle(RES.s,true)}
 function pkClear(){LOCK={};lss('sp_lock',LOCK);drawPick();if(RES.s)showSingle(RES.s,true)}
 function curSis(k){if(!RES.s)return;drawBatch(sisters(k,JSON.parse(JSON.stringify(RES.s))));const b=document.getElementById('list');if(b)b.scrollIntoView({behavior:'smooth'})}
@@ -796,13 +835,13 @@ function warns(c){const w=[];const nm=c.bot?'bodice':'dress';
  else if(fam(c.hair)===fam(c.dress))w.push(`${c.hair} hair is close to the ${c.dress} ${nm}; it might bleed`);
  else if(c.bot&&fam(c.hair)===fam(c.bot))w.push(`${c.hair} hair is close to the ${c.bot} skirt; it might bleed`);
  if(c.trim===c.dress)w.push(`Trim matches the ${nm} (${c.trim}); it might bleed`);
+ const hw=handWarn(c);if(hw)w.push(hw);
  return w.length?`<div class=warn>⚠️ ${w.map(esc).join('<br>⚠️ ')}</div>`:''}
 // video prompt (Grok Imagine): no names, gentle motion, nothing near hands/chest
 const VT=[(h,d)=>`Her ${h} hair sways softly and the ${d} gown ripples slightly as she blinks and glances to the side. She tilts her head a little while the camera slowly pushes in.`,
  (h,d)=>`Gentle breeze: her ${h} hair drifts softly and the fabric of her ${d} gown ripples slightly. She blinks, glances up, and tilts her head slightly as the camera pushes in slowly.`,
  (h,d)=>`The camera slowly pushes in on the princess as her ${h} hair sways softly. She blinks twice, glances to the side, and gives a slight head tilt while her ${d} skirt ripples gently.`,
  (h,d)=>`Soft, calm motion: her ${h} hair sways and the ${d} ballgown ripples slightly in a light breeze. She blinks slowly, glances toward the viewer with a slight head tilt, and the camera gently pushes in.`];
-const vprompt=c=>r(VT)(c.h2?c.hair+' and '+c.h2:c.hair,c.dress);
 // daily / weekly
 function rng(seed){let a=0;for(const ch of seed)a=(Math.imul(a^ch.charCodeAt(0),2654435761)+0x9e37)>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
 function seeded(seed,fn){const m=Math.random;Math.random=rng(seed);try{return fn()}finally{Math.random=m}}
@@ -815,31 +854,30 @@ function chips(c,k){return [['Hair','hair'],['Eyes','eyes'],...(c.bot?[['Bodice'
  const s=`<span${k?` class=rr onclick="rr('${k}','${p}')" title="Tap to re-roll"`:''} style="background:${HEX[x]||'#ccc'}">${n}: ${x}${p==='hair'&&c.h2?' → '+c.h2:''}</span>`;
  return s+(k==='s'&&PARTS.includes(p)?`<button class="lk${LOCK[p]?' on':''}" onclick="lock('${p}')">${LOCK[p]?'🔒':'🔓'}</button>`:'')}).join('');}
 const badge=c=>(c.rar?`<span class="rar r${c.rar}">${RARN[c.rar]}</span>`:'')+(c.rar==='R'||c.rar==='L'?'<span class="rar rS">✨ Sparkle</span>':'')+(c.role?`<span class="rar rR">${esc(ROLE[c.role][0])}</span>`:'');
-function tools(k){return `<div class=tools><button class=copy onclick="cpPix('${k}')">📋 Copy for PixAI</button><button class=fav onclick="fav('${k}')">⭐ Save</button><button class=up onclick="rate('${k}',1)" title="More like this">👍</button><button class=dn onclick="rate('${k}',-1)" title="Less like this">👎</button>`+`<details class=more><summary>➕ More</summary><button class=copy onclick="cpP('${k}',0)">Copy prompt</button><button class=copy onclick="cpP('${k}',1)">Copy negative</button><button class=cbtn onclick="pin('${k}')">📌 Pin to compare</button><button class=cbtn onclick="twin('${k}')">👯 Surprise twin</button><button class=cbtn onclick="accRoll('${k}')">💍 Re-roll accessories</button><button class=vbtn onclick="vid('${k}')">🎬 Video prompt</button><button class=cbtn onclick="code('${k}')">🔗 Share code</button></details></div><div id=x${k}></div>`}
+function tools(k){return `<div class=tools><button class=copy onclick="cpPix('${k}')">📋 Copy for PixAI</button><button class=vbtn onclick="openPix('${k}')">🌐 Open PixAI</button><button class=fav onclick="fav('${k}')">⭐ Save</button><button class=up onclick="rate('${k}',1)" title="More like this">👍</button><button class=dn onclick="rate('${k}',-1)" title="Less like this">👎</button>`+`<details class=more><summary>➕ More</summary><button class=copy onclick="cpP('${k}',0)">Copy prompt</button><button class=copy onclick="cpP('${k}',1)">Copy negative</button><button class=copy onclick="cpPV('${k}')">📋 Copy PixAI + Video</button><button class=vbtn onclick="vid('${k}')">🎬 Video prompt</button><button class=cbtn onclick="sameGirl('${k}')">👗 Same girl, new outfit</button><button class=cbtn onclick="sameOutfit('${k}')">👩 Same outfit, new girl</button><button class=cbtn onclick="swapHD('${k}')">🔄 Swap hair &amp; dress</button><button class=cbtn onclick="reTrim('${k}')">🎀 Re-roll trim</button><button class=cbtn onclick="cleanR('${k}')">✨ Clean for Rainbow GIF</button><button class=cbtn onclick="tagUI('${k}')">🏷️ Tag inspector</button><button class=cbtn onclick="pin('${k}')">📌 Pin to compare</button><button class=cbtn onclick="twin('${k}')">👯 Surprise twin</button><button class=cbtn onclick="accRoll('${k}')">💍 Re-roll accessories</button><button class=cbtn onclick="code('${k}')">🔗 Share code</button></details></div><div id=x${k}></div>`}
 function showSingle(c,nohist){if(RES.s&&RES.s!==c&&!nohist){UNDO.push(enc(RES.s));if(UNDO.length>30)UNDO.shift()}RES.s=c;const [p,n]=build(c);
  document.getElementById('list').innerHTML='';
  document.getElementById('p').value=p;document.getElementById('n').value=n;
- document.getElementById('chips').innerHTML=`<span style="background:#8a6cff;color:#fff">Theme: ${esc(label(c))}</span>${badge(c)}`+chips(c,'s')+warns(c)+info(c);
+ document.getElementById('chips').innerHTML=`<span style="background:#8a6cff;color:#fff">Theme: ${esc(label(c))}</span>${trBtns(c,'s')}${badge(c)}`+chips(c,'s')+warns(c)+info(c);
  document.getElementById('sx').innerHTML=tools('s')+`<div class=tools><button class=copy onclick="curSis(2)">👭 2 sisters of her</button><button class=copy onclick="curSis(3)">👭👧 3 sisters of her</button></div>`;
- if(!nohist)addHist([[p,n,label(c)]])}
+ if(!nohist)addHist([[p,n,label(c)]]);saveLast();drawUndo()}
 function go(){const c=SEED?seeded('seed-'+SEED,()=>roll()):roll();if(c.rar==='R'||c.rar==='L'){STREAK++;if(STREAK>1)toast('🍀 Lucky streak ×'+STREAK+'!')}else STREAK=0;showSingle(c)}
 const ckey=c=>(c.lab||label(c))+'|'+[c.hair,c.eyes,c.dress,c.bot,c.trim,c.tiara,c.gem].join('/');
 function tiGen(){if(!O.norep||typeof theme==='number'&&theme>=-1)return ti;const used=new Set();
- return()=>{const pool=tPool();let av=pool.filter(i=>!used.has(i));if(!av.length){used.clear();av=pool}const i=r(av);used.add(i);return i}}
+ return()=>{const pool=tPool();let av=pool.filter(i=>!used.has(i));if(!av.length){used.clear();av=pool}const i=tpick(av);used.add(i);return i}}
 function batch(k){const tg=tiGen(),seen=new Set(),cs=[];
  for(let i=1;i<=k;i++){let c,t=0;do{c=roll(tg())}while(O.norep&&seen.has(ckey(c))&&++t<40);seen.add(ckey(c));cs.push(c)}
  drawBatch(cs)}
 let BN=[];
-function itemHTML(i){const c=RES[i],[p]=build(c);return `<b>#${i}</b><span class=tname>${esc(label(c))}</span>${badge(c)}<div class=chips>${chips(c,i)}</div>${warns(c)}${info(c)}<pre id=b${i}>${esc(p)}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button>`+tools(i)}
+function itemHTML(i){const c=RES[i],[p]=build(c);return `<label class=ck style="padding:6px 10px"><input type=checkbox class=bk${BCHK.has(i)?' checked':''} onchange="bChk(${i},this.checked)"> <b>#${i}</b></label><span class=tname>${esc(label(c))}</span>${trBtns(c,i)}${badge(c)}<div class=chips>${chips(c,i)}</div>${warns(c)}${info(c)}<pre id=b${i}>${esc(p)}</pre><button class=copy onclick="cpt('b${i}')">Copy #${i}</button><button class="cbtn${BDONE.has(i)?' on':''}" onclick="bDone(${i})">${BDONE.has(i)?'✅ Used':'⬜ Mark used'}</button><button class=cbtn onclick="bRe(${i})">🔁 Re-roll this one</button>`+tools(i)}
 function drawItem(i){document.getElementById('it'+i).innerHTML=itemHTML(i);allTxt()}
 function allTxt(){window._all=BN.map(i=>build(RES[i])[0]).join('\n\n')}
-function drawBatch(cs){let h='',negs=new Set(),hist=[];BN=[];
+function drawBatch(cs,nohist){let h='',negs=new Set(),hist=[];BN=[];BCHK=new Set();BDONE=new Set();
  cs.forEach((c,j)=>{const i=j+1;RES[i]=c;BN.push(i);const [p,n]=build(c);negs.add(n);hist.push([p,n,label(c)]);h+=`<div class=item id=it${i}>${itemHTML(i)}</div>`});
  document.getElementById('n').value=[...negs].sort((a,b)=>b.length-a.length)[0];allTxt();
- document.getElementById('list').innerHTML=`<button class=copy onclick="cpAll()">Copy all ${cs.length}</button><button class=copy onclick="cpList()">🔢 Copy as list</button>`+h;document.getElementById('chips').innerHTML='';document.getElementById('sx').innerHTML='';document.getElementById('p').value='(batch below)';
- addHist(hist)}
+ document.getElementById('list').innerHTML=`<div class=tools><button class=copy onclick="cpAll()">Copy all ${cs.length}</button><button class=copy onclick="cpList()">🔢 Copy as list</button><button class=copy onclick="cpChk()">☑️ Copy checked</button></div><details class=more><summary>📤 Export &amp; batch tools</summary><button class=cbtn onclick="bChkAll(1)">☑️ Check all</button><button class=cbtn onclick="bChkAll(0)">⬜ Uncheck all</button><button class=vbtn onclick="bVid()">🎬 Copy all video prompts</button><button class=cbtn onclick="bExp('txt')">⬇️ .txt</button><button class=cbtn onclick="bExp('json')">⬇️ .json</button><button class=cbtn onclick="bExp('csv')">⬇️ .csv</button></details>`+h;document.getElementById('chips').innerHTML='';document.getElementById('sx').innerHTML='';document.getElementById('p').value='(batch below)';
+ if(!nohist)addHist(hist);saveLast()}
 function showXs(k,html){const e=document.getElementById('x'+k);if(e)e.innerHTML=html}
-function vid(k){const v=vprompt(RES[k]);window['_v'+k]=v;showXs(k,`<div class=sub><b>🎬 Grok Imagine motion prompt</b><pre id=vp${k}>${esc(v)}</pre><button class=copy onclick="cpt('vp${k}')">Copy video prompt</button><button onclick="vid('${k}')">🎲 Another</button></div>`)}
 function code(k){const s=enc(RES[k]);showXs(k,`<div class=sub><b>🔗 Share code</b><pre id=sc${k} class=code>${esc(s)}</pre><button class=copy onclick="cpt('sc${k}')">Copy code</button></div>`)}
 function loadCode(){const v=document.getElementById('codein').value;try{const c=dec(v);showSingle(c);toast('Loaded ✓');window.scrollTo&&window.scrollTo(0,0)}catch(e){toast('That code didn\'t work')}}
 // favorites & history
@@ -854,28 +892,42 @@ function dlFavs(){if(!FAV.length)return toast('No favorites yet');const a=docume
 function cpRaw(s){wr(s);toast('Copied')}
 function drawSaved(){const f=document.getElementById('favs'),h=document.getElementById('hist');if(!f||!h)return;
  document.getElementById('nfav').textContent=FAV.length;document.getElementById('nhist').textContent=HIST.length;
- f.innerHTML=FAV.length?FAV.map((x,i)=>!fmatch(x)?'':`<div class=item><span class=tname>${esc(x.l)}</span><pre id=fv${i}>${esc(x.p)}</pre><button class=copy onclick="cpt('fv${i}')">Copy</button><button onclick="cpRaw(FAV[${i}].n)">Copy negative</button><button class=cbtn onclick="remixUI(${i})">🔁 Remix</button><button class=del onclick="delFav(${i})">🗑 Delete</button><div id=fx${i}></div></div>`).join(''):'<p class=muted>No favorites yet. Tap ⭐ on a result.</p>';
+ f.innerHTML=FAV.length?FAV.map((x,i)=>!fmatch(x)?'':`<div class=item><span class=tname>${esc(x.l)}</span><pre id=fv${i}>${esc(x.p)}</pre><button class=copy onclick="cpt('fv${i}')">Copy</button><button onclick="cpRaw(FAV[${i}].n)">Copy negative</button><button class=cbtn onclick="remixUI(${i})">🔁 Remix</button><button class=cbtn onclick="favClean(${i})">✨ GIF prep</button><button class=del onclick="delFav(${i})">🗑 Delete</button><div id=fx${i}></div></div>`).join(''):'<p class=muted>No favorites yet. Tap ⭐ on a result.</p>';
  h.innerHTML=HIST.length?HIST.map((x,i)=>`<div class=item><span class=tname>${esc(x.l)}</span><pre id=hs${i}>${esc(x.p)}</pre><button class=copy onclick="cpt('hs${i}')">Copy</button></div>`).join(''):'<p class=muted>Nothing yet.</p>'}
 function toast(m){const t=document.getElementById('toast');if(!t)return;t.textContent=m;t.classList.add('on');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('on'),1600)}
 // options UI
 function sel(key,opts){return `<select onchange="setO('${key}',this.value)">`+opts.map(([v,l])=>`<option value="${esc(v)}"${String(O[key])===v?' selected':''}>${esc(l)}</option>`).join('')+'</select>'}
 const lst=m=>Object.keys(m).map(k=>[k,m[k][0]]);
 const colOpts=a=>a.map(x=>[x,x]);
-function drawOpts(){const R=['rand','🎲 Random'];
+function drawOpts(){const R=['rand','🎲 Random'];const box=document.getElementById('opts');if(!box)return;
+ const op=new Set([...box.querySelectorAll('details[data-k]')].filter(d=>d.open).map(d=>d.dataset.k));
+ const sec=(k,t,h)=>`<details data-k="${k}"${op.has(k)?' open':''}><summary>${t}</summary>${h}</details>`;
+ const row=(l,h)=>`<div class=row><label>${l}</label>${h}</div>`;
  const ck=(k,l)=>`<label class=ck><input type=checkbox${O[k]?' checked':''} onchange="setO('${k}',this.checked)"> ${l}</label>`;
- document.getElementById('opts').innerHTML=
- `<div class=row><label>Pose</label>${sel('pose',[...lst(POSES),R])}</div><div class=row><label>Expression</label>${sel('expr',[...lst(EXPRS),R])}</div>`+
- `<div class=row><label>Background</label>${sel('bg',[['theme','Theme default'],...lst(BGS),R])}</div><div class=row><label>Hairstyle</label>${sel('hs',[...lst(HSTY),R])}</div>`+
- `<h4>👗 Dress &amp; scene</h4><div class=row><label>Dress style</label>${sel('ds',[...lst(DST),R])}</div><div class=row><label>Time of day</label>${sel('tod',[...lst(TOD),R])}</div>`+`<div class=row><label>Pattern add-on</label>${sel('pat',[...lst(PAT),R])}</div><div class=row><label>Gloves</label>${sel('glove',[['white','White gloves (default)'],['trim','Tinted to match the trim']])}</div>`+`<div class=row><label>Gradient hair (2nd color)</label>${sel('grad',[['off','Off'],R,...colOpts(HAIR)])}</div><p class=muted>🎨 Anime style enhancer trigger words are on every prompt; Better clothes words are added when hair is a solid color. Equip Anime style enhancer + Better clothes in PixAI.</p><p class=muted>🌈 Gradient/multi-color hair auto-adds the Multi Colored Hair LoRA words (multicolor hair, color tip hairs, root hair color). Equip that LoRA in PixAI.</p>`+
- `<h4>✨ Extra LoRAs</h4><div class=cks>${ck('loraDas','Detailed anime style (SDXL_pony) — equip only')}${ck('loraAsx','anime screencap xl (adds "anime screencap")')}${ck('loraAex','Anime Enchancer XL-v5 — equip only')}</div><p class=muted>Optional extras. Equip the ones you check in PixAI. Prompts stay on the short classic template (Anime style enhancer and Better clothes words are not auto-added). PixAI usually allows ~3 LoRAs. Links: https://pixai.art/model/1736754211036393297 · https://pixai.art/model/1752071107160354886 · https://pixai.art/model/1720709685796684408</p>`+
- `<h4>Add-ons</h4><div class=cks>`+Object.keys(ADDONS).map(k=>`<label class=ck><input type=checkbox${O.add.includes(k)?' checked':''} onchange="setAdd('${k}',this.checked)"> ${ADDONS[k][0]}</label>`).join('')+'</div>'+
- `<h4>Accessories</h4><div class=row><label>Earrings</label>${sel('ear',[['','Theme / gem default'],...EARS.map(x=>[x,x[0].toUpperCase()+x.slice(1)]),R,...ACOL.map(x=>[x,x+' earrings'])])}</div>`+
- `<div class=row><label>Necklace / pendant color</label>${sel('neck',[['','Default'],R,...colOpts(ACOL)])}</div>`+
- `<div class=row><label>Bracelet</label>${sel('br',[['','None'],['gold','Gold'],['silver','Silver']])}</div><div class=row><label>🎀 Hair accessory (worn with the tiara)</label>${sel('orn',[['','None'],['bow','Hair bow'],['flower','Hair flower'],['ribbon','Hair ribbon'],['braid','Side braid'],['star','Star ornament'],R])}</div>`+
+ const ns=loraSlots();
+ box.innerHTML=
+ row('Pose',sel('pose',[...lst(POSES),R]))+row('Expression',sel('expr',[...lst(EXPRS),R]))+
+ sec('face','🧍 Pose, face &amp; camera',`<div class=cks>${ck('freeHands','✋ Hands-free: drop hand-held props on Praying &amp; Tied poses')}${ck('bgPropsOnly','🏞️ Props in background only (nothing in her hands)')}</div>`+
+  (O.pose==='tied'?row('🌳 Tied to…',sel('tanc',lst(TANC)))+row('🪢 Rope / ribbon',sel('trope',lst(TROPE))):'<p class=muted>🌳 Pick the Tied to tree pose to choose what she is tied to and the rope color.</p>')+
+  row('Blush',sel('blush',lst(BLUSH)))+row('Eyebrows',sel('brow',lst(BROW)))+row('📷 Framing',sel('frm',[...lst(FRM),R]))+row('🎥 Camera angle',sel('cam',[...lst(CAM),R]))+row('👀 Gaze',sel('gaze',[...lst(GAZE),R]))+row('🍃 Wind',sel('wind',lst(WIND))))+
+ sec('hair','💇 Hair',row('Hairstyle',sel('hs',[...lst(HSTY),R]))+row('Hair length',sel('hlen',lst(HLEN)))+row('Bangs',sel('bang',lst(BANG)))+row('Gradient / rainbow hair (2nd color)',sel('grad',[['off','Off'],R,['rainbow','🌈 Rainbow / prism'],...colOpts(HAIR)]))+row('Heterochromia (2nd eye color)',sel('het',[['','Off'],R,...colOpts(HET)]))+`<div class=cks>${ck('aho','Ahoge (cute stray strand)')}</div><p class=muted>🌈 Gradient or rainbow hair auto-adds the Multi Colored Hair LoRA words (multicolor hair, color tip hairs, root hair color). Equip that LoRA in PixAI.</p>`)+
+ sec('dress','👗 Dress &amp; outfit',row('Dress style',sel('ds',[...lst(DST),R]))+row('Neckline',sel('neckl',lst(NECK)))+row('Sleeves',sel('slv',lst(SLV)))+row('Fabric',sel('fab',lst(FAB)))+row('🎀 Trim style',sel('tov',[['','Theme default'],['rand','🎲 Random trim'],...TRIMS.map(x=>[x,x])]))+row('Two-tone skirt color',sel('skirt',[['','One color (default)'],['rand','🎲 Random accent'],...colOpts(DRESS)]))+row('Pattern add-on',sel('pat',[...lst(PAT),R]))+row('Gloves',sel('glove',[['white','White gloves (default)'],['trim','Tinted to match the trim']]))+row('Glove length',sel('glen',lst(GLEN)))+row('Cape / shawl',sel('cape',lst(CAPE)))+row('Waist',sel('waist',lst(WAIST)))+row('👑 Tiara style',sel('tst',lst(TST)))+`<div class=cks>${ck('jsync','💍 Jewelry metal sync (earrings, pendant, bracelet match the tiara)')}${ck('vil','🖤 Rival / villainess (dark palette, dark castle, smirk)')}</div>`)+
+ sec('scene','🏞️ Scene',row('Background',sel('bg',[['theme','Theme default'],...lst(BGS),R]))+row('Time of day',sel('tod',[...lst(TOD),R])))+
+ sec('acc','💍 Accessories &amp; add-ons',`<div class=cks>`+Object.keys(ADDONS).map(k=>`<label class=ck><input type=checkbox${O.add.includes(k)?' checked':''} onchange="setAdd('${k}',this.checked)"> ${ADDONS[k][0]}</label>`).join('')+'</div>'+
+  row('Earrings',sel('ear',[['','Theme / gem default'],...EARS.map(x=>[x,x[0].toUpperCase()+x.slice(1)]),R,...ACOL.map(x=>[x,x+' earrings'])]))+row('Necklace / pendant color',sel('neck',[['','Default'],R,...colOpts(ACOL)]))+row('Bracelet',sel('br',[['','None'],['gold','Gold'],['silver','Silver']]))+row('🎀 Hair accessory (worn with the tiara)',sel('orn',[['','None'],['bow','Hair bow'],['flower','Hair flower'],['ribbon','Hair ribbon'],['braid','Side braid'],['star','Star ornament'],R])))+
+ sec('rbw','🌈 Rainbow GIF &amp; video',`<div class=cks>${ck('rbw','🌈 Rainbow-ready still (GIF prep)')}</div>`+row('GIF prep hair',sel('rbwHair',[['white','White hair'],['silver','Silver hair']]))+`<p class=muted>GIF prep forces white or silver hair, adds hair behind shoulders, removes sparkles, glitter and glow (and adds them to the negative), and uses the covered Video-safe neckline. Then open 🎬 Video prompt → 🌈 Rainbow Hair GIF.</p>`)+
+ sec('pix',`🧩 PixAI, LoRAs &amp; negatives <span class=muted>(${ns} / 3 slots)</span>`,`<p class=muted>🎨 Prompts use the short classic template. Anime style enhancer and Better clothes trigger words are not added, so equip those LoRAs in PixAI only if you want them.</p><p class="${ns>3?'lwarn':'muted'}">🧩 LoRA slots: ${ns} / 3${ns>3?' ⚠️ PixAI usually allows about 3. Uncheck one.':''}</p>`+
+  `<h4>✨ Extra LoRAs</h4><div class=cks>${ck('loraDas','Detailed anime style (SDXL_pony): equip only')}${ck('loraAsx','anime screencap xl (adds "anime screencap")')}${ck('loraAex','Anime Enchancer XL-v5: equip only')}</div><p class=muted>Links: https://pixai.art/model/1736754211036393297 · https://pixai.art/model/1752071107160354886 · https://pixai.art/model/1720709685796684408</p>`+
+  `<h4>➕ My custom LoRAs</h4>`+(CLORA.length?CLORA.map((l,i)=>`<div class=item><label class=ck><input type=checkbox${l.on?' checked':''} onchange="clTog(${i},this.checked)"> ${esc(String(l.n))}</label>${l.t?` <span class=pill>adds “${esc(String(l.t))}”</span>`:' <span class=pill>equip only</span>'}${l.w?` <span class=pill>@ ${esc(String(l.w))}</span>`:''}${l.u?` <a href="${esc(String(l.u))}" target=_blank rel="noopener noreferrer">link</a>`:''} <button class=del onclick="clDel(${i})">🗑</button></div>`).join(''):'<p class=muted>None yet.</p>')+
+  `<input class=inp id=clN placeholder="LoRA name"><input class=inp id=clU placeholder="Link (optional, https://…)"><input class=inp id=clT placeholder="Trigger word (optional)"><input class=inp id=clW placeholder="Weight note (optional, e.g. 0.65)"><button class=copy onclick="clAdd()">➕ Save LoRA</button>`+
+  `<h4>🎯 Prompt tuning</h4>`+row('Color emphasis',sel('emph',[['off','Off (default)'],['hair','(hair color:1.2)'],['dress','(dress color:1.2)'],['both','Both']]))+row('Negative preset',sel('negp',[['std','Standard (default)'],['strict','Strict anti-bleed'],['video','Video-clean (no sparkles/particles)'],['limbs','Extra-limbs guard']]))+
+  `<div class=row><label>🚫 Banned tags (comma separated; removed from the prompt and added to the negative)</label><input class=inp id=btg value="${esc(String(O.btags||''))}" placeholder="e.g. sparkles, frills"></div><button class=cbtn onclick="setO('btags',document.getElementById('btg').value);toast('🚫 Banned tags saved')">Save banned tags</button>`)+
+ sec('outf','💾 Outfit presets',`<p class=muted>Save the dress style, neckline, sleeves, fabric, gloves, trim, skirt, cape, waist, pattern and tiara settings, then put them on anyone.</p>`+(OUTF.length?OUTF.map((e,i)=>`<button class=tb onclick="outLoad(${i})">👗 ${esc(String(e.n))}</button><button class=del onclick="outDel(${i})">🗑</button>`).join(''):'<p class=muted>No outfits saved yet.</p>')+`<input class=inp id=ofn placeholder="Outfit name (e.g. Velvet opera look)"><button class=copy onclick="outSave()">💾 Save current outfit</button>`)+
  `<h4>Switches</h4><div class=cks>${ck('norep','🚫 Never repeat in a batch')}${ck('rar','🎰 Rarity roll')}${ck('vs','🎬 Video still (covered dress)')}${ck('ttrim','🎀 Theme dress trim')}</div>`+
  `<button onclick="resetO()">↩️ Reset options to default</button>`;
- const on=JSON.stringify(O)!==JSON.stringify(DEF);document.getElementById('ocur').textContent=on?'(custom)':'(default)'}
-function setO(k,v){O[k]=v;lss('sp_opts',O);drawOpts();if(k==='dpose')drawDaily()}
+ const on=JSON.stringify(O)!==JSON.stringify(DEF);document.getElementById('ocur').textContent=on?'(custom)':'(default)';
+ const q=document.getElementById('rbq');if(q){q.textContent=O.rbw?'🌈 GIF prep: ON':'🌈 GIF prep: off';q.classList.toggle('on',!!O.rbw)}}
+function setO(k,v){O[k]=v;lss('sp_opts',O);drawOpts();if(k==='dpose')drawDaily();if(k==='skirt')drawPick()}
 function setAdd(k,v){O.add=O.add.filter(x=>x!==k);if(v)O.add.push(k);O.add=Object.keys(ADDONS).filter(x=>O.add.includes(x));lss('sp_opts',O);drawOpts()}
 function resetO(){O=Object.assign({},DEF,{add:[]});lss('sp_opts',O);drawOpts()}
 function drawMash(){const o='<option value="-1">🎲 Random</option>'+FRANS.map(f=>`<optgroup label="${esc(f)}">`+CIDX.filter(i=>TH[i].g===f).map(i=>`<option value="${i}">${esc(TH[i].name)}</option>`).join('')+'</optgroup>').join('');
@@ -888,13 +940,16 @@ function drawDaily(){const d=new Date(),c=dailyC(ymd(d));RES.d=c;const [p]=build
  const w=weekTheme(d);if(w>=0)document.getElementById('week').innerHTML=`<button class="wk" onclick="setT(${w});toast('Theme set: ${esc(TH[w].name).replace(/'/g,"\\'")}')">🗓️ Theme of the week: <b>${esc(TH[w].name)}</b></button>`}
 // display: dark/light + disguise
 let LIGHT=lsg('sp_light',false),DISG=lsg('sp_disg',false),taps=0;
-function applyDisp(){document.body.classList[LIGHT?'add':'remove']('light');document.getElementById('dm').textContent=LIGHT?'🌙 Dark mode':'☀️ Light mode';
- document.getElementById('dg').textContent=DISG?'🕵️ Disguise: ON':'🕵️ Disguise: off';document.title=DISG?'HOA Meeting Minutes':'Surprise Princess'}
-function togDark(){LIGHT=!LIGHT;lss('sp_light',LIGHT);applyDisp()}
+function applyDisp(){const b=document.body.classList;if(!SKINS[SKIN])SKIN='dark';LIGHT=SKIN==='light'||SKIN==='pink';b[LIGHT?'add':'remove']('light');b[SKIN==='amoled'?'add':'remove']('amoled');b[SKIN==='pink'?'add':'remove']('pinkui');
+ document.getElementById('dm').textContent=LIGHT?'🌙 Dark mode':'☀️ Light mode';const sk=document.getElementById('skin');if(sk)sk.value=SKIN;const ds=document.getElementById('dsc');if(ds)ds.value=DSC;renderDsc();
+ document.getElementById('dg').textContent=DISG?'🕵️ Disguise: ON':'🕵️ Disguise: off';document.title=DISG?dTitle():'Surprise Princess'}
+function togDark(){SKIN=LIGHT?'dark':'light';lss('sp_skin',SKIN);lss('sp_light',SKIN==='light');applyDisp()}
 function togDisg(){DISG=!DISG;lss('sp_disg',DISG);applyDisp();if(DISG)toast('Disguise on: opens as HOA minutes. Tap its title 3× to open.')}
-function panic(){document.getElementById('hoa').style.display='block';document.title='HOA Meeting Minutes';window.scrollTo(0,0)}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')panic()});
-function hoaTap(){taps++;clearTimeout(window._ht);window._ht=setTimeout(()=>taps=0,1500);if(taps>=3){taps=0;document.getElementById('hoa').style.display='none';document.title=DISG?'HOA Meeting Minutes':'Surprise Princess'}}
+function panic(){document.getElementById('hoa').style.display='block';document.title=dTitle();window.scrollTo(0,0)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')return panic();const t=e.target,tn=String(t&&t.tagName||'').toUpperCase();if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','TEXTAREA','SELECT'].includes(tn)||(t&&t.isContentEditable))return;
+ const hz=document.getElementById('hoa');if(hz&&hz.style.display==='block')return;const k=String(e.key||'').toLowerCase();
+ if(k===' '){if(tn==='BUTTON'||tn==='SUMMARY')return;e.preventDefault();go()}else if(k==='c')pixTop();else if(k==='z')undo();else if(k==='s'&&RES.s)fav('s')});
+function hoaTap(){taps++;clearTimeout(window._ht);window._ht=setTimeout(()=>taps=0,1500);if(taps>=3){taps=0;document.getElementById('hoa').style.display='none';document.title=DISG?dTitle():'Surprise Princess'}}
 
 // ===== v4 extensions =====
 const DST={ballgown:['Ballgown (default)','ballgown'],mermaid:['Mermaid','mermaid dress'],aline:['A-line','a-line dress'],tiered:['Tiered','tiered skirt'],ruffle:['Layered ruffles','layered dress, frills']};
@@ -934,10 +989,10 @@ function tune(c){if(c.theme&&c.theme.ch)return c;const free=!c.theme,rt=free&&ha
 function rules(c){if(c.dress==='white')c.dress='light blue';if(c.bot==='white'||c.bot===c.dress)c.bot='';
  if(c.hair===c.dress&&!c.forced)c.hair=okc('hair',HAIR.filter(x=>fam(x)!==fam(c.dress)),[c.dress])||hairFor(c);
  if(c.h2&&(c.h2===c.hair||c.h2===c.dress))c.h2=r(HAIR.filter(x=>x!==c.hair&&x!==c.dress));return c}
-function roll(t){return rules(applyLocks(tune(apply(pick(mode,t===undefined?ti():t)))))}
+function roll(t){return rbwPost(rules(applyLocks(outfitPost(tune(apply(pick(mode,t===undefined?ti():t)))))))}
 // copy helpers
 const pixTxt=c=>{const [p,n]=build(c);return p+'\n\nNegative: '+n};
-function cpPix(k){if(!RES[k])return;wr(pixTxt(RES[k]));toast('📋 Copied for PixAI')}
+function cpPix(k){if(!RES[k])return;wr(pixTxt(RES[k]));toast(cpMsg(RES[k]))}
 function cpP(k,w){if(!RES[k])return;wr(build(RES[k])[w]);toast(w?'Negative copied':'Prompt copied')}
 function listTxt(){if(!BN.length)return '';const n=[...new Set(BN.map(i=>build(RES[i])[1]))].sort((a,b)=>b.length-a.length)[0];return 'Negative: '+n+'\n\n'+BN.map((i,j)=>`${j+1}. ${build(RES[i])[0]}`).join('\n\n')}
 function cpList(){const t=listTxt();if(!t)return toast('Make a batch first');wr(t);toast('🔢 Copied '+BN.length+' as a list')}
@@ -967,7 +1022,7 @@ const tokN=p=>p.split(/[\s,]+/).filter(Boolean).length+(p.match(/,/g)||[]).lengt
 function lenInfo(c){const n=tokN(build(c)[0]);if(n<=TOKLIM)return `<span class=muted>📏 ~${n} tokens</span>`;
  const s=[];if(c.pat)s.push('pattern');if(c.tod)s.push('time of day');if(c.orn)s.push('hair accessory');if((c.add||[]).length)s.push('add-ons');if(c.extras&&c.extras.length>2)s.push('a theme extra');if(c.rar&&c.rar!=='C')s.push('sparkle tags');if(c.hs==='wavy')s.push('wavy hairstyle');if(c.ear||c.neck||c.br)s.push('custom jewelry');
  return `<span class=lwarn>⚠️ Long prompt (~${n} tokens)${s.length?'. Try dropping: '+s.join(', '):''}</span>`}
-function info(c){return `<div class=info>🏷️ <b>${esc(pname(c))}</b> · 🎨 ${esc(why(c))}<br>${lenInfo(c)}</div>`}
+function info(c){return `<div class=info>🏷️ <b>${esc(pname(c))}</b> · 🎨 ${esc(why(c))}<br>${lenInfo(c)}<br>${swatch(c)}${loraPill(c)} ${healthPill(c)}</div>`}
 // twin / accessories
 const TD={blonde:'yellow',brown:'light orange',black:'navy',white:'light blue',silver:'lavender'},TH2={'light green':'green','mint green':'green',teal:'blue',navy:'blue','light purple':'purple',lavender:'purple'};
 function twin(k){const o=RES[k];if(!o)return;const c=dec(enc(o));c.theme=o.theme;const h=o.hair,d=o.dress;
@@ -979,11 +1034,13 @@ function accRoll(k){const c=RES[k];if(!c)return;if(!LOCK.gem){c.gem=okc('gem',DR
 // undo
 function undo(){if(!UNDO.length)return toast('Nothing to undo');const c=dec(UNDO.pop());showSingle(c,true);toast('⬅️ Back ('+UNDO.length+' more)')}
 // compare
-function pin(k){if(!RES[k])return;PIN.push(enc(RES[k]));PIN=PIN.slice(-2);lss('sp_pin',PIN);drawCmp();const d=document.getElementById('cmpd');if(d){d.open=true}toast('📌 Pinned ('+PIN.length+'/2)')}
+function pin(k){if(!RES[k])return;PIN.push(enc(RES[k]));PIN=PIN.slice(-4);lss('sp_pin',PIN);drawCmp();const d=document.getElementById('cmpd');if(d){d.open=true}toast('📌 Pinned ('+PIN.length+'/4)')}
 function unpin(i){PIN.splice(i,1);lss('sp_pin',PIN);drawCmp()}
 function drawCmp(){const e=document.getElementById('cmp');if(!e)return;document.getElementById('ncmp').textContent=PIN.length;
- if(!PIN.length){e.innerHTML='<p class=muted>Tap 📌 Pin on any two results to see them side by side.</p>';return}
- e.innerHTML='<div class=cmp>'+PIN.map((s,i)=>{let c;try{c=dec(s)}catch(x){return ''}RES['c'+i]=c;return `<div class=item><b>${esc(pname(c))}</b><br><span class=tname>${esc(label(c))}</span><div class=chips>${chips(c)}</div><pre>${esc(build(c)[0])}</pre><button class=copy onclick="cpPix('c${i}')">📋 PixAI</button><button class=del onclick="unpin(${i})">✖</button></div>`}).join('')+'</div>'}
+ if(!PIN.length){e.innerHTML='<p class=muted>Tap 📌 Pin on up to four results to see them side by side.</p>';return}
+ const cs=PIN.map(s=>{try{return dec(s)}catch(x){return null}}),ok=cs.filter(Boolean),F=['hair','eyes','dress','bot','trim','tiara','gem','pose','expr','hs'];
+ const dif=ok.length>1?F.filter(f=>!ok.every(c=>(c[f]||'')===(ok[0][f]||''))):[];
+ e.innerHTML='<div class=cmp>'+cs.map((c,i)=>{if(!c)return '';RES['c'+i]=c;return `<div class=item>${swatch(c)}<b>${esc(pname(c))}</b><br><span class=tname>${esc(label(c))}</span><div class=chips>${chips(c)}</div>${dif.length?'<div>'+dif.map(f=>`<span class="pill w">${f}: ${esc(String(c[f]||'none'))}</span>`).join('')+'</div>':''}<pre>${esc(build(c)[0])}</pre><button class=copy onclick="cpPix('c${i}')">📋 PixAI</button><button class=del onclick="unpin(${i})">✖</button></div>`}).join('')+'</div>'}
 // presets
 const cl=o=>JSON.parse(JSON.stringify(o));
 function preSave(){const ni=document.getElementById('pren'),n=(ni.value||'').trim()||('Preset '+(PRE.length+1));const e={n,lock:cl(LOCK),ban:cl(BAN),mood:MOOD};
@@ -1030,21 +1087,21 @@ function remixUI(i){const e=document.getElementById('fx'+i);if(!e)return;e.inner
 function remix(i){const f=FAV[i];let o;try{o=dec(f.code)}catch(x){return toast('Can\'t remix this one')}
  const keep=RMX.map(x=>x[0]).filter(p=>{const e=document.getElementById('rk'+i+p);return e&&e.checked});const c=roll();
  ['hair','eyes','dress','trim','tiara','gem'].forEach(p=>{if(keep.includes(p)&&o[p]){c[p]=o[p];if(p==='dress')c.bot=o.bot||'';if(p==='gem')c.pend=o.pend||o.gem}});
- if(keep.includes('look'))['pose','expr','hs','h2','ds','pat','tod','orn','glove','vs','ttrim'].forEach(k=>{if(o[k]!==undefined)c[k]=o[k]});
+ if(keep.includes('look'))['pose','expr','hs','h2','ds','pat','tod','orn','glove','vs','ttrim','frm','cam','gaze','wind','tanc','trope','blush','brow','hlen','bang','aho','het','rbh','neckl','slv','glen','fab','cape','waist','tst','jsync'].forEach(k=>{if(o[k]!==undefined)c[k]=o[k]});
  if(keep.includes('ext')){c.extras=(o.extras||[]).slice();c.bg=o.bg||c.bg;c.bgo=o.bgo||'';c.theme=o.theme;c.dt=o.dt||'';if(o.lab)c.lab=o.lab}
  if(c.hair===c.dress){if(!keep.includes('hair'))c.hair=hairFor(c);else if(!keep.includes('dress'))c.dress=r(DRESS.filter(x=>x!==c.hair&&x!==c.trim))}
  if(c.trim===c.dress&&!keep.includes('trim'))c.trim=r(ACOL.filter(x=>x!==c.dress));rules(c);delete c.nm;c.lab='🔁 Remix · '+(f.l||'').replace(/^🔁 Remix · /,'');showSingle(c);window.scrollTo&&window.scrollTo(0,0);toast('🔁 Remixed')}
 const fmatch=x=>{const e=document.getElementById('fq'),q=e?e.value.toLowerCase().trim():'';return !q||(x.l+' '+x.p).toLowerCase().includes(q)};
 // privacy
 function wipeAll(){if(typeof confirm==='function'&&!confirm('Hide my history? This erases History, Saved favorites, 👍/👎 ratings, presets and pins on this device.'))return;
- HIST=[];FAV=[];RT={};PRE=[];PIN=[];UNDO=[];['sp_hist','sp_fav','sp_rate','sp_pre','sp_pin'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});window._pre='';drawSaved();drawPre();drawRT();drawCmp();toast('🧹 All gone')}
-function wipeHist(){if(typeof confirm==='function'&&!confirm('Wipe history only?'))return;HIST=[];UNDO=[];lss('sp_hist',HIST);drawSaved();toast('History wiped')}
+ HIST=[];FAV=[];RT={};PRE=[];PIN=[];UNDO=[];TRT={};['sp_hist','sp_fav','sp_rate','sp_pre','sp_pin','sp_last','sp_trate'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});window._pre='';drawSaved();drawPre();drawRT();drawTR();drawCmp();drawUndo();toast('🧹 All gone')}
+function wipeHist(){if(typeof confirm==='function'&&!confirm('Wipe history only?'))return;HIST=[];UNDO=[];drawUndo();lss('sp_hist',HIST);drawSaved();toast('History wiped')}
 // export / import settings
 function expSet(){const s='PS1.'+b64e(JSON.stringify({O,LOCK,BAN,PRE,MOOD,SEASON,SIS,RT,LIGHT,QTL,SEED}));document.getElementById('sxo').value=s;wr(s);toast('⚙️ Settings code copied')}
-function impSet(){try{const o=JSON.parse(b64d(document.getElementById('sxo').value.trim().replace(/^PS1\./,'')));
+function impSet(){const raw=document.getElementById('sxo').value.trim();if(raw.startsWith('{')){try{bkLoad(JSON.parse(raw))}catch(e){toast('That backup didn\'t work')}return}try{const o=JSON.parse(b64d(document.getElementById('sxo').value.trim().replace(/^PS1\./,'')));
  if(o.O){O=Object.assign({},DEF,o.O);O.add=(O.add||[]).filter(k=>ADDONS[k]);lss('sp_opts',O)}if(o.LOCK){LOCK=o.LOCK;lss('sp_lock',LOCK)}if(o.BAN){BAN=o.BAN;lss('sp_ban2',BAN)}if(o.PRE){PRE=o.PRE;lss('sp_pre',PRE)}
  if(o.MOOD)MOOD=MOODS[o.MOOD]?o.MOOD:'any';lss('sp_mood',MOOD);if('SEASON'in o){SEASON=!!o.SEASON;lss('sp_season',SEASON)}if(o.SIS){SIS=o.SIS;lss('sp_sis',SIS)}if(o.RT){RT=o.RT;lss('sp_rate',RT)}
- if('LIGHT'in o){LIGHT=!!o.LIGHT;lss('sp_light',LIGHT)}if(o.QTL){QTL=o.QTL;lss('sp_qt',QTL)}if('SEED'in o){SEED=o.SEED||'';lss('sp_seed',SEED)}
+ if('LIGHT'in o){LIGHT=!!o.LIGHT;lss('sp_light',LIGHT);SKIN=LIGHT?'light':'dark';lss('sp_skin',SKIN)}if(o.QTL){QTL=o.QTL;lss('sp_qt',QTL)}if('SEED'in o){SEED=o.SEED||'';lss('sp_seed',SEED)}
  drawOpts();drawPick();drawBan();drawQT();drawMood();drawPre();drawRT();drawSeed();applyDisp();toast('⚙️ Settings imported')}catch(e){toast('That settings code didn\'t work')}}
 // fixed seed
 function setSeed(v){SEED=String(v||'').trim();lss('sp_seed',SEED);drawSeed();toast(SEED?'🔒 Seed on: Surprise Me repeats the same roll':'Seed off')}
@@ -1052,8 +1109,213 @@ function newSeed(){setSeed(Math.random().toString(36).slice(2,8))}
 function drawSeed(){const e=document.getElementById('seed');if(e)e.value=SEED;const s=document.getElementById('sdc');if(s)s.textContent=SEED?'(seed: '+SEED+')':''}
 // what's new
 function wnShow(){document.getElementById('wn').style.display='flex'}
-function wnClose(){document.getElementById('wn').style.display='none';lss('sp_wn12',true)}
-function initV4(){document.getElementById('sist').value=SIS;drawMood();drawPre();drawQT();drawChal();drawMix();drawCmp();drawRT();drawSeed();document.getElementById('fq').oninput=drawSaved;if(!lsg('sp_wn12',false))wnShow()}
+function wnClose(){document.getElementById('wn').style.display='none';lss('sp_wn13',true)}
+function initV4(){document.getElementById('sist').value=SIS;drawMood();drawPre();drawQT();drawChal();drawMix();drawCmp();drawRT();drawTR();drawSeed();document.getElementById('fq').oninput=drawSaved;if(!lsg('sp_wn13',false))wnShow()}
 
-document.getElementById('go').onclick=go;drawThemes();drawChars();drawOpts();drawMash();drawSaved();drawDaily();drawPick();drawBan();initV4();applyDisp();if(DISG)document.getElementById('hoa').style.display='block';showSingle(apply(pick(mode,ti())),true);
+// ===== v5 extensions (Batch 1) =====
+const FRM={close:['Close-up (default)','close-up'],upper:['Upper body','upper body'],cowboy:['Cowboy shot','cowboy shot'],full:['Full body (whole gown)','full body']};
+const CAM={tq:['Three-quarter view (default)','three-quarter view'],front:['Front view','front view'],side:['Side profile','from side, profile'],above:['From above','from above'],back:['Looking back over shoulder','from behind, looking back, looking over shoulder']};
+const GAZE={viewer:['Looking at viewer (default)','looking at viewer'],away:['Looking away','looking away'],down:['Looking down','looking down']};
+const WIND={none:['Default (no wind words)',''],calm:['Calm','calm, still air'],light:['Light breeze','light breeze, floating hair'],strong:['Strong wind','strong wind, windswept hair, floating hair']};
+const TANC={up:['Tied up (default)','tied up'],tree:['Tied to a tree','tied up, against tree, forest'],pole:['Tied to a pole','tied up, against pole'],post:['Tied to a wooden post','tied up, wooden post'],pillar:['Tied to a stone pillar','tied up, stone pillar'],chair:['Tied to a chair','tied up, tied to chair, sitting on chair']};
+const TROPE={def:['Default',''],red:['Red rope','red rope'],brown:['Brown rope','brown rope'],gold:['Gold ribbon','gold ribbon'],silk:['Silk ribbon','silk ribbon']};
+const BLUSH={normal:['Normal (from expression)',''],none:['No blush',''],light:['Light blush','light blush'],heavy:['Heavy blush','heavy blush, full-face blush']};
+const BROW={auto:['Auto',''],furrowed:['Furrowed brows','furrowed brows'],relaxed:['Relaxed brows','relaxed brows']};
+const HLEN={def:['Default',''],shoulder:['Shoulder length','medium hair, shoulder-length hair'],mid:['Mid-back','long hair'],vlong:['Very long','very long hair'],floor:['Floor length','absurdly long hair']};
+const BANG={def:['Default',''],blunt:['Blunt bangs','blunt bangs'],wispy:['Wispy bangs','wispy bangs'],parted:['Parted bangs','parted bangs'],side:['Side-swept bangs','side-swept bangs']};
+const HSTYT={crown:'braided crown',spony:'side ponytail',half:'half updo',drill:'drill hair',hime:'hime cut',lbun:'low bun',odango:'double bun, odango'};
+const HET=['blue','green','pink','purple','red','yellow','gold','light blue','brown'];
+const NECK={off:['Off-shoulder (default)','off-shoulder'],high:['High neck (video-safe)','high neckline, covered bodice'],sweet:['Sweetheart','sweetheart neckline'],boat:['Boat neck','boat neckline'],square:['Square neck','square neckline']};
+const SLV={short:['Short puffy sleeves (default)','short puffy sleeves'],long:['Long puffy sleeves','long puffy sleeves, juliet sleeves'],bell:['Bell sleeves','bell sleeves, long sleeves'],none:['Sleeveless','sleeveless']};
+const GLEN={def:['Default',''],wrist:['Wrist gloves','wrist gloves'],elbow:['Elbow gloves','elbow gloves'],opera:['Opera gloves','opera gloves, elbow gloves'],lace:['Lace-trimmed gloves','lace-trimmed gloves']};
+const FAB={def:['Default',''],silk:['Silk','silk dress'],velvet:['Velvet','velvet dress'],satin:['Satin','satin dress'],chiffon:['Chiffon','chiffon dress']};
+const CAPE={none:['None',()=>''],cape:['Cape (dress color)',c=>c.dress+' cape'],capelet:['Capelet (trim color)',c=>c.trim+' capelet'],fur:['Fur-trimmed cape',()=>'fur-trimmed cape'],cloak:['Royal cloak',()=>'royal cloak'],shawl:['Shawl',c=>c.trim+' shawl']};
+const WAIST={none:['None',()=>''],ribbon:['Waist ribbon (trim color)',c=>c.trim+' waist ribbon'],bow:['Big back bow',()=>'big back bow'],belt:['Jeweled belt',()=>'jeweled belt']};
+const TST={tiara:['Tiara (default)','tiara'],crown:['Crown','crown'],circlet:['Circlet','circlet'],headband:['Jeweled headband','jeweled headband'],fcrown:['Flower crown','flower crown']};
+const TRIMS=[...new Set(TH.map(t=>t.dt).filter(Boolean).concat(['fur trim','pearl trim','gothic lace trim','starry trim','lace trim','ribbon trim','ruffled trim']))].filter(x=>!/white|wedding|bridal|corset|choker|collar|sweat/.test(x)).sort();
+const CORE=new Set(['1girl','solo','ultrabody','tied to tree','tied to pole']);
+const RBX=/sparkl|glitter|glow|light particles|iridescent|shimmer/;
+const HPS=new Set('teddy bear|basket|umbrella|rose|balloon|champagne glass|red lantern|lantern|magic wand|potion|teacup|coffee cup|bubble tea|straw|chopsticks|pizza slice|glass of milk|microphone|glowstick|violin|electric guitar|guitar|whisk|wooden spoon|pencil|pen|paintbrush|paint palette|music box|vintage camera|camera|photograph|magnifying glass|pocket watch|flask|test tube|telescope|compass|suitcase|train ticket|letter|envelope|bouquet|flower basket|watering can|first aid kit|playing card|blueprint|drafting compass|ruler|spool of thread|measuring tape|sewing needle|sword|gavel|law book|book|clipboard|whistle|oar|surfboard|fishing rod|bucket|wrench|laptop|tablet|game controller|sketchbook|megaphone|film clapperboard|script papers|notepad|map|treasure map|small flag|ancient vase|comb|scissors|ribbon spool|perfume bottle|crystal flask|hat box|glass slipper|glass slippers|tiny hammer|hammer|golden key|key ring|jeweler loupe|gem tray|diamond ring|calligraphy brush|scroll|ink pot|clay vase|ceramic bowl|chisel|small hammer|paper crane|origami|colorful paper|yarn ball|honey jar|honey pot|shepherd crook|apple basket|binoculars|brush|ancient relic|small brush|butterfly net|rolled map|ice axe|climbing rope|rope|rope coil|trophy|riding crop|ice skates|hand fan|fan|castanets|hoop|juggling balls|juggling pins|crystal ball|tarot cards|bubbling flask|spell book|herb bundle|herb sprig|mortar and pestle|potion bottles|rose bouquet|scepter|lute|scroll of songs|trumpet|horn|royal banner|glowing sword|bow|bow and arrow|quiver of arrows|rapier|leather pouch|spy gadget|giant toothbrush|tooth plush|spyglass|star wand|broom|toy hammer|shuriken|wooden hammer|baseball bat|big sword|long sword|key-shaped sword|sword and shield|lollipop|candy cane|ice cream cone|quill|porcelain doll|wooden toy soldier|torch|pickaxe|shovel|pottery|circus ball|holding kitten|holding book'.split('|'));
+const HPX=/^holding |\b(under|on) arm$|\b(sword|wand|dagger|spear|lance|staff|axe|mug|bottle|bouquet|guitar|violin|microphone|lantern|umbrella|parasol|paintbrush|quill|torch|pickaxe|shovel|rod|oar|scepter|trophy|broom|teacup)$/;
+const HPKEEP=/earrings|hair|brooch|ornament|badge|pattern|print|trim|ears|tail|wings|charm|necklace|pendant|bracelet|bangle|headband|\bhat\b|bow tie|mark|sleeves|collar|on head/;
+const handProp=x=>!HPKEEP.test(x)&&(HPS.has(x)||HPX.test(x));
+let TRT=lsg('sp_trate',{}),CLORA=lsg('sp_clora',[]),OUTF=lsg('sp_outfit',[]),MCAT=lsg('sp_mcat',[]),SKIN=lsg('sp_skin',LIGHT?'light':'dark'),DSC=lsg('sp_dsc','hoa');
+let BCHK=new Set(),BDONE=new Set();
+if(!Array.isArray(CLORA))CLORA=[];if(!Array.isArray(OUTF))OUTF=[];if(!Array.isArray(MCAT))MCAT=[];
+function ov(m,v,d){const k=v==='rand'?r(Object.keys(m)):(m[v]?v:d);return k===d?'':k}
+function applyV5(c,o){c.frm=ov(FRM,o.frm,'close');c.cam=ov(CAM,o.cam,'tq');c.gaze=ov(GAZE,o.gaze,'viewer');c.wind=ov(WIND,o.wind,'none');c.tanc=ov(TANC,o.tanc,'up');c.trope=ov(TROPE,o.trope,'def');c.blush=ov(BLUSH,o.blush,'normal');c.brow=ov(BROW,o.brow,'auto');
+ c.nfh=o.freeHands===false;c.bgp=!!o.bgPropsOnly;c.hlen=ov(HLEN,o.hlen,'def');c.bang=ov(BANG,o.bang,'def');c.aho=!!o.aho;
+ c.het=o.het==='rand'?r(HET.filter(x=>x!==c.eyes)):(o.het&&HET.includes(o.het)&&o.het!==c.eyes?o.het:'');
+ if(o.grad==='rainbow'){c.h2='';c.rbh=true}else c.rbh=false;
+ c.neckl=ov(NECK,o.neckl,'off');c.slv=ov(SLV,o.slv,'short');c.glen=ov(GLEN,o.glen,'def');c.fab=ov(FAB,o.fab,'def');c.cape=ov(CAPE,o.cape,'none');c.waist=ov(WAIST,o.waist,'none');c.tst=ov(TST,o.tst,'tiara');c.jsync=!!o.jsync;c.vil=!!o.vil;c.rbw=false;if(c.vil)c.expr='smirk';return c}
+// post-roll steps: outfit (villainess, skirt, trim style) before locks; GIF prep last
+function trimPost(c){if(O.tov){c.dt=O.tov==='rand'?r(TRIMS):(TRIMS.includes(O.tov)?O.tov:c.dt);c.ttrim=true}return c}
+function outfitPost(c){if(O.vil&&!(c.theme&&c.theme.ch)){const d=okc('dress',['navy','purple','red','teal'],[c.hair]);if(d)c.dress=d;c.bot='';const hp=['black','silver','red','purple'].filter(x=>fam(x)!==fam(c.dress));if(!hp.includes(c.hair))c.hair=okc('hair',hp)||c.hair;if(!GS.includes(c.trim))c.trim=okc('trim',GS)||c.trim;c.gem=okc('gem',['red','purple'],[c.dress])||c.gem;c.pend=c.gem}
+ if(O.skirt){const s=O.skirt==='rand'?(okc('dress',(COMP[c.dress]||[]).filter(x=>DRESS.includes(x)),[c.dress,c.hair])||okc('dress',DRESS.filter(x=>fam(x)!==fam(c.dress)),[c.dress,c.hair])):O.skirt;if(s&&DRESS.includes(s)&&s!==c.dress&&s!==c.hair)c.bot=s}
+ return trimPost(c)}
+function rbwify(c){c.hair=O.rbwHair==='silver'?'silver':'white';c.h2='';c.rbh=false;c.vs=true;c.rbw=true;delete c.nm;delete c.forced;if(c.bot&&fam(c.bot)==='s')c.bot='';return c}
+function rbwPost(c){return O.rbw?rbwify(c):c}
+// banned tags & LoRAs
+function btags(){return String(O.btags||'').split(',').map(s=>s.trim().toLowerCase()).filter(s=>s&&!CORE.has(s))}
+function tagHit(t,b){const x=t.toLowerCase();return x===b||(b.length>=4&&x.includes(b))}
+function loraList(c){const a=[];const multi=(!!c.rbh&&!c.rbw)||(!c.rbw&&(!!c.h2||(c.extras||[]).some(x=>MHX.test(x))));if(multi)a.push('Multi Colored Hair');if(c.loraDas)a.push(XLORA.das[0]);if(c.loraAsx)a.push(XLORA.asx[0]);if(c.loraAex)a.push(XLORA.aex[0]);CLORA.forEach(l=>{if(l&&l.on)a.push(l.n)});return a}
+function loraSlots(){return (O.grad&&O.grad!=='off'?1:0)+['loraDas','loraAsx','loraAex'].filter(k=>O[k]).length+CLORA.filter(l=>l&&l.on).length}
+function loraPill(c){const a=loraList(c);return `<span class="pill${a.length>3?' w':''}">🧩 ${a.length?'Equip: '+esc(a.join(' + ')):'No LoRAs needed'} (${a.length}/3${a.length>3?' ⚠️ too many':''})</span>`}
+function cpMsg(c){const a=loraList(c);return `📋 Copied! ${build(c)[0].split(', ').length} tags · ${a.length?'Equip: '+a.join(' + '):'no LoRAs needed'}`}
+function clAdd(){const g=id=>{const e=document.getElementById(id);return e?e.value.trim():''};const n=g('clN');if(!n)return toast('Type a LoRA name first');let u=g('clU');if(u&&!/^https?:\/\//i.test(u))u='';
+ const t=g('clT').replace(/\bultrabody\b/gi,'').replace(/^[,\s]+|[,\s]+$/g,'');CLORA.push({n,u,t,w:g('clW'),on:true});lss('sp_clora',CLORA);drawOpts();toast('🧩 Saved LoRA “'+n+'”')}
+function clTog(i,v){if(!CLORA[i])return;CLORA[i].on=!!v;lss('sp_clora',CLORA);drawOpts()}
+function clDel(i){CLORA.splice(i,1);lss('sp_clora',CLORA);drawOpts()}
+// outfit presets
+const OKEYS=['ds','neckl','slv','fab','glove','glen','tov','skirt','cape','waist','pat','tst','jsync'];
+function outSave(){const e=document.getElementById('ofn'),n=((e&&e.value)||'').trim()||('Outfit '+(OUTF.length+1));const o={};OKEYS.forEach(k=>o[k]=O[k]);const i=OUTF.findIndex(x=>x.n===n);if(i>=0)OUTF[i]={n,o};else OUTF.push({n,o});lss('sp_outfit',OUTF);drawOpts();toast('👗 Saved outfit “'+n+'”')}
+function outLoad(i){const e=OUTF[i];if(!e)return;OKEYS.forEach(k=>{if(e.o&&k in e.o)O[k]=e.o[k]});lss('sp_opts',O);drawOpts();drawPick();toast('👗 Outfit on: '+e.n+' (next rolls)')}
+function outDel(i){OUTF.splice(i,1);lss('sp_outfit',OUTF);drawOpts()}
+// prompt health, swatch, hands
+function health(c){const [p]=build(c),t=p.split(', '),o=[];const tied=c.pose==='tied';
+ if(tied?!p.endsWith('ultrabody, tied to tree, tied to pole'):t[t.length-1]!=='ultrabody')o.push('ultrabody not last');
+ if(t.some(x=>/white/.test(x)&&x!=='white gloves'&&!/hair|ponytail|twintails/.test(x)))o.push('white outside gloves/hair');
+ if(/sweat|wedding|bridal|choker|corset|gagged/i.test(p)||/neck collar/.test(p.replace(/no neck collar/g,'')))o.push('banned word');
+ if(tokN(p)>TOKLIM)o.push('long prompt');
+ if((c.pose==='pray'||tied)&&t.some(x=>handProp(x.replace(/^\((.*):1\.2\)$/,'$1'))))o.push('hand props');
+ if(loraList(c).length>3)o.push('more than 3 LoRAs');return o}
+function healthPill(c){const o=health(c);return o.length?`<span class="pill w">⚠️ Health: ${esc(o.join(', '))}</span>`:'<span class="pill g">✅ Prompt health: good</span>'}
+function handWarn(c){if(c.pose!=='pray'&&c.pose!=='tied')return '';const ch=!!(c.theme&&c.theme.ch);const props=(c.extras||[]).filter(x=>(!ch||charEx(x))&&handProp(x)).concat((c.add||[]).includes('rose')?['rose']:[]);
+ if(!props.length)return '';if(!c.nfh)return '';return `Hand-held props (${props.slice(0,3).join(', ')}) with the ${POSES[c.pose][0]} pose can mess up hands. Turn ✋ Hands-free back on in Options → Pose, face & camera.`}
+function swatch(c){const H=x=>HEX[x]||'#ccc';const hair=c.rbh&&!c.rbw?'url(#rbg)':H(c.hair);
+ return `<svg class=sw width="44" height="48" viewBox="0 0 44 48" role="img" aria-label="palette preview"><defs><linearGradient id="rbg"><stop offset="0" stop-color="#e53935"/><stop offset=".5" stop-color="#4caf50"/><stop offset="1" stop-color="#9c27b0"/></linearGradient></defs><polygon points="22,1 16,7 28,7" fill="${H(c.tiara)}"/><circle cx="22" cy="14" r="8" fill="${hair}"/><circle cx="19" cy="15" r="1.7" fill="${H(c.eyes)}"/><circle cx="25" cy="15" r="1.7" fill="${H(c.het||c.eyes)}"/><path d="M15 23h14l3 8H12z" fill="${H(c.dress)}"/><path d="M12 31h20l8 13H4z" fill="${H(c.bot||c.dress)}"/><rect x="4" y="44" width="36" height="3" fill="${H(c.trim)}"/><circle cx="22" cy="26" r="2" fill="${H(c.gem)}"/></svg>`}
+// video prompts (Grok Imagine): no names, nothing moving near hands
+const VTT=[(h,d)=>`Locked-off static camera on a tripod, no zoom. From the shoulders down she stays completely still: her hands, the ropes and her torso do not move at all. She blinks slowly, glances to the side and back to the viewer, and a few strands of her ${h} hair sway softly.`,
+ (h,d)=>`Static camera, no camera movement. She stays perfectly still against the post with her hands and the ropes completely motionless. Only her eyes move: a slow blink and a small glance up, while the hem of her ${d} gown and a few strands of her ${h} hair stir in a faint breeze.`,
+ (h,d)=>`Locked-off shot. Her body, hands and the ropes stay frozen in place. She gives one slow blink and a small worried glance to the side while her ${h} hair drifts gently.`];
+const VTP=[(h,d)=>`Static camera, no zoom. Her clasped hands stay completely still with no finger movement. She blinks slowly and glances up while her ${h} hair sways softly and the hem of her ${d} gown ripples slightly.`,
+ (h,d)=>`Locked-off camera. She keeps her hands clasped and perfectly still. Only her head moves: a slow blink, a small head tilt and a gentle glance toward the viewer, while her ${h} hair drifts in a light breeze.`];
+const VHERO=[(h,d)=>`Locked-off static camera on a tripod. She starts looking down, then slowly raises her head and blinks toward the camera. Her hands, the ropes and her body stay completely still; only her head moves and her ${h} hair shifts slightly.`,
+ (h,d)=>`Static camera. Hero reveal: she begins with her head lowered and eyes down, then slowly lifts her gaze to the viewer with a soft blink. Everything from the shoulders down stays frozen; her ${h} hair settles gently.`];
+const VRB=[(h,d)=>`Locked-off static camera on a tripod, no zoom or pan. From the shoulders down she stays completely still in her original colors: the ${d} gown, gloves, tiara and jewelry never change color. Only her ${h} hair smoothly cycles red, orange, yellow, green, blue, purple and back to ${h}, with no color bleed onto her face, skin, dress or background. She blinks once.`,
+ (h,d)=>`Static camera, perfectly still subject. Her ${h} hair slowly shifts through a smooth rainbow: red, orange, yellow, green, blue, purple, then returns to ${h} for a seamless loop. Her face, ${d} gown, tiara, gloves and the background keep their exact original colors with no color bleed. Only a slow blink.`];
+const VBG=[(h,d,m)=>`Static camera, no zoom. The princess stays perfectly still, only blinking softly. Behind her, ${m}. Her hands, ${d} gown and pose do not move.`,
+ (h,d,m)=>`Locked-off camera. Background-only motion: ${m} while she holds completely still with just one slow blink. Her ${h} hair stays in place.`];
+const VACT=[(h,d,m)=>`Gentle motion: behind her, ${m}. Her ${h} hair sways softly and her ${d} gown ripples slightly while she blinks and glances toward the viewer. Her hands and body stay still.`,
+ (h,d,m)=>`The camera slowly pushes in as ${m} behind her. She blinks twice and tilts her head a little; her ${h} hair drifts while her hands stay still.`];
+const VACTT=[(h,d,m)=>`Locked-off static camera. Behind her, ${m}. She stays completely still from the shoulders down; her hands and the ropes do not move. Only a few strands of her ${h} hair sway and she blinks slowly.`];
+function bgMotion(c){const s=((c.theme?c.theme.name+' '+(c.theme.ex||[]).join(' '):'')+' '+(c.extras||[]).join(' ')+' '+(c.bgo||c.bg||'')+' '+(c.tod||'')).toLowerCase();
+ if(/snow|winter|christmas|frost|ice|skat/.test(s))return 'snowflakes fall softly';if(/ocean|beach|sea|ship|harbor|sail|pirate|lighthouse|surf|coast|lake|river|diver|submarine|mermaid|gondol|aquarium|lifeguard|cruise/.test(s))return 'ocean waves roll gently';
+ if(/blacksmith|forge|fire|flame|ember|phoenix|volcano/.test(s))return 'warm sparks drift upward';if(/rain|storm/.test(s))return 'rain falls softly';if(/autumn|leaves|maple|thanksgiving/.test(s))return 'autumn leaves drift down';
+ if(/star|night|moon|galaxy|space|astronaut|astronom|planet/.test(s))return 'stars twinkle and a shooting star crosses the sky';if(/bak|chef|cafe|coffee|tea|kitchen|candy|sweet|cake/.test(s))return 'steam curls up from fresh treats';
+ if(/garden|flower|spring|florist|rose|cherry|petal|blossom|meadow/.test(s))return 'flower petals drift by';if(/fairy|magic|witch|wizard|crystal|alchem|fortune/.test(s))return 'soft glowing motes float through the air';return 'curtains sway gently and a few petals drift by'}
+const VK={rbw:'🌈 Rainbow Hair GIF',hero:'🦸 Hero reveal',bg:'🍃 Background-only',act:'✨ Action-matched'};
+function vprompt(c,kind){const h=c.rbw?c.hair:(c.rbh?'rainbow':(c.h2?c.hair+' and '+c.h2:c.hair)),d=c.dress;
+ if(kind==='rbw')return r(VRB)(c.hair,d);if(kind==='hero')return r(VHERO)(h,d);if(kind==='bg')return r(VBG)(h,d,bgMotion(c));if(kind==='act')return r(c.pose==='tied'?VACTT:VACT)(h,d,bgMotion(c));
+ if(c.pose==='tied')return r(VTT)(h,d);if(c.pose==='pray')return r(VTP)(h,d);return r(VT)(h,d)}
+function vid(k,kind){const c=RES[k];if(!c)return;kind=kind||'';const v=vprompt(c,kind);window['_v'+k]=v;
+ const tag=kind?VK[kind]:c.pose==='tied'?'🌳 Tied-safe (auto)':c.pose==='pray'?'🙏 Hands-still (auto)':'';
+ showXs(k,`<div class=sub><b>🎬 Grok Imagine motion prompt</b>${tag?' <span class=pill>'+tag+'</span>':''}<pre id=vp${k}>${esc(v)}</pre><button class=copy onclick="cpt('vp${k}')">Copy video prompt</button><button onclick="vid('${k}','${kind}')">🎲 Another</button><button class=vbtn onclick="vid('${k}','rbw')">🌈 Rainbow Hair GIF</button><button class=cbtn onclick="vid('${k}','bg')">🍃 Background-only motion</button><button class=cbtn onclick="vid('${k}','act')">✨ Action-matched</button>${c.pose==='tied'?`<button class=cbtn onclick="vid('${k}','hero')">🦸 Hero reveal</button>`:''}${kind?`<button class=cbtn onclick="vid('${k}')">↩️ Auto</button>`:''}${c.rbw?'':`<button class=cbtn onclick="cleanR('${k}')">✨ Clean for Grok Imagine</button>`}</div>`)}
+// card power tools
+function scrollTop(){const e=document.getElementById('chips');if(e&&e.scrollIntoView)e.scrollIntoView({behavior:'smooth',block:'center'})}
+function rer(k){if(k==='s'){if(RES.s)showSingle(RES.s,true)}else if(RES[k]&&document.getElementById('it'+k))drawItem(k)}
+function put(k,c){if(k!=='s'&&document.getElementById('it'+k)&&BN.includes(+k)){RES[k]=c;drawItem(k);saveLast()}else{showSingle(c);scrollTop()}}
+const strip=(s,p)=>String(s||'').replace(p,'');
+function sameGirl(k){const o=RES[k];if(!o)return;const n=roll();['hair','h2','eyes','hs','expr','rbh','het','hlen','bang','aho','rbw'].forEach(p=>{if(o[p]!==undefined)n[p]=o[p];else delete n[p]});
+ if(n.rbw)n.vs=true;if(n.hair===n.dress||fam(n.hair)===fam(n.dress)){const a=okp('dress',DRESS,[n.hair,'white']).filter(x=>fam(x)!==fam(n.hair));if(a.length)n.dress=r(a)}
+ if(n.bot&&(n.bot===n.dress||fam(n.bot)===fam(n.hair)))n.bot='';if(n.trim===n.dress)n.trim=r(ACOL.filter(x=>x!==n.dress));delete n.nm;delete n.forced;n.lab='👗 Same girl, new outfit · '+label(n);put(k,n);toast('👗 Same girl, new outfit')}
+function sameOutfit(k){const o=RES[k];if(!o)return;const n=dec(enc(o));n.theme=o.theme;delete n.nm;delete n.forced;
+ if(!o.rbw){let a=okp('hair',HAIR,[o.hair,n.dress,'white']).filter(x=>fam(x)!==fam(n.dress)&&(!n.bot||fam(x)!==fam(n.bot)));if(!a.length)a=HAIR.filter(x=>x!==n.dress&&x!==o.hair);n.hair=r(a);n.h2=n.h2?r(HAIR.filter(x=>x!==n.hair&&x!==n.dress)):''}
+ n.eyes=okc('eyes',EYES,[o.eyes])||r(EYES);n.expr=r(Object.keys(EXPRS));n.hs=r(Object.keys(HSTY));if(n.het)n.het=r(HET.filter(x=>x!==n.eyes));
+ n.lab='👩 Same outfit, new girl · '+strip(label(o),/^(👩 Same outfit, new girl|👗 Same girl, new outfit) · /);put(k,n);toast('👩 Same outfit, new girl')}
+function swapCore(o){const c=dec(enc(o));c.theme=o.theme;const h=o.hair,d=o.dress;
+ c.dress=DRESS.includes(h)?h:(TD[h]||'light blue');c.hair=HAIR.includes(d)?d:(TH2[d]||hairFor(c));c.bot='';delete c.forced;delete c.nm;c.rbw=false;
+ if(c.hair===c.dress||fam(c.hair)===fam(c.dress))c.hair=okc('hair',HAIR.filter(x=>fam(x)!==fam(c.dress)),[c.dress,'white'])||hairFor(c);
+ if(c.trim===c.dress)c.trim=r(ACOL.filter(x=>x!==c.dress));banFix(c);return rules(c)}
+function swapHD(k){const o=RES[k];if(!o)return;const c=swapCore(o);c.lab='🔄 Swapped · '+strip(label(o),/^🔄 Swapped · /);put(k,c);toast('🔄 Hair and dress swapped')}
+function reTrim(k){const c=RES[k];if(!c)return;c.dt=r(TRIMS.filter(x=>x!==c.dt));c.ttrim=true;if(!(k==='s'&&LOCK.trim))c.trim=okc('trim',ACOL,[c.dress,c.trim])||c.trim;rer(k);if(k!=='s')saveLast();toast('🎀 New trim: '+c.trim+' '+c.dt)}
+function cleanR(k){const o=RES[k];if(!o)return;const c=dec(enc(o));c.theme=o.theme;rbwify(c);c.lab='✨ GIF prep · '+strip(label(o),/^✨ GIF prep · /);showSingle(c);vid('s','rbw');scrollTop();toast('✨ Clean for Rainbow GIF: '+c.hair+' hair, no sparkles')}
+function favClean(i){const f=FAV[i];if(!f||!f.code)return toast('Can\'t prep this one');let c;try{c=dec(f.code)}catch(e){return toast('Can\'t prep this one')}rbwify(c);c.lab='✨ GIF prep · '+strip(f.l,/^✨ GIF prep · /);showSingle(c);vid('s','rbw');scrollTop();toast('✨ Ready for Grok Imagine')}
+function rbwQuick(){setO('rbw',!O.rbw);if(O.rbw&&RES.s&&!RES.s.rbw)cleanR('s');else toast(O.rbw?'🌈 GIF prep on':'🌈 GIF prep off: next rolls use normal hair')}
+function openPix(k){if(!RES[k])return;cpPix(k);try{window.open('https://pixai.art/generator/image','_blank','noopener')}catch(e){}}
+function cpPV(k){const c=RES[k];if(!c)return;wr(pixTxt(c)+'\n\nVideo prompt (Grok Imagine): '+vprompt(c));toast('📋 Copied prompt + negative + video')}
+function cpTopNeg(){const v=document.getElementById('n').value;if(!v)return toast('Nothing to copy');wr(v);toast('🚫 Negative copied')}
+// tag inspector
+function tagKind(t){t=t.replace(/^\((.*):1\.2\)$/,'$1');if(CORE.has(t)||t==='big breasts'||t==='no neck collar')return '📐 Template rule';if(MHL.split(', ').includes(t)||Object.values(XLORA).some(x=>x[1]===t)||CLORA.some(l=>l&&(l.t||'').split(',').map(s=>s.trim()).includes(t)))return '🧩 LoRA trigger';
+ if(/hair|bangs|ponytail|twintails|bun|ahoge|odango|hime|updo|sidelocks/.test(t))return '💇 Hair';if(/eyes|heterochromia/.test(t))return '👁️ Eyes';
+ if(/tiara|crown|circlet|headband|gem$|earrings|pendant|bracelet/.test(t))return '💍 Jewelry';
+ if(Object.values(POSES).some(p=>p[1].split(', ').includes(t))||/tied|rope|kneeling|sitting/.test(t))return '🧍 Pose';
+ if(Object.values(EXPRS).some(p=>p[1].split(', ').includes(t))||/blush|brows|smile|smirk/.test(t))return '😊 Expression';
+ if(/dress|bodice|skirt|sleeve|shoulders|neckline|gown|trim|gloves|cape|capelet|shawl|ribbon|belt|bow|frills|fabric/.test(t))return '👗 Dress';
+ if(/view|close-up|upper body|cowboy|full body|from |looking|standing|profile/.test(t))return '🎥 Camera';
+ if(/wind|breeze|calm/.test(t))return '🍃 Wind';return '🎨 Theme / scene'}
+function tagUI(k){const c=RES[k];if(!c)return;const t=build(c)[0].split(', ');
+ showXs(k,`<div class=sub><b>🏷️ Tag inspector</b> <span class=muted>Tap a tag to drop it from this prompt. Hold or hover to see what it controls.</span><br>`+t.map((x,j)=>CORE.has(x)?`<span class="tagp k" title="${esc(tagKind(x))} (always kept)">🔒 ${esc(x)}</span>`:`<button class=tagp title="${esc(tagKind(x))}" onclick="dropTag('${k}',${j})">${tagKind(x).split(' ')[0]} ${esc(x)} ✖</button>`).join('')+(c.drop&&c.drop.length?`<br><button class=cbtn onclick="undrop('${k}')">↩️ Restore ${c.drop.length} dropped</button>`:'')+'</div>')}
+function dropTag(k,j){const c=RES[k];if(!c)return;const t=build(c)[0].split(', ')[j];if(!t||CORE.has(t))return;const raw=t.replace(/^\((.*):1\.2\)$/,'$1');c.drop=(c.drop||[]).concat(raw);rer(k);tagUI(k);toast('Dropped: '+raw)}
+function undrop(k){const c=RES[k];if(!c)return;delete c.drop;rer(k);tagUI(k);toast('↩️ Tags restored')}
+// theme 👍/👎
+const tkey=t=>t.g+'|'+t.name;
+function tpick(p){if(!Object.keys(TRT).length)return r(p);let a=p.filter(i=>TRT[tkey(TH[i])]!==-1);if(!a.length)a=p;const ws=a.map(i=>TRT[tkey(TH[i])]===1?3:1),t=ws.reduce((x,y)=>x+y,0);let q=Math.random()*t;for(let j=0;j<a.length;j++){q-=ws[j];if(q<=0)return a[j]}return a[a.length-1]}
+function trBtns(c,k){if(!c||!c.theme||!TH.includes(c.theme))return '';const v=TRT[tkey(c.theme)]||0;return `<button class="trt up" title="Pick this ${c.theme.ch?'character':'theme'} more often" onclick="trate('${k}',1)">👍${v>0?' liked':''}</button><button class="trt dn" title="Skip this ${c.theme.ch?'character':'theme'} in Any picks" onclick="trate('${k}',-1)">👎${v<0?' skipped':''}</button>`}
+function trate(k,v){const c=RES[k];if(!c||!c.theme||!TH.includes(c.theme))return;const key=tkey(c.theme);if(TRT[key]===v){delete TRT[key];toast('Rating cleared: '+c.theme.name)}else{TRT[key]=v;toast(v>0?'👍 '+c.theme.name+' will come up more':'👎 '+c.theme.name+' will be skipped in Any picks')}lss('sp_trate',TRT);rer(k);drawTR()}
+function drawTR(){const e=document.getElementById('trtc');if(!e)return;const v=Object.values(TRT);e.textContent=`Themes & characters: 👍 ${v.filter(x=>x>0).length} · 👎 ${v.filter(x=>x<0).length}`}
+function trReset(){if(typeof confirm==='function'&&!confirm('Reset all theme and character 👍/👎?'))return;TRT={};lss('sp_trate',TRT);drawTR();rer('s');toast('Theme ratings reset')}
+// multi-category mix
+const MCV=[...TGRPS.map(g=>'tg:'+g),...FRANS];
+const mcPool=()=>{const s=new Set();MCAT.forEach(v=>{if(isTG(v))tgIdx(v.slice(3)).forEach(i=>s.add(i));else CIDX.filter(i=>TH[i].g===v).forEach(i=>s.add(i))});return s.size?[...s]:[...Array(NOLD).keys()]};
+function mcLabel(){const n=MCAT.map(v=>isTG(v)?v.slice(3):v);return '🎛️ Mix: '+(n.length?n.slice(0,3).join(' + ')+(n.length>3?' +'+(n.length-3)+' more':''):'all themes')}
+function drawMC(){const e=document.getElementById('mcat');if(!e)return;const box=i=>{const v=MCV[i],l=isTG(v)?v.slice(3)+' ('+tgIdx(v.slice(3)).length+')':v+' ('+CIDX.filter(j=>TH[j].g===v).length+')';return `<label class=ck><input type=checkbox${MCAT.includes(v)?' checked':''} onchange="mcTog(${i},this.checked)"> ${esc(l)}</label>`};
+ e.innerHTML='<h4>🎨 Theme groups</h4><div class=cks>'+TGRPS.map((g,i)=>box(i)).join('')+'</div><h4>👸 Character franchises</h4><div class=cks>'+FRANS.map((f,i)=>box(TGRPS.length+i)).join('')+'</div>';
+ const c=document.getElementById('mcc');if(c)c.textContent=MCAT.length?'('+MCAT.length+' checked'+(theme===-4?', in use':'')+')':''}
+function mcTog(i,on){const v=MCV[i];if(!v)return;MCAT=MCAT.filter(x=>x!==v);if(on)MCAT.push(v);MCAT=MCV.filter(x=>MCAT.includes(x));lss('sp_mcat',MCAT);if(theme===-4)setT(-4);drawMC()}
+function mcUse(){if(!MCAT.length)return toast('Check at least one category first');setT(-4);drawMC();toast(mcLabel())}
+function mcClear(){MCAT=[];lss('sp_mcat',MCAT);if(theme===-4)setT(-2);drawMC()}
+// character × theme mashup
+function ctTheme(ci,tj,ex){const A=TH[ci],B=TH[tj];return{g:'Mashup',name:A.name+' × '+B.name,ex:ex||[],bg:B.bg}}
+function ctMash(ci,tj){if(!isCh(ci))ci=r(CIDX);if(!(tj>=0&&tj<NOLD))tj=r([...Array(NOLD).keys()]);const A=TH[ci],B=TH[tj],p=r(B.pal);
+ const c={hair:A.c.hair,eyes:A.c.eyes,tiara:A.c.tiara,gem:A.c.gem,pend:A.c.gem,dress:p[2],trim:p[3],bot:''};
+ if(!c.dress||!DRESS.includes(c.dress))c.dress='light blue';
+ if(c.hair===c.dress||fam(c.hair)===fam(c.dress)){const a=DRESS.filter(x=>fam(x)!==fam(c.hair)&&!bn('dress',x));c.dress=r(a.length?a:DRESS)}
+ if(c.trim===c.dress)c.trim=r(ACOL.filter(x=>x!==c.dress));
+ const ex=[];for(const x of shuf(A.ex.filter(x=>charEx(x)&&!/earrings/.test(x))).slice(0,2).concat(shuf(B.ex).slice(0,2)))if(!ex.includes(x))ex.push(x);
+ c.extras=ex;c.bg=B.bg;c.dt=B.dt||'';c.mx=[ci,tj,'ct'];c.theme=ctTheme(ci,tj,ex);c.lab='✨ '+c.theme.name;return rbwPost(rules(applyLocks(outfitPost(apply(c)))))}
+function drawCT(){const a=document.getElementById('ca'),b=document.getElementById('cb');if(!a||!b)return;a.innerHTML=document.getElementById('ma').innerHTML;b.innerHTML=document.getElementById('xa').innerHTML}
+function doCT(){showSingle(ctMash(+document.getElementById('ca').value,+document.getElementById('cb').value))}
+// batch tools
+function bChk(i,v){if(v)BCHK.add(i);else BCHK.delete(i)}
+function bChkAll(v){BN.forEach(i=>v?BCHK.add(i):BCHK.delete(i));document.querySelectorAll('input.bk').forEach(x=>x.checked=!!v)}
+function cpChk(){const a=BN.filter(i=>BCHK.has(i));if(!a.length)return toast('Check some princesses first');const n=[...new Set(a.map(i=>build(RES[i])[1]))].sort((x,y)=>y.length-x.length)[0];wr('Negative: '+n+'\n\n'+a.map((i,j)=>`${j+1}. ${build(RES[i])[0]}`).join('\n\n'));toast('☑️ Copied '+a.length+' checked')}
+function bDone(i){if(BDONE.has(i))BDONE.delete(i);else BDONE.add(i);const e=document.getElementById('it'+i);if(e){e.classList.toggle('done',BDONE.has(i));e.innerHTML=itemHTML(i)}toast(`✅ ${BN.filter(x=>BDONE.has(x)).length} / ${BN.length} used`)}
+function bRe(i){if(!RES[i])return;RES[i]=roll();BDONE.delete(i);const e=document.getElementById('it'+i);if(e)e.classList.remove('done');drawItem(i);saveLast();toast('🔁 Re-rolled #'+i)}
+function bRows(){return BN.map((i,j)=>{const c=RES[i],[p,n]=build(c);return {n:j+1,label:label(c),prompt:p,negative:n,video:vprompt(c),code:enc(c),used:BDONE.has(i)}})}
+function bVid(){if(!BN.length)return toast('Make a batch first');wr(bRows().map(x=>`${x.n}. ${x.video}`).join('\n\n'));toast('🎬 Copied '+BN.length+' video prompts')}
+function dl(name,text,type){if(!(window.URL&&URL.createObjectURL)){wr(text);toast('Copied (download not available here)');return}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast('⬇️ Downloaded '+name)}
+function bExp(f){if(!BN.length)return toast('Make a batch first');const rows=bRows(),d='princess-batch-'+ymd(new Date());
+ if(f==='json')return dl(d+'.json',JSON.stringify(rows,null,2),'application/json');
+ if(f==='csv'){const q=s=>'"'+String(s).replace(/"/g,'""')+'"';return dl(d+'.csv',['n,label,prompt,negative,video,code,used'].concat(rows.map(x=>[x.n,x.label,x.prompt,x.negative,x.video,x.code,x.used].map(q).join(','))).join('\n'),'text/csv')}
+ dl(d+'.txt',listTxt(),'text/plain')}
+function batchN(){const e=document.getElementById('bnum');let n=parseInt(e&&e.value,10);if(!(n>=1))n=8;n=Math.min(100,Math.max(1,n));if(e)e.value=n;batch(n)}
+// auto-save, undo drawer, backup
+function saveLast(){try{const l=document.getElementById('list');const b=l&&l.innerHTML&&BN.length?BN.map(i=>enc(RES[i])):null;lss('sp_last',{s:RES.s?enc(RES.s):null,b})}catch(e){}}
+function restoreLast(){const L=lsg('sp_last',null);try{if(L&&L.s){showSingle(dec(L.s),true);if(Array.isArray(L.b)&&L.b.length)drawBatch(L.b.map(dec),true);return}}catch(e){}showSingle(apply(pick(mode,ti())),true)}
+function drawUndo(){const e=document.getElementById('undl');if(!e)return;const n=document.getElementById('nund');if(n)n.textContent=UNDO.length;
+ e.innerHTML=UNDO.length?UNDO.map((s,j)=>{let c;try{c=dec(s)}catch(x){return ''}return `<div class=item>${swatch(c)}<span class=tname>${esc(label(c))}</span> <span class=muted>${esc(String(c.hair))} hair · ${esc(String(c.dress))} dress</span><br><button class=cbtn onclick="undoTo(${j})">↩️ Jump back here</button></div>`}).reverse().join(''):'<p class=muted>Nothing yet. Each new roll lands here (last 30, this visit).</p>'}
+function undoTo(j){const s=UNDO[j];if(!s)return;UNDO=UNDO.slice(0,j);showSingle(dec(s),true);toast('⏪ Jumped back')}
+const BKK=['sp_opts','sp_lock','sp_ban2','sp_fav','sp_hist','sp_rate','sp_pre','sp_pin','sp_qt','sp_seed','sp_mood','sp_season','sp_sis','sp_light','sp_disg','sp_trate','sp_clora','sp_outfit','sp_mcat','sp_skin','sp_dsc'];
+function bkData(){const d={};BKK.forEach(k=>{const v=lsg(k,undefined);if(v!==undefined)d[k]=v});return {app:'surprise-princess',v:1,date:ymd(new Date()),data:d}}
+function bkExp(){dl('princess-backup-'+ymd(new Date())+'.json',JSON.stringify(bkData(),null,1),'application/json')}
+function bkLoad(o){if(!o||typeof o!=='object'||!o.data||typeof o.data!=='object')return toast('That backup didn\'t work');BKK.forEach(k=>{if(k in o.data)lss(k,o.data[k])});reloadAll();toast('💾 Backup restored')}
+function bkFile(inp){const f=inp&&inp.files&&inp.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{bkLoad(JSON.parse(fr.result))}catch(e){toast('That backup didn\'t work')}inp.value=''};fr.readAsText(f)}
+function reloadAll(){O=Object.assign({},DEF,lsg('sp_opts',{}));O.add=(O.add||[]).filter(k=>ADDONS[k]);LOCK=lsg('sp_lock',{});BAN=lsg('sp_ban2',{});FAV=lsg('sp_fav',[]);HIST=lsg('sp_hist',[]);RT=lsg('sp_rate',{});PRE=lsg('sp_pre',[]);PIN=lsg('sp_pin',[]);QTL=lsg('sp_qt',['hair|blonde']);SEED=lsg('sp_seed','');
+ MOOD=lsg('sp_mood','any');if(!MOODS[MOOD])MOOD='any';SEASON=lsg('sp_season',false);SIS=lsg('sp_sis','def');LIGHT=lsg('sp_light',false);DISG=lsg('sp_disg',false);TRT=lsg('sp_trate',{});CLORA=lsg('sp_clora',[]);OUTF=lsg('sp_outfit',[]);MCAT=lsg('sp_mcat',[]);SKIN=lsg('sp_skin',LIGHT?'light':'dark');DSC=lsg('sp_dsc','hoa');
+ if(!Array.isArray(CLORA))CLORA=[];if(!Array.isArray(OUTF))OUTF=[];if(!Array.isArray(MCAT))MCAT=[];
+ document.getElementById('sist').value=SIS;drawOpts();drawPick();drawBan();drawQT();drawMood();drawPre();drawRT();drawTR();drawSeed();drawSaved();drawCmp();drawMC();drawDaily();applyDisp()}
+// skins & disguise screens
+const SKINS={dark:'🌙 Dark (default)',light:'☀️ Light',amoled:'🖤 Midnight AMOLED',pink:'🌸 Pastel Pink'};
+const HOAH=document.getElementById('hoa').innerHTML;
+const DSCS={hoa:['🏘️ HOA meeting minutes','HOA Meeting Minutes'],grocery:['🛒 Grocery list','Grocery List'],weather:['🌦️ Weather log','Weather Log'],notes:['📝 Notes','Notes']};
+const DHTML={grocery:'<h2 onclick="hoaTap()">Grocery List</h2><p><i>Week of the 10th</i></p><ul><li>Milk (2%), eggs, butter</li><li>Bread (whole wheat)</li><li>Bananas, apples, baby spinach</li><li>Chicken thighs, ground turkey</li><li>Rice, pasta, marinara</li><li>Coffee filters</li><li>Paper towels, dish soap</li><li>Dog treats</li></ul>',
+ weather:'<h2 onclick="hoaTap()">Weather Log</h2><p><i>Backyard station readings, 7:00 AM</i></p><p>Mon: 41°F, clear, wind NW 5 mph, 0.00 in rain.</p><p>Tue: 44°F, overcast, wind W 8 mph, 0.12 in rain.</p><p>Wed: 39°F, light frost, calm, 0.00 in rain.</p><p>Thu: 47°F, partly cloudy, wind SW 6 mph, 0.00 in rain.</p><p>Fri: 50°F, showers, wind S 10 mph, 0.31 in rain.</p><p>Notes: rain gauge cleaned Wednesday.</p>',
+ notes:'<h2 onclick="hoaTap()">Notes</h2><p>Call the dentist about rescheduling.</p><p>Return library books by Thursday.</p><p>Car: rotate tires at next oil change.</p><p>Gift ideas: scarf, puzzle, bird feeder.</p><p>Look into gutter cleaning quotes.</p>'};
+const dTitle=()=>(DSCS[DSC]||DSCS.hoa)[1];
+function renderDsc(){const e=document.getElementById('hoa');if(!e)return;const h=DHTML[DSC]||HOAH;if(e.innerHTML!==h)e.innerHTML=h}
+function setDsc(v){DSC=DSCS[v]?v:'hoa';lss('sp_dsc',DSC);applyDisp();toast('Disguise screen: '+DSCS[DSC][0])}
+function setSkin(v){SKIN=SKINS[v]?v:'dark';lss('sp_skin',SKIN);lss('sp_light',SKIN==='light'||SKIN==='pink');applyDisp()}
+
+document.getElementById('go').onclick=go;drawThemes();drawChars();drawOpts();drawMash();drawMC();drawSaved();drawDaily();drawPick();drawBan();initV4();drawCT();applyDisp();if(DISG)document.getElementById('hoa').style.display='block';restoreLast();
 </script></body></html>
