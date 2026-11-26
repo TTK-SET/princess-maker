@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#7e57c2">
+<title>DS Peach Randomizer — NSMB DS</title>
+<style>
+:root{--pink:#ffd6e8;--rose:#f48fb1;--lav:#e6dcff;--purple:#7e57c2;--gold:#e0b04a;--ink:#3d2a52;--bg:#fff7fb;--ok:#1d6b33}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#fde4f2,#ece4ff 60%,#fff7fb);color:var(--ink);min-height:100vh;padding:env(safe-area-inset-top) 0 48px}
+header{text-align:center;padding:18px 12px 6px}
+h1{margin:0;font-size:28px;color:var(--purple);letter-spacing:.4px}
+h1 span{color:var(--gold)}
+.sub{font-size:14px;opacity:.75;margin-top:4px}
+main{max-width:760px;margin:0 auto;padding:0 12px}
+.card{background:#fff;border-radius:20px;box-shadow:0 4px 18px rgba(126,87,194,.13);padding:16px;margin:14px 0;border:2px solid var(--lav)}
+.card h2{margin:0 0 10px;font-size:20px;color:var(--purple)}
+.note,.warn{border-radius:12px;padding:10px 12px;font-size:14px;margin:8px 0;line-height:1.45}
+.note{background:var(--lav)}
+.warn{background:#fff3cd;color:#7a5a00}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1 1 auto}
+button,.btn{font-size:16px;font-weight:700;border:none;border-radius:16px;padding:12px 16px;min-height:48px;background:var(--lav);color:var(--ink);cursor:pointer;font-family:inherit}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:linear-gradient(135deg,var(--rose),var(--purple));color:#fff;width:100%;font-size:18px;min-height:56px}
+.ghost{background:#fff;border:2px solid var(--lav)}
+.copy{background:var(--pink);min-height:40px;padding:8px 12px;font-size:14px}
+.copy.done{background:#c8f7d4}
+.danger{background:#ffd3d3;color:#a3213a}
+.chk{display:flex;align-items:center;gap:10px;font-weight:600;margin:10px 0;min-height:44px}
+.chk input{width:24px;height:24px;accent-color:var(--purple);flex:0 0 auto}
+label{font-weight:600;font-size:15px}
+input[type=text],input[type=search],select{width:100%;font-size:16px;padding:10px 12px;border-radius:14px;border:2px solid var(--lav);background:#fffafd;color:var(--ink);font-family:inherit;min-height:44px}
+input[type=color]{width:48px;height:44px;border:2px solid var(--lav);border-radius:12px;padding:2px;background:#fff;cursor:pointer;flex:0 0 auto}
+.file{display:block;text-align:center;border:3px dashed var(--rose);border-radius:18px;padding:14px;background:var(--pink);font-weight:700;cursor:pointer;margin:8px 0}
+.file input{display:none}
+.previews{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.previews.stack-narrow{grid-template-columns:1fr}}
+.prev-col{text-align:center}
+.prev-col h3{margin:0 0 6px;font-size:15px;color:var(--purple)}
+.stage{background:#2a2034;border-radius:14px;padding:8px;overflow:auto;-webkit-overflow-scrolling:touch}
+.stage canvas,.stage img{image-rendering:pixelated;image-rendering:crisp-edges;display:block;margin:0 auto;background:repeating-conic-gradient(#3a3148 0% 25%,#2a2034 0% 50%) 50%/12px 12px}
+.native-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px;align-items:flex-start}
+.native-wrap figure{margin:0;text-align:center}
+.native-wrap figcaption{font-size:11px;opacity:.7;margin-top:2px}
+.field{border-top:1px dashed var(--lav);padding:10px 0}
+.field:first-child{border-top:none;padding-top:0}
+.fhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fhead b{font-size:15px;min-width:8.5em}
+.lock{flex:0 0 auto;min-width:48px;min-height:44px;padding:8px 10px;background:#efe8ff}
+.lock.on{background:#ff9f43;color:#3d2a00}
+.hex{flex:0 0 7.2em;font-family:ui-monospace,Menlo,monospace;font-size:13px;text-transform:uppercase}
+.ftools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ftools button{min-height:40px;font-size:13px;padding:8px 10px;flex:0 0 auto}
+.picks{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pick{width:36px;height:36px;border-radius:10px;border:2px solid #fff;box-shadow:0 0 0 2px var(--lav);cursor:pointer;position:relative;padding:0;min-height:36px}
+.pick .x{position:absolute;top:-8px;right:-8px;width:22px;height:22px;min-height:22px;border-radius:50%;padding:0;font-size:12px;background:#fff;color:#a3213a;line-height:1;display:none}
+.pick:hover .x,.pick:focus .x{display:block}
+.swatches{display:flex;flex-wrap:nowrap;gap:6px;margin-top:8px;max-height:40px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.sw{width:28px;height:28px;border-radius:8px;border:2px solid #fff;box-shadow:0 0 0 1px #d7c8ef;padding:0;min-height:28px;cursor:pointer}
+.sw:hover,.sw:focus{outline:2px solid var(--purple)}
+.libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:6px;max-height:320px;overflow:auto;margin-top:8px}
+.libgrid button{width:100%;aspect-ratio:1;border-radius:8px;padding:0;min-height:0;border:2px solid #fff;box-shadow:0 0 0 1px #d7c8ef;height:auto}
+.zoom{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.zoom button{min-width:56px}
+.zoom button.on{background:var(--purple);color:#fff}
+.muted{color:#6d5a80;font-size:13px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+.toast.show{opacity:.95}
+#summary{width:100%;min-height:90px;font-size:13px;line-height:1.4;padding:10px;border-radius:14px;border:2px solid var(--lav);background:#fffafd;color:var(--ink);font-family:ui-monospace,Menlo,monospace;resize:vertical}
+details>summary{font-size:17px;font-weight:700;color:var(--purple);cursor:pointer;min-height:44px;display:flex;align-items:center;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";margin-right:6px}
+details[open]>summary::before{content:"▾ "}
+
+.back{display:inline-flex;align-items:center;min-height:40px;padding:8px 12px;border-radius:14px;background:var(--lav);color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;margin-bottom:8px}
+.back:active{transform:scale(.97)}
+a.primary,a.btn{display:block;text-decoration:none;text-align:center}
+#rollCode{width:100%;font-size:13px;font-family:ui-monospace,Menlo,monospace;padding:10px 12px;border-radius:14px;border:2px solid var(--lav);background:#fffafd;color:var(--ink);min-height:44px}
+
+</style>
+</head>
+<body>
+<header>
+  <a class="back" id="backLink" href="../">← Back</a>
+  <h1 id="pageTitle">👑 DS Peach <span>Randomizer</span></h1>
+  <div class="sub" id="pageSub">New Super Mario Bros. DS texture recolor — hair, dress, gems &amp; face</div>
+</header>
+<main>
+  <div class="card">
+    <div class="warn">Recolors work great. New shapes like a ponytail can’t be added here — that needs a model change. The DS packs textures in 4×4 blocks (Tex4x4), so some shades may look slightly blotchy after you inject them with NSMBe.</div>
+    <p class="note" style="margin-top:8px">Paint these native-size PNGs, then re-inject into <code>enemy/peach.nsbmd</code> and <code>map/cursor_peach.nsbmd</code> (same textures). Keep the sizes: <b>peach.png</b> 128×64, <b>peach_face.0.png</b> and <b>peach_face.1.png</b> 32×128.</p>
+  </div>
+
+  <div class="card">
+    <h2>🎨 Preview</h2>
+    <div class="zoom" id="zoomBtns">
+      <button type="button" data-zoom="4">4×</button>
+      <button type="button" data-zoom="6">6×</button>
+      <button type="button" data-zoom="8" class="on">8×</button>
+    </div>
+    <div class="previews">
+      <div class="prev-col">
+        <h3>Original</h3>
+        <div class="stage"><canvas id="origBody" width="1024" height="512"></canvas></div>
+      </div>
+      <div class="prev-col">
+        <h3>Rolled</h3>
+        <div class="stage"><canvas id="rollBody" width="1024" height="512"></canvas></div>
+      </div>
+    </div>
+    <h3 style="margin:14px 0 6px;font-size:16px;color:var(--purple)">Face (open / blink) and mirrored portrait</h3>
+    <div class="previews">
+      <div class="prev-col">
+        <h3>Original faces</h3>
+        <div class="stage"><canvas id="origFaces" width="1024" height="1024"></canvas></div>
+      </div>
+      <div class="prev-col">
+        <h3>Rolled faces</h3>
+        <div class="stage"><canvas id="rollFaces" width="1024" height="1024"></canvas></div>
+      </div>
+    </div>
+    <p class="muted" style="margin:10px 0 4px">Native size (1×) — this is what you download</p>
+    <div class="native-wrap" id="nativePreviews"></div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <button type="button" class="primary" id="btnRoll" style="margin:0">🎲 Roll all</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button type="button" id="btnPicks">🎯 Random from my picks</button>
+      <button type="button" class="ghost" id="btnReset">↩ Reset to original</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="sepShade"> Separate dress shade / trim (otherwise shadows follow the dress color)</label>
+    <label class="chk"><input type="checkbox" id="useCoolors"> Include Coolors library (~540 named colors) when rolling. Off by default — rolls use the basic hair / eye / dress list.</label>
+  </div>
+
+  <div class="card" id="fieldsCard">
+    <h2>🎨 Colors</h2>
+    <p class="muted">Lock a field to keep it on the next roll. Add colors to My picks, then use 🎯 Random from my picks.</p>
+    <div id="fields"></div>
+  </div>
+
+  <div class="card">
+    <h2>🎯 My picks</h2>
+    <p class="muted" id="picksHint">No picks yet. Tap ➕ on a field (or a library swatch) to save colors you like.</p>
+    <div class="picks" id="picksBar"></div>
+    <div class="row" style="margin-top:8px">
+      <button type="button" class="ghost" id="btnClearPicks">Clear my picks</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <details>
+      <summary>📚 Color library</summary>
+      <p class="muted">Basic named colors always show here. Turn on the Coolors toggle above to browse all 540 and include them in rolls.</p>
+      <input type="search" id="libSearch" placeholder="Search colors…" autocomplete="off">
+      <p class="muted" id="libHint"></p>
+      <div class="libgrid" id="libGrid"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2>⬇️ Download</h2>
+    <div class="row">
+      <button type="button" class="copy" id="dlPeach">peach.png</button>
+      <button type="button" class="copy" id="dlFace0">peach_face.0.png</button>
+      <button type="button" class="copy" id="dlFace1">peach_face.1.png</button>
+    </div>
+    <button type="button" class="primary" id="dlAll" style="margin-top:10px">⬇️ Download all three</button>
+    <button type="button" class="primary" id="dlZip" style="margin-top:8px">📦 Download all as ZIP</button>
+    <button type="button" id="btnShare" style="margin-top:8px;width:100%">📤 Share (Drive, email, Discord…)</button>
+    <p class="note">On a phone, ZIP or Share is the easy way to get the three PNGs to your PC (OneDrive, Google Drive, email, or Discord). Or copy the roll link / code, open it on your PC, and download there.</p>
+    <label for="rollCode" style="margin-top:14px;display:block">Roll code</label>
+    <input type="text" id="rollCode" spellcheck="false" autocomplete="off" placeholder="DSP3:…">
+    <div class="row" style="margin-top:8px">
+      <button type="button" class="copy" id="btnCopyCode">📋 Copy roll code</button>
+      <button type="button" class="copy" id="btnCopyLink">🔗 Copy link to this roll</button>
+      <button type="button" id="btnLoadCode">📥 Load roll code</button>
+    </div>
+    <label for="summary" style="margin-top:14px;display:block">Roll summary</label>
+    <textarea id="summary" readonly></textarea>
+    <button type="button" class="copy" id="btnCopySum" style="margin-top:8px">📋 Copy summary</button>
+  </div>
+
+  <div class="card">
+    <h2>📤 Use your own base PNGs</h2>
+    <p class="muted">Optional. Upload stock (or already edited) textures of the exact sizes to recolor from those instead of the built-in originals.</p>
+    <label class="file">Upload peach.png (128×64)<input type="file" id="upPeach" accept="image/png"></label>
+    <label class="file">Upload peach_face.0.png (32×128)<input type="file" id="upFace0" accept="image/png"></label>
+    <label class="file">Upload peach_face.1.png (32×128)<input type="file" id="upFace1" accept="image/png"></label>
+    <p class="muted" id="upStatus"></p>
+  </div>
+
+  <div class="card">
+    <h2>💡 After you download</h2>
+    <ul class="muted" style="padding-left:20px;line-height:1.5">
+      <li>Re-inject the three PNGs into the TEX0 of <code>enemy/peach.nsbmd</code>, then replace both <code>enemy/peach.nsbmd</code> and <code>map/cursor_peach.nsbmd</code> in NSMBe. The map model uses the same textures.</li>
+      <li>If you have the box-side toolkit, <code>inject_nsbmd.py</code> next to this page can patch both NSBMD files for you.</li>
+      <li>Keep a copy of the original .nsbmd so you can undo a bad inject.</li>
+    </ul>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+window.__DS_SITE = {"title": "DS Peach Randomizer \u2014 NSMB DS", "heading": "\ud83d\udc51 DS Peach <span>Randomizer</span>", "sub": "New Super Mario Bros. DS texture recolor \u2014 hair, dress, gems & face", "backHref": "../", "backLabel": "\u2190 Shaun's Princess Maker", "shareTitle": "DS Peach textures", "variant": "public"};
+window.__CDEF_JSON = "[[\"red\",\"red\",\"\\u2764\\ufe0f Red\",\"#e53935\",\"red\",\"hde\",\"base\"],\n[\"saturated red\",\"red\",\"\\u2764\\ufe0f Red\",\"#ff1515\",\"vivid red, saturated red\",\"hde\",\"saturated\"],\n[\"pastel red\",\"red\",\"\\u2764\\ufe0f Red\",\"#ff8a80\",\"pastel red, pale red\",\"hde\",\"pastel\"],\n[\"dark red\",\"red\",\"\\u2764\\ufe0f Red\",\"#b71c1c\",\"dark red, deep red\",\"hde\",\"dark\"],\n[\"neon red\",\"red\",\"\\u2764\\ufe0f Red\",\"#ff1744\",\"neon red, bright red\",\"hde\",\"neon\"],\n[\"crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#c62828\",\"crimson\",\"hde\",\"base\"],\n[\"saturated crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#e0122a\",\"vivid crimson, saturated crimson\",\"hde\",\"saturated\"],\n[\"light crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#ef5350\",\"light crimson\",\"hde\",\"light\"],\n[\"dark crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#7f0000\",\"dark crimson, deep crimson\",\"hde\",\"dark\"],\n[\"maroon\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#800000\",\"maroon\",\"hde\",\"named\"],\n[\"burgundy\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#6d0019\",\"burgundy\",\"hde\",\"named\"],\n[\"orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff9800\",\"orange\",\"hde\",\"base\"],\n[\"saturated orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff6d00\",\"vivid orange, saturated orange\",\"hde\",\"saturated\"],\n[\"light orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ffd1a1\",\"light orange\",\"hde\",\"light\"],\n[\"pastel orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ffcc80\",\"pastel orange, pale orange\",\"hde\",\"pastel\"],\n[\"dark orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#e65100\",\"dark orange, deep orange\",\"hde\",\"dark\"],\n[\"neon orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff9100\",\"neon orange, bright orange\",\"hde\",\"neon\"],\n[\"coral\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff7f50\",\"coral\",\"hde\",\"named\"],\n[\"peach\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ffcba4\",\"peach\",\"hde\",\"named\"],\n[\"yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#ffeb3b\",\"yellow\",\"hde\",\"base\"],\n[\"saturated yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#ffe600\",\"vivid yellow, saturated yellow\",\"hde\",\"saturated\"],\n[\"light yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#fff59d\",\"light yellow\",\"hde\",\"light\"],\n[\"pastel yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#fff9c4\",\"pastel yellow, pale yellow\",\"hde\",\"pastel\"],\n[\"dark yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#f9a825\",\"dark yellow, deep yellow\",\"hde\",\"dark\"],\n[\"neon yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#eeff00\",\"neon yellow, bright yellow\",\"hde\",\"neon\"],\n[\"gold\",\"gold\",\"\\u2728 Gold\",\"#d4af37\",\"gold\",\"hde\",\"base\"],\n[\"rose gold\",\"gold\",\"\\u2728 Gold\",\"#b76e79\",\"rose gold\",\"hde\",\"named\"],\n[\"bronze\",\"gold\",\"\\u2728 Gold\",\"#cd7f32\",\"bronze\",\"hde\",\"named\"],\n[\"copper\",\"gold\",\"\\u2728 Gold\",\"#b87333\",\"copper\",\"hde\",\"named\"],\n[\"champagne\",\"gold\",\"\\u2728 Gold\",\"#f7e7ce\",\"champagne\",\"hde\",\"named\"],\n[\"dark gold\",\"gold\",\"\\u2728 Gold\",\"#b8860b\",\"dark gold, deep gold\",\"hde\",\"dark\"],\n[\"lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#c0ff00\",\"lime\",\"hde\",\"base\"],\n[\"saturated lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#b0ff00\",\"vivid lime, saturated lime\",\"hde\",\"saturated\"],\n[\"pastel lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#e6ee9c\",\"pastel lime, pale lime\",\"hde\",\"pastel\"],\n[\"dark lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#9e9d24\",\"dark lime, deep lime\",\"hde\",\"dark\"],\n[\"neon lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#d4ff00\",\"neon lime, bright lime\",\"hde\",\"neon\"],\n[\"green\",\"green\",\"\\ud83d\\udc9a Green\",\"#4caf50\",\"green\",\"hde\",\"base\"],\n[\"saturated green\",\"green\",\"\\ud83d\\udc9a Green\",\"#00c853\",\"vivid green, saturated green\",\"hde\",\"saturated\"],\n[\"light green\",\"green\",\"\\ud83d\\udc9a Green\",\"#b9f6ca\",\"light green\",\"hde\",\"light\"],\n[\"pastel green\",\"green\",\"\\ud83d\\udc9a Green\",\"#c8e6c9\",\"pastel green, pale green\",\"hde\",\"pastel\"],\n[\"dark green\",\"green\",\"\\ud83d\\udc9a Green\",\"#2e7d32\",\"dark green, deep green\",\"hde\",\"dark\"],\n[\"neon green\",\"green\",\"\\ud83d\\udc9a Green\",\"#00ff3a\",\"neon green, bright green\",\"hde\",\"neon\"],\n[\"mint green\",\"green\",\"\\ud83d\\udc9a Green\",\"#a8f0d0\",\"mint green\",\"hde\",\"named\"],\n[\"mint\",\"green\",\"\\ud83d\\udc9a Green\",\"#98e0c0\",\"mint, mint green\",\"hde\",\"named\"],\n[\"emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#00a86b\",\"emerald\",\"hde\",\"base\"],\n[\"saturated emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#00d47a\",\"vivid emerald, saturated emerald\",\"hde\",\"saturated\"],\n[\"light emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#7dcea0\",\"light emerald\",\"hde\",\"light\"],\n[\"dark emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#006b3c\",\"dark emerald, deep emerald\",\"hde\",\"dark\"],\n[\"teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#20b2aa\",\"teal\",\"hde\",\"base\"],\n[\"saturated teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#00bfa5\",\"vivid teal, saturated teal\",\"hde\",\"saturated\"],\n[\"light teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#80cbc4\",\"light teal\",\"hde\",\"light\"],\n[\"dark teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#00695c\",\"dark teal, deep teal\",\"hde\",\"dark\"],\n[\"neon teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#1de9b6\",\"neon teal, bright teal\",\"hde\",\"neon\"],\n[\"turquoise\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#40e0d0\",\"turquoise\",\"hde\",\"named\"],\n[\"aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00d4d4\",\"aqua\",\"hde\",\"base\"],\n[\"cyan\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00bcd4\",\"cyan\",\"hde\",\"named\"],\n[\"saturated aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00e5ee\",\"vivid aqua, saturated aqua\",\"hde\",\"saturated\"],\n[\"light aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#b2ebf2\",\"light aqua, light cyan\",\"hde\",\"light\"],\n[\"dark aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00838f\",\"dark aqua, deep aqua\",\"hde\",\"dark\"],\n[\"neon cyan\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00ffff\",\"neon cyan, bright cyan\",\"hde\",\"neon\"],\n[\"sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#87ceeb\",\"sky blue\",\"hde\",\"base\"],\n[\"saturated sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#00b0ff\",\"vivid sky blue, saturated sky blue\",\"hde\",\"saturated\"],\n[\"light sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#b3e5fc\",\"light sky blue\",\"hde\",\"light\"],\n[\"dark sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#0277bd\",\"dark sky blue, deep sky blue\",\"hde\",\"dark\"],\n[\"blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#2196f3\",\"blue\",\"hde\",\"base\"],\n[\"saturated blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#0066ff\",\"vivid blue, saturated blue\",\"hde\",\"saturated\"],\n[\"light blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#9ad8ff\",\"light blue\",\"hde\",\"light\"],\n[\"pastel blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#bbdefb\",\"pastel blue, pale blue\",\"hde\",\"pastel\"],\n[\"dark blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#1565c0\",\"dark blue, deep blue\",\"hde\",\"dark\"],\n[\"neon blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#3d5afe\",\"neon blue, bright blue\",\"hde\",\"neon\"],\n[\"navy\",\"navy\",\"\\ud83c\\udf03 Navy\",\"#3949ab\",\"navy\",\"hde\",\"base\"],\n[\"saturated navy\",\"navy\",\"\\ud83c\\udf03 Navy\",\"#1a237e\",\"vivid navy, saturated navy\",\"hde\",\"saturated\"],\n[\"light navy\",\"navy\",\"\\ud83c\\udf03 Navy\",\"#7986cb\",\"light navy\",\"hde\",\"light\"],\n[\"indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#3f51b5\",\"indigo\",\"hde\",\"base\"],\n[\"saturated indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#304ffe\",\"vivid indigo, saturated indigo\",\"hde\",\"saturated\"],\n[\"light indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#9fa8da\",\"light indigo\",\"hde\",\"light\"],\n[\"dark indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#283593\",\"dark indigo, deep indigo\",\"hde\",\"dark\"],\n[\"violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#7c4dff\",\"violet\",\"hde\",\"base\"],\n[\"saturated violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#651fff\",\"vivid violet, saturated violet\",\"hde\",\"saturated\"],\n[\"light violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#d1c4e9\",\"light violet\",\"hde\",\"light\"],\n[\"dark violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#4527a0\",\"dark violet, deep violet\",\"hde\",\"dark\"],\n[\"neon violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#9d00ff\",\"neon violet, bright violet\",\"hde\",\"neon\"],\n[\"purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#9c27b0\",\"purple\",\"hde\",\"base\"],\n[\"saturated purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#aa00ff\",\"vivid purple, saturated purple\",\"hde\",\"saturated\"],\n[\"light purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#d1b3ff\",\"light purple\",\"hde\",\"light\"],\n[\"pastel purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#e1bee7\",\"pastel purple, pale purple\",\"hde\",\"pastel\"],\n[\"dark purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#6a1b9a\",\"dark purple, deep purple\",\"hde\",\"dark\"],\n[\"neon purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#e040fb\",\"neon purple, bright purple\",\"hde\",\"neon\"],\n[\"lavender\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#c8a2ff\",\"lavender\",\"hde\",\"named\"],\n[\"lilac\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#c8a2c8\",\"lilac\",\"hde\",\"named\"],\n[\"magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ff00ff\",\"magenta\",\"hde\",\"base\"],\n[\"saturated magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ff00aa\",\"vivid magenta, saturated magenta\",\"hde\",\"saturated\"],\n[\"light magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#f8bbd0\",\"light magenta\",\"hde\",\"light\"],\n[\"dark magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ad1457\",\"dark magenta, deep magenta\",\"hde\",\"dark\"],\n[\"neon magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ff00e5\",\"neon magenta, bright magenta\",\"hde\",\"neon\"],\n[\"pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ff8fc8\",\"pink\",\"hde\",\"base\"],\n[\"saturated pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ff2d95\",\"vivid pink, saturated pink\",\"hde\",\"saturated\"],\n[\"light pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ffc8e0\",\"light pink\",\"hde\",\"light\"],\n[\"pastel pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#f8bbd9\",\"pastel pink, pale pink\",\"hde\",\"pastel\"],\n[\"dark pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#c2185b\",\"dark pink, deep pink\",\"hde\",\"dark\"],\n[\"neon pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ff1493\",\"neon pink, bright pink\",\"hde\",\"neon\"],\n[\"rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#e75480\",\"rose\",\"hde\",\"base\"],\n[\"saturated rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#ff3d7f\",\"vivid rose, saturated rose\",\"hde\",\"saturated\"],\n[\"light rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#ffc1cc\",\"light rose\",\"hde\",\"light\"],\n[\"dark rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#ad2d4e\",\"dark rose, deep rose\",\"hde\",\"dark\"],\n[\"dusty rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#c08081\",\"dusty rose\",\"hde\",\"named\"],\n[\"brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#8b5a2b\",\"brown\",\"hde\",\"base\"],\n[\"saturated brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#8d4004\",\"vivid brown, saturated brown\",\"hde\",\"saturated\"],\n[\"light brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#c4a574\",\"light brown\",\"hde\",\"light\"],\n[\"dark brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#4e2e0e\",\"dark brown, deep brown\",\"hde\",\"dark\"],\n[\"chocolate\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#5d3a1a\",\"chocolate\",\"hde\",\"named\"],\n[\"auburn\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#922724\",\"auburn\",\"hde\",\"named\"],\n[\"black\",\"black\",\"\\u2b1b Black\",\"#555\",\"black\",\"hde\",\"base\"],\n[\"charcoal\",\"black\",\"\\u2b1b Black\",\"#36454f\",\"charcoal\",\"hde\",\"named\"],\n[\"jet black\",\"black\",\"\\u2b1b Black\",\"#111\",\"jet black, black\",\"he\",\"named\"],\n[\"silver\",\"silver\",\"\\u26aa Silver\",\"#c0c0c0\",\"silver\",\"hde\",\"base\"],\n[\"light silver\",\"silver\",\"\\u26aa Silver\",\"#e8e8e8\",\"light silver\",\"he\",\"light\"],\n[\"gray\",\"silver\",\"\\u26aa Silver\",\"#999\",\"gray\",\"hde\",\"named\"],\n[\"gunmetal\",\"silver\",\"\\u26aa Silver\",\"#5b6770\",\"gunmetal, dark silver\",\"hde\",\"dark\"],\n[\"blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#f5d76e\",\"blonde\",\"h\",\"base\"],\n[\"platinum blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#f3e9c6\",\"platinum blonde\",\"h\",\"named\"],\n[\"golden blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#e8c547\",\"golden blonde, gold blonde\",\"h\",\"named\"],\n[\"dark blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#c9a227\",\"dark blonde\",\"h\",\"dark\"],\n[\"strawberry blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#e2946e\",\"strawberry blonde\",\"h\",\"named\"],\n[\"white\",\"white\",\"\\u2b1c White\",\"#fff\",\"white\",\"h\",\"base\"]]";
+window.__LIBRAW = "AB274F|Cherry Rose;7C0902|Molten Lava;FE6F5E|Vibrant Coral;BF4F51|Blushed Brick;660000|Dark Garnet;FB607F|Bubblegum Pink;800020|Burgundy;FF0800|Electric Red;FDBCB4|Powder Blush;C51E3A|Intense Cherry;960018|Deep Crimson;DE3163|Magenta Bloom;E23D28|Burnt Tangerine;58111A|Night Bordeaux;E44D2E|Fiery Terracotta;7F1734|Dark Amaranth;FF3800|Blazing Flame;F88379|Sweet Salmon;893F45|Burnt Rose;B31B1B|Mahogany Red;DC143C|Classic Crimson;8B0000|Blood Red;801818|Dark Wine;B22222|Brick Red;CE2029|Flag Red;FF004F|Hot Fuchsia;733635|Bitter Chocolate;ED2939|Strawberry Red;CD5C5C|Lobster Pink;D05340|Rosy Copper;F08080|Light Coral;FF7F7F|Grapefruit Pink;A50021|Ruby Red;C04000|Burnt Orange;800000|Maroon;FFE4E1|Soft Blush;FE0000|Pure Red;C08081|Dusty Rose;841617|Crushed Berry;990000|Oxblood;CC3333|Tomato Jam;FFC0CB|Pastel Pink;DC343B|Scarlet Rush;FF0000|Red;A52A2A|Brown Red;ED1B24|Racing Red;EE204E|Watermelon;F2003C|Lipstick Red;C40234|Carmine;ED2839|Punch Red;E60026|Primary Scarlet;FF0080|Neon Pink;674846|Chocolate Plum;C21E56|Rosewood;905D5D|Smoky Rose;AB4E52|Dusty Mauve;65000B|Black Cherry;BC8F8F|Rosy Taupe;B7410E|Rusty Spice;DA2C43|Raspberry;FA8072|Salmon;FF91A4|Cotton Candy;FF2400|Scarlet Fire;D44500|Spicy Orange;F4C2C2|Cotton Rose;FF6347|Tomato;A91101|Inferno;E34234|Cinnabar;722F37|Wine Plum;FF4F00|Flame Orange;C46210|Burnt Caramel;FFBF00|Amber Gold;FBCEB1|Peach Fuzz;FF9966|Tangerine Dream;964B00|Chocolate Brown;BF5700|Autumn Ember;E09540|Golden Apricot;ED9121|Carrot Orange;F7E7CE|Champagne Mist;FF7F50|Coral Glow;FF8C00|Dark Orange;EDC9AF|Desert Sand;BA160C|Brick Ember;E25822|Spicy Paprika;FE5A1D|Tiger Flame;FFD700|Gold;F04A00|Molten Orange;DAA520|Goldenrod;E8AC41|Honey Bronze;FED8B1|Soft Apricot;FF7538|Atomic Tangerine;FF5800|Blaze Orange;FFA000|Amber Glow;FFA500|Orange;FF8000|Vivid Tangerine;FFEFD5|Papaya Whip;FFE5B4|Light Apricot;D99058|Toasted Almond;EC5800|Cayenne Red;FF8F00|Deep Saffron;FF7518|Pumpkin Spice;FF7900|Harvest Orange;F4C430|Saffron;E86100|Autumn Leaf;F94D00|Crimson Carrot;F28500|Tiger Orange;CD5700|Bronze Spice;B56917|Copperwood;FF8200|Princeton Orange;F1B42F|Sunflower Gold;EFDECD|Almond Cream;9F8170|Dusty Taupe;F5F5DC|Beige;3D2B1F|Dark Coffee;3D0C02|Rich Mahogany;3B3C36|Charcoal Brown;79443B|Clay Soil;E3DAC9|Bone;CD7F32|Bronze;993300|Rust Brown;AF6E4D|Cinnamon Wood;DAA06D|Light Bronze;E97451|Burnt Peach;8A3324|Chestnut;C19A6B|Camel;592720|Espresso;CC7F3B|Golden Chestnut;A0785A|Faded Copper;954535|Reddish Brown;7B3F00|Raw Umber;DDD06A|Golden Sand;D2691E|Chocolate;6F4E37|Coffee Bean;B87333|Copper;81613E|Olive Wood;4A412A|Dark Khaki;DAC8AE|Pale Oak;E1A95F|Sunlit Clay;C2B280|Sand;E5AA70|Light Caramel;6C541E|Olive Bark;E48400|Amber Earth;996515|Golden Earth;DA9100|Harvest Gold;C3B091|Khaki Beige;6B4423|Brown Bark;674C47|Mauve Bark;CC7722|Ochre;926644|Toffee Brown;A45A52|Terracotta Clay;A81C07|Oxidized Iron;80461B|Saddle Brown;F4A460|Sandy Brown;CBA135|Golden Bronze;59260B|Dark Walnut;704214|Walnut;882D17|Brandy;CB410B|Red Ochre;D2B48C|Tan;483C32|Taupe;635147|Ash Brown;44362F|Deep Mocha;5C5248|Stone Brown;645452|Taupe Grey;F5DEB3|Wheat;E9D66B|Straw Gold;FDEE00|Bright Lemon;E0AB76|Sandy Clay;FFEF00|Sunbeam Yellow;DFFF00|Lime Yellow;E4D00A|Golden Glow;FFF8E7|Ivory Mist;FFFDD0|Cream;B8860B|Dark Goldenrod;CDB280|Soft Fawn;EEDC82|Light Gold;EF9B0F|Golden Orange;D4AF37|Metallic Gold;E6A817|Amber Honey;FCF75E|Canary Yellow;FFFFF0|Ivory;F8DE7E|Jasmine;FACA16|Bright Amber;FFFACD|Lemon Chiffon;E3FF00|Neon Chartreuse;FFFFE0|Light Yellow;FBEC5D|Banana Cream;FFC40C|School Bus Yellow;E3F988|Lime Cream;FFDB58|Mustard;FADA5E|Royal Gold;FFDEAD|Navajo White;CFB53B|Old Gold;808000|Olive;FADFAD|Soft Peach;D1E231|Lemon Lime;F4C431|Tuscan Sun;FFD800|Bright Gold;FFBA00|Amber Flame;E4D96F|Pale Amber;FFCC33|Golden Pollen;FAD6A5|Apricot Cream;F3E5AB|Vanilla Custard;FFFF00|Yellow;8DB600|Lime Moss;00FFBF|Tropical Mint;7BA05B|Sage Green;568203|Forest Moss;66FF00|Neon Grass;004225|Deep Forest;1B4D3E|Pine Teal;1E4D2B|Dark Spruce;00563B|Emerald Depths;ACE1AF|Celadon;80FF00|Lime Flash;00FFFF|Cyan;013220|Evergreen;4A5D23|Olive Leaf;03C03C|Jade Green;177245|Turf Green;00693E|Dark Emerald;50C878|Emerald;00FF40|Electric Green;4F7942|Fern;228B22|Forest Green;00FF00|Lime;ADFF2F|Green Yellow;3FFF00|Spring Laser;F0FFF0|Honeydew;49796B|Deep Teal;355E3B|Hunter Green;138808|India Green;00A86B|Jungle Green;29AB87|Seaweed;4CBB17|Bright Fern;7CFC00|Lawn Green;90EE90|Light Green;C0FF00|Chartreuse;32CD32|Lime Green;0BDA51|Malachite;74C365|Moss Green;004953|Dark Teal;3EB489|Mint Leaf;8A9A5B|Palm Leaf;317873|Pine Blue;39FF14|Laser Green;008000|Green;9AB973|Muted Olive;00401A|Black Forest;00A693|Verdigris;00A550|Medium Jungle;01796F|Blue Spruce;93C572|Willow Green;6C7C59|Dusty Olive;00CCCC|Strong Cyan;BCB88A|Dry Sage;76FF7A|Mint Glow;2E8B57|Sea Green;55DD33|Radioactive Grass;009E60|Shamrock;A7FC00|Slime Lime;00FF7F|Spring Green;D0F0C0|Tea Green;008080|Teal;40E0D0|Turquoise;40826D|Jungle Teal;9ACD32|Yellow Green;F0F8FF|Alice Blue;0FFFFF|Cyan Glow;7FFFD4|Aquamarine;007FFF|Azure Blue;F0FFFF|Azure Mist;0D98BA|Blue Green;00BFFF|Deep Sky Blue;006D6F|Stormy Teal;B2FFFF|Icy Aqua;007BA7|Cerulean;008B8B|Dark Cyan;7DF9FF|Electric Aqua;15F4EE|Neon Ice;3AB09E|Ocean Mist;99FFFF|Soft Cyan;E0FFFF|Light Cyan;20B2AA|Light Sea Green;DFFFFD|Frozen Water;3AA8C1|Pacific Blue;1CA9C9|Turquoise Surf;00B7EB|Bright Sky;007A74|Deep Ocean;81D8D0|Pearl Aqua;43B3AE|Tropical Teal;00CCFF|Sky Aqua;39A78D|Seagrass;00B9E8|Sky Surge;5D8AA8|Air Force Blue;72A0C1|Steel Blue;6CB4EE|Cool Sky;0070BB|Bright Marine;89CFF0|Baby Blue;003262|Oxford Navy;2072AF|Cornflower Ocean;318CE7|Brilliant Azure;0000FF|Blue;6699CC|Blue Grey;0095B6|Bondi Blue;0070FF|Digital Blue;3457D5|Royal Azure;85B09A|Muted Teal;7BAFD4|Sky Reflection;4997D0|Blue Bell;246BCE|Sapphire Sky;468FEA|Blue Energy;3B00DB|Ultrasonic Blue;0047AB|Cobalt Blue;B9D9EB|Pale Sky;6495ED|Cornflower Blue;1F75FE|Crayola Blue;0000B8|True Azure;1F305E|Twilight Indigo;1560BD|Tech Blue;1E90FF|Dodger Blue;00009C|Navy Electric;1034A6|Egyptian Blue;16166B|Deep Twilight;6082B6|Glaucous;1164B4|Ocean Deep;6F00FF|Electric Indigo;0072BB|Twitter Blue;4B0082|Indigo;00416A|Yale Blue;002FA7|International Klein Blue;8AB9F1|Baby Blue Ice;26619C|Baltic Blue;ADD8E6|Light Blue;87CEFA|Sky Blue;6050DC|Majorelle Blue;2B4593|French Blue;73C2FB|Maya Blue;0000CD|Medium Blue;7B68EE|Medium Slate Blue;191970|Midnight Blue;0093AF|Pacific Cyan;000080|Navy;0087BD|Ocean Blue;4666FF|Electric Sapphire;A4DDED|Frosted Blue;002147|Prussian Blue;273BE2|Bright Indigo;87D3F8|Frozen Lake;011F5B|Deep Navy;CCCCFF|Periwinkle;1C39BB|Persian Blue;000F89|Electric Royal;45B1E8|Fresh Sky;224C98|Steel Azure;9EB9D4|Powder Blue;003153|Deep Space Blue;002387|True Cobalt;2454FF|Full Spectrum Blue;4169E1|Royal Blue;002366|Imperial Blue;76ABDF|Cool Horizon;0F52BA|Sapphire;0076B6|Bright Teal Blue;4B61D1|Slate Indigo;5D89BA|Dusty Denim;87CEEB|Sky Blue (Light);1E2952|Space Indigo;4682B4|Steel Blue;0059CF|Laser Blue;2D68C4|Smart Blue;3E8EDE|Bright Ocean;2774AE|Rich Cerulean;120A8F|Dark Ultramarine;4B92DB|Cloudy Sky;AFDBF5|Icy Blue;324AB2|Ocean Twilight;7C9ED9|Wisteria Blue;00356B|Regal Navy;2E5090|Dusk Blue;0014A8|Vivid Royal;B284BE|Amethyst Smoke;9966CC|Lavender Purple;8A2BE2|Blue Violet;702963|Royal Plum;856088|Dusty Lavender;301934|Midnight Violet;9400D3|Dark Violet;614051|Mauve Shadow;BF00FF|Hyper Magenta;8F00FF|Violet Ray;563C5C|Vintage Grape;6C3082|Velvet Orchid;F2C1D1|Pastel Petal;B53389|Raspberry Plum;D473D4|Orchid Mist;8806CE|Royal Violet;FF00FF|Magenta;6F2DA8|Indigo Bloom;DF73FF|Mauve Magic;5A4FCF|Violet Twilight;5B3256|Blackberry Cream;FFF0F5|Lavender Blush;B57EDC|Bright Lavender;E6E6FA|Lavender;C8A2C8|Lilac;880085|Dark Magenta;E0B0FF|Mauve;8D029B|Royal Orchid;997A8D|Dusty Mauve;C54B8C|Fuchsia Plum;8B004B|Dark Raspberry;DA70D6|Orchid;682860|Deep Purple;FAE6FA|Lavender Veil;32127A|Indigo Ink;DF00FF|Neon Violet;DBB2D1|Pink Orchid;DDA0DD|Plum;86608E|Vintage Lavender;CC8899|Old Rose;800080|Purple;9A4EAE|Amethyst;663399|Rebecca Purple;7851A9|Deep Lilac;C71585|Medium Violet Red;32174D|Dark Amethyst;6A5ACD|Slate Blue;CC33CC|Vivid Orchid;512888|Indigo Velvet;D8BFD8|Thistle;9683EC|Soft Periwinkle;66023C|Crimson Violet;645394|Dusty Grape;A020F0|Purple (X11);8000FF|Ultra Violet;C9A0DC|Wisteria;E52B50|Amaranth;FF91AF|Cotton Candy;8B008B|Dark Magenta;683068|Velvet Purple;FF1DCE|Neon Fuchsia;CA1F7B|Hot Rose;FF0090|Barbie Pink;F653A6|Deep Pink;D0417E|Rose Punch;9F4576|Berry Blush;8E4585|Grape Soda;FE4EDA|Cotton Bloom;8E3A59|Vintage Berry;E30B5C|Raspberry Red;FF33CC|Fuchsia Pop;FF66CC|Bubblegum Fizz;AA98A9|Lilac Ash;FC0FC0|Shocking Pink;FF6FFF|Bright Peony;CF71AF|Petal Pink;CF3476|Hot Berry;EE82EE|Violet;F19CBB|Pink Mist;DE5D83|Blush Rose;FFA6C9|Baby Pink;F1DDCF|Powder Petal;FFB7C5|Cherry Blossom;A8516E|Rosewood;F56FA1|Rose Kiss;FF1493|Deep Pink;D71868|Berry Lipstick;F64A8A|Wild Strawberry;C74375|Rose Wine;F400A1|Electric Rose;FF00CC|Neon Rose;FF69B4|Hot Pink (Web);FBAED2|Blush Pop;E4007C|Fuchsia Flame;FFDAE9|Petal Frost;F2BDCD|Soft Blossom;EDCDC2|Almond Silk;FFCBA4|Peach Glow;FE28A2|Brilliant Rose;F77FBE|Pink Carnation;ED7A9B|Petal Rouge;E3256B|Razzmatazz;B3446C|Berry Crush;F9429E|Dragonfruit;FFF5EE|Seashell;FC89AC|Bubblegum Tint;DE6FA1|Sweet Peony;EDEAE0|Soft Linen;F2F3F4|Platinum;FAEBD7|Antique White;FEFEFA|Porcelain;FFF8DC|Cornsilk;EFDFBB|Pearl Beige;F0EAD6|Eggshell;FFFAF0|Floral White;F8F8FF|Ghost White;F4F0EC|Parchment;FAF0E6|Linen;F8F4FF|Lavender Mist;F5FFFA|Mint Cream;E9FFDB|Frosted Mint;FDF5E6|Old Lace;F1E9D2|Vanilla Cream;EAE0C8|Sand Dune;E5E4E2|Alabaster Grey;F7F7F7|Bright Snow;FFFAFA|Snow;FFFFFF|White;F5F5F5|White Smoke;DBD7D2|Dust Grey;C0C0C0|Silver;BEBFC5|Pale Slate;B2BEB5|Ash Grey;98817B|Taupe;91A3B0|Cool Steel;8C92AC|Lavender Grey;8B8589|Rosy Granite;848482|Grey Olive;808080|Grey;708090|Slate Grey;696969|Dim Grey;555555|Charcoal;536878|Blue Slate;2A3439|Jet Black;4D5D53|Granite;2F4F4F|Dark Slate Grey;000000|Black;4B3621|Deep Walnut;36454F|Charcoal Blue;555D50|Ebony;1B1B1B|Carbon Black;343434|Graphite;1A1110|Coffee Bean;111111|Onyx;353839|Gunmetal;414A4C|Iron Grey;242124|Shadow Grey;010B13|Ink Black;100C08|Pitch Black";
+window.__BASE_PEACH = "data:image/png;base64,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";
+window.__BASE_FACE0 = "data:image/png;base64,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";
+window.__BASE_FACE1 = "data:image/png;base64,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";
+</script>
+<script>
+/* DS Peach Randomizer — NSMB DS texture recolor */
+(function(){
+"use strict";
+
+const FIELDS = [
+  {id:"hair", label:"Hair", ref:"#F7DE08", palette:"hair", def:"#F7DE08", defName:"Blonde (stock)"},
+  {id:"dress", label:"Dress", ref:"#FC83AB", palette:"dress", def:"#FC83AB", defName:"Peach pink (stock)"},
+  {id:"dressShade", label:"Dress shade / trim", ref:"#DE4A7B", palette:"dress", def:"#DE4A7B", defName:"Dress shadow (stock)", optional:true},
+  {id:"gloves", label:"Gloves & petticoat", ref:"#FFFFFF", palette:"any", def:"#FFFFFF", defName:"White (stock)"},
+  {id:"skin", label:"Skin", ref:"#FFD0BE", palette:"skin", def:"#FFD0BE", defName:"Peach (stock)"},
+  {id:"crownMetal", label:"Crown metal", ref:"#F7A521", palette:"metal", def:"#F7A521", defName:"Gold (stock)"},
+  {id:"crownGems", label:"Crown gems", ref:"#0084F7", palette:"gem", def:"#0084F7", defName:"Blue / red (stock maps to one color)"},
+  {id:"broochGem", label:"Brooch gem", ref:"#0894FF", palette:"gem", def:"#0894FF", defName:"Blue (stock)"},
+  {id:"earring", label:"Earring", ref:"#0894FF", palette:"gem", def:"#0894FF", defName:"Blue (stock)"},
+  {id:"headJewel", label:"Head jewel", ref:"#FF0031", palette:"gem", def:"#FF0031", defName:"Red (stock)"},
+  {id:"iris", label:"Eyes", ref:"#21A5FF", palette:"eye", def:"#21A5FF", defName:"Blue (stock)"},
+  {id:"lips", label:"Lips", ref:"#EF737B", palette:"lips", def:"#EF737B", defName:"Rose (stock)"}
+];
+
+const SKIN_PAL = [
+  ["Peach (stock)","#FFD0BE"],["Porcelain","#FFE6DC"],["Fair","#F8D5C4"],["Light","#E8B89A"],
+  ["Warm light","#E0A882"],["Tan","#C68642"],["Golden tan","#C4925A"],["Medium","#A56B45"],
+  ["Olive","#8D6E4C"],["Brown","#8D5524"],["Deep brown","#5C3317"],["Rich deep","#3B2214"]
+];
+const METAL_PAL = [
+  ["Gold","#D4AF37"],["Stock gold","#F7A521"],["Light gold","#FFBD42"],["Dark gold","#B8860B"],
+  ["Rose gold","#B76E79"],["Silver","#C0C0C0"],["Light silver","#E8E8E8"],["Gunmetal","#5A5A64"],
+  ["Bronze","#CD7F32"],["Copper","#B87333"],["Champagne","#F7E7CE"]
+];
+const LIPS_PAL = [
+  ["Stock rose","#EF737B"],["Nude","#D4A194"],["Soft pink","#F4A7B9"],["Rose","#E07080"],
+  ["Coral","#E06A5A"],["Red","#C62828"],["Berry","#9B2D4A"],["Mauve","#C47A8A"],
+  ["Peach","#E89A86"],["Plum","#7A3B52"]
+];
+
+const STORE = "dsPeachRandomizer.v1";
+const state = {
+  zoom: 8,
+  locked: {},
+  colors: {},
+  names: {},
+  picks: [], // {hex, name}
+  lastField: "hair",
+  ready: false,
+  imgs: {peach:null, face0:null, face1:null},
+  orig: {peach:null, face0:null, face1:null},
+  out: {peach:null, face0:null, face1:null}
+};
+
+FIELDS.forEach(f => { state.colors[f.id]=f.def; state.names[f.id]=f.defName; });
+
+/* ---------- color math ---------- */
+function clamp(n,a,b){ return n<a?a:n>b?b:n; }
+function hexNorm(h){
+  h=String(h||"").trim().replace(/^#/,"");
+  if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  if(!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+  return "#"+h.toUpperCase();
+}
+function parseHex(h){
+  h=hexNorm(h); if(!h) return [0,0,0];
+  return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+}
+function toHex(r,g,b){
+  return "#"+[r,g,b].map(x=>clamp(Math.round(x),0,255).toString(16).padStart(2,"0")).join("").toUpperCase();
+}
+function lum(r,g,b){ return 0.2126*r + 0.7152*g + 0.0722*b; }
+function rgbToHsv(r,g,b){
+  r/=255;g/=255;b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+  let h=0;
+  if(d!==0){
+    if(max===r) h=((g-b)/d + (g<b?6:0))*60;
+    else if(max===g) h=((b-r)/d + 2)*60;
+    else h=((r-g)/d + 4)*60;
+  }
+  return [h, max===0?0:d/max, max];
+}
+function rgbToHsl(r,g,b){
+  r/=255;g/=255;b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b);
+  const l=(max+min)/2;
+  if(max===min) return [0,0,l];
+  const d=max-min;
+  const s=l>0.5?d/(2-max-min):d/(max+min);
+  let h=0;
+  if(max===r) h=((g-b)/d + (g<b?6:0))*60;
+  else if(max===g) h=((b-r)/d + 2)*60;
+  else h=((r-g)/d + 4)*60;
+  return [h,s,l];
+}
+function hslToRgb(h,s,l){
+  h=((h%360)+360)%360;
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+  let r,g,b;
+  if(h<60)[r,g,b]=[c,x,0];
+  else if(h<120)[r,g,b]=[x,c,0];
+  else if(h<180)[r,g,b]=[0,c,x];
+  else if(h<240)[r,g,b]=[0,x,c];
+  else if(h<300)[r,g,b]=[x,0,c];
+  else [r,g,b]=[c,0,x];
+  return [Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)];
+}
+function snap555(r,g,b){
+  const r5=Math.round(clamp(r,0,255)*31/255);
+  const g5=Math.round(clamp(g,0,255)*31/255);
+  const b5=Math.round(clamp(b,0,255)*31/255);
+  return [(r5<<3)|(r5>>2),(g5<<3)|(g5>>2),(b5<<3)|(b5>>2)];
+}
+function inHue(h,lo,hi){ return lo<=hi ? (h>=lo&&h<=hi) : (h>=lo||h<=hi); }
+function mapColor(sr,sg,sb, tr,tg,tb, rr,rg,rb){
+  const [, , sl]=rgbToHsl(sr,sg,sb);
+  const [th,ts,tl]=rgbToHsl(tr,tg,tb);
+  const [, , rl]=rgbToHsl(rr,rg,rb);
+  const ratio = sl / Math.max(rl, 0.05);
+  let l = clamp(tl * ratio, 0, 1);
+  // Keep deep folds visible instead of crushing them to near-black
+  const floor = Math.min(tl * 0.30, sl);
+  if(l < floor) l = floor;
+  if(l > 1) l = 1;
+  return hslToRgb(th, ts, l);
+}
+
+/* ---------- families ---------- */
+function fam(r,g,b,a){
+  if(a<128) return {none:true};
+  const [h,s,v]=rgbToHsv(r,g,b);
+  const L=lum(r,g,b);
+  const redgem=inHue(h,345,15) && s>0.7 && g<80;
+  const pink=inHue(h,320,355) && s>0.25 && v>0.2 && !redgem;
+  const hair=inHue(h,40,65) && s>0.35 && v>0.25;
+  const gold=(inHue(h,28,48) && s>0.45 && v>0.4 && !hair) || (inHue(h,28,55)&&s>0.4&&v>0.35&&!hair&&!pink);
+  const white=s<0.22 && v>0.70;
+  const skin=(inHue(h,0,40) && s>=0.10 && s<=0.38 && v>0.62) || (inHue(h,8,40) && s>=0.12 && s<=0.50 && v>0.55);
+  const blue=inHue(h,190,230) && s>0.3 && v>0.3;
+  const iris=inHue(h,190,240) && s>0.25 && v>0.25;
+  const pupil=v<0.28;
+  const eyewhite=s<0.2 && v>0.70;
+  const lips=inHue(h,340,25) && s>0.28 && v>0.40 && !skin && !redgem;
+  return {h,s,v,L,redgem,pink,hair,gold,white,skin,blue,iris,pupil,eyewhite,lips};
+}
+function inBox(x,y,boxes){
+  for(let i=0;i<boxes.length;i++){
+    const b=boxes[i];
+    if(x>=b[0]&&y>=b[1]&&x<=b[2]&&y<=b[3]) return true;
+  }
+  return false;
+}
+const BOX = {
+  dress:[[0,24,39,63],[112,0,127,63],[0,0,39,23]],
+  gloves:[[0,50,15,63]],
+  collar:[[48,0,79,31]],
+  brooch:[[0,6,15,23]],
+  earring:[[16,16,23,27]],
+  redunc:[[24,16,31,27]],
+  crown:[[80,0,95,15]],
+  jewel:[[64,16,79,31]],
+  hair:[[32,0,63,15],[80,16,95,31],[48,32,111,63],[96,0,111,31],[38,32,47,63]],
+  iris:[[6,34,30,74]],
+  pupil:[[14,48,24,68]],
+  lips:[[0,80,31,118]]
+};
+
+function classifyBody(x,y,r,g,b,a){
+  if(a<128) return null;
+  const f=fam(r,g,b,a);
+  if(inBox(x,y,BOX.earring) && f.blue) return "earring";
+  if(inBox(x,y,BOX.brooch) && f.blue) return "broochGem";
+  if(inBox(x,y,BOX.brooch) && (f.gold || (inHue(f.h,28,55)&&f.s>0.4))) return "broochRim";
+  if(inBox(x,y,BOX.redunc) && f.redgem) return "uncertainRed";
+  if(inBox(x,y,BOX.crown) && (f.redgem || f.blue)) return "crownGems";
+  if(inBox(x,y,BOX.crown) && (f.gold || (inHue(f.h,20,55)&&f.s>0.4&&f.v>0.35))) return "crownMetal";
+  if(inBox(x,y,BOX.jewel) && f.redgem) return "headJewel";
+  if(inBox(x,y,BOX.jewel) && f.skin) return "jewelCenter";
+  if(inBox(x,y,BOX.gloves) && f.white) return "gloves";
+  if(inBox(x,y,BOX.collar) && f.white) return "collarLace";
+  if(inBox(x,y,BOX.collar) && f.skin) return "skin";
+  if(inBox(x,y,BOX.hair) && (f.hair || (inHue(f.h,38,70)&&f.s>0.3&&f.v>0.3))) return "hair";
+  if(f.pink && (inBox(x,y,BOX.dress) || inBox(x,y,BOX.brooch))){
+    return f.L < lum(0xFC,0x83,0xAB)*0.82 ? "dressShade" : "dress";
+  }
+  // Any remaining unused blonde on the sheet (gap between dress and leftover hair, etc.)
+  if(f.hair || (inHue(f.h,38,70)&&f.s>0.3&&f.v>0.3)) return "hair";
+  return null;
+}
+function classifyFace(x,y,r,g,b,a, blink){
+  if(a<128) return null;
+  const f=fam(r,g,b,a);
+  if(!blink){
+    if(inBox(x,y,BOX.pupil) && f.pupil) return null;
+    if(inBox(x,y,BOX.iris) && f.iris && !f.pupil && !f.eyewhite) return "iris";
+  }
+  if(inBox(x,y,BOX.lips) && (f.lips || (inHue(f.h,340,25)&&f.s>0.28&&f.v>0.4&&!f.skin))) return "lips";
+  if(f.skin) return "skin";
+  return null;
+}
+
+/* ---------- palettes ---------- */
+function parseCdef(raw){
+  try{ return JSON.parse(raw); }catch(e){ return []; }
+}
+function parseLib(raw){
+  return raw.split(";").map(s=>{
+    const i=s.indexOf("|");
+    if(i<0) return null;
+    const hex=hexNorm("#"+s.slice(0,i));
+    const name=s.slice(i+1).trim();
+    return hex && name ? {hex, name, lib:true} : null;
+  }).filter(Boolean);
+}
+const CDEF = parseCdef(window.__CDEF_JSON || "[]");
+const COOLORS = parseLib(window.__LIBRAW || "");
+function cdefItem(row){
+  return {name:row[0], family:row[1], label:row[2], hex:hexNorm(row[3]), tags:row[4], flags:row[5], shade:row[6]};
+}
+const BASIC = CDEF.map(cdefItem).filter(x=>x.hex);
+function poolFor(palette, includeLib){
+  let list=[];
+  if(palette==="skin") list=SKIN_PAL.map(([n,h])=>({name:n,hex:hexNorm(h)}));
+  else if(palette==="metal") list=METAL_PAL.map(([n,h])=>({name:n,hex:hexNorm(h)}));
+  else if(palette==="lips") list=LIPS_PAL.map(([n,h])=>({name:n,hex:hexNorm(h)}));
+  else if(palette==="hair") list=BASIC.filter(x=>x.flags.includes("h"));
+  else if(palette==="eye"||palette==="gem") list=BASIC.filter(x=>x.flags.includes("e"));
+  else if(palette==="dress") list=BASIC.filter(x=>x.flags.includes("d"));
+  else list=BASIC.slice();
+  if(includeLib && palette!=="skin" && palette!=="metal" && palette!=="lips"){
+    list=list.concat(COOLORS);
+  }
+  if(includeLib && (palette==="skin"||palette==="metal"||palette==="lips")){
+    list=list.concat(COOLORS);
+  }
+  // unique by hex, keep first name
+  const seen=new Set(); const out=[];
+  for(const c of list){
+    if(!c||!c.hex||seen.has(c.hex)) continue;
+    seen.add(c.hex); out.push(c);
+  }
+  return out;
+}
+function nameOf(hex, palette){
+  hex=hexNorm(hex);
+  const all=poolFor(palette||"any", true).concat(FIELDS.map(f=>({hex:hexNorm(f.def),name:f.defName})));
+  const hit=all.find(c=>c.hex===hex);
+  return hit?hit.name:hex;
+}
+
+/* ---------- recolor ---------- */
+function canvasFromImage(img){
+  const c=document.createElement("canvas");
+  c.width=img.naturalWidth||img.width;
+  c.height=img.naturalHeight||img.height;
+  const ctx=c.getContext("2d",{willReadFrequently:true});
+  ctx.drawImage(img,0,0);
+  return c;
+}
+function cloneCanvas(src){
+  const c=document.createElement("canvas");
+  c.width=src.width; c.height=src.height;
+  c.getContext("2d",{willReadFrequently:true}).drawImage(src,0,0);
+  return c;
+}
+function recolorAll(){
+  const sep=document.getElementById("sepShade").checked;
+  const T={};
+  for(const f of FIELDS) T[f.id]=parseHex(state.colors[f.id]);
+  const dressT=T.dress, shadeT=sep?T.dressShade:T.dress;
+  const dressRef=parseHex("#FC83AB");
+  const shadeRef=sep?parseHex("#DE4A7B"):dressRef;
+  const metalT=T.crownMetal;
+  const jewelT=T.headJewel;
+
+  function applyBody(src){
+    const c=cloneCanvas(src);
+    const ctx=c.getContext("2d",{willReadFrequently:true});
+    const im=ctx.getImageData(0,0,c.width,c.height);
+    const d=im.data;
+    for(let y=0,i=0;y<c.height;y++){
+      for(let x=0;x<c.width;x++,i+=4){
+        const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+        const lab=classifyBody(x,y,r,g,b,a);
+        if(!lab) continue;
+        let tgt=null, ref=null, subtle=false, highlight=false;
+        if(lab==="hair"){ tgt=T.hair; ref=parseHex("#F7DE08"); }
+        else if(lab==="dress"){ tgt=dressT; ref=dressRef; }
+        else if(lab==="dressShade"){ tgt=shadeT; ref=shadeRef; }
+        else if(lab==="gloves"){ tgt=T.gloves; ref=parseHex("#FFFFFF"); }
+        else if(lab==="collarLace"){ continue; }
+        else if(lab==="skin"){ tgt=T.skin; ref=parseHex("#FFD0BE"); }
+        else if(lab==="crownMetal"||lab==="broochRim"){ tgt=metalT; ref=parseHex("#F7A521"); }
+        else if(lab==="crownGems"){ tgt=T.crownGems; ref=parseHex("#0084F7"); }
+        else if(lab==="broochGem"){ tgt=T.broochGem; ref=parseHex("#0894FF"); }
+        else if(lab==="earring"){ tgt=T.earring; ref=parseHex("#0894FF"); }
+        else if(lab==="headJewel"||lab==="uncertainRed"){ tgt=jewelT; ref=parseHex("#FF0031"); }
+        else if(lab==="jewelCenter"){ tgt=jewelT; ref=parseHex("#FFD6BD"); highlight=true; }
+        if(!tgt) continue;
+        // Leave stock pixels untouched so an unedited download matches the original PNG.
+        const tgtHex=toHex(tgt[0],tgt[1],tgt[2]);
+        const stock = {
+          hair:"#F7DE08", dress:"#FC83AB", dressShade: (sep?"#DE4A7B":"#FC83AB"),
+          gloves:"#FFFFFF", skin:"#FFD0BE",
+          crownMetal:"#F7A521", broochRim:"#F7A521",
+          crownGems:"#0084F7", broochGem:"#0894FF", earring:"#0894FF",
+          headJewel:"#FF0031", uncertainRed:"#FF0031", jewelCenter:"#FF0031"
+        };
+        const stockHex = lab==="dressShade" ? (sep?"#DE4A7B":"#FC83AB") : stock[lab];
+        if(stockHex && tgtHex===stockHex && !highlight) continue;
+        if(lab==="jewelCenter" && toHex(jewelT[0],jewelT[1],jewelT[2])==="#FF0031") continue;
+        let [nr,ng,nb]=mapColor(r,g,b, tgt[0],tgt[1],tgt[2], ref[0],ref[1],ref[2]);
+        if(highlight){
+          const [h,s,l]=rgbToHsl(nr,ng,nb);
+          [nr,ng,nb]=hslToRgb(h, Math.min(s,0.35), Math.max(l,0.82));
+        }
+        [nr,ng,nb]=snap555(nr,ng,nb);
+        d[i]=nr; d[i+1]=ng; d[i+2]=nb;
+      }
+    }
+    ctx.putImageData(im,0,0);
+    return c;
+  }
+  function applyFace(src, blink){
+    const c=cloneCanvas(src);
+    const ctx=c.getContext("2d",{willReadFrequently:true});
+    const im=ctx.getImageData(0,0,c.width,c.height);
+    const d=im.data;
+    const skinRef=parseHex("#FFD0BE");
+    const lipRef=parseHex("#EF737B");
+    const irisRef=parseHex("#21A5FF");
+    for(let y=0,i=0;y<c.height;y++){
+      for(let x=0;x<c.width;x++,i+=4){
+        const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+        const lab=classifyFace(x,y,r,g,b,a,blink);
+        if(!lab) continue;
+        let tgt, ref, mix=1;
+        if(lab==="skin"){ tgt=T.skin; ref=skinRef; }
+        else if(lab==="iris"){ tgt=T.iris; ref=irisRef; }
+        else if(lab==="lips"){ tgt=T.lips; ref=lipRef; mix=0.72; }
+        else continue;
+        const tgtHex=toHex(tgt[0],tgt[1],tgt[2]);
+        if(lab==="skin" && tgtHex==="#FFD0BE") continue;
+        if(lab==="iris" && tgtHex==="#21A5FF") continue;
+        if(lab==="lips" && tgtHex==="#EF737B") continue;
+        let [nr,ng,nb]=mapColor(r,g,b, tgt[0],tgt[1],tgt[2], ref[0],ref[1],ref[2]);
+        if(mix<1){
+          nr=Math.round(r+(nr-r)*mix);
+          ng=Math.round(g+(ng-g)*mix);
+          nb=Math.round(b+(nb-b)*mix);
+        }
+        [nr,ng,nb]=snap555(nr,ng,nb);
+        d[i]=nr; d[i+1]=ng; d[i+2]=nb;
+      }
+    }
+    ctx.putImageData(im,0,0);
+    return c;
+  }
+  state.out.peach=applyBody(state.orig.peach);
+  state.out.face0=applyFace(state.orig.face0, false);
+  state.out.face1=applyFace(state.orig.face1, true);
+  drawAll();
+  updateSummary();
+  if(state.orig.peach) syncHash();
+}
+
+/* ---------- draw ---------- */
+function blitNN(src, dest, x, y, scale){
+  const ctx=dest.getContext("2d",{willReadFrequently:true});
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(src, 0,0,src.width,src.height, x,y, src.width*scale, src.height*scale);
+}
+function mirrorFace(src){
+  const c=document.createElement("canvas");
+  c.width=src.width*2; c.height=src.height;
+  const ctx=c.getContext("2d",{willReadFrequently:true});
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(src,0,0);
+  ctx.save();
+  ctx.translate(c.width,0);
+  ctx.scale(-1,1);
+  ctx.drawImage(src,0,0);
+  ctx.restore();
+  return c;
+}
+function sizeCanvas(cv, w, h){
+  if(cv.width!==w) cv.width=w;
+  if(cv.height!==h) cv.height=h;
+  const ctx=cv.getContext("2d",{willReadFrequently:true});
+  ctx.imageSmoothingEnabled=false;
+  ctx.clearRect(0,0,w,h);
+  return ctx;
+}
+function drawAll(){
+  const z=state.zoom;
+  if(!state.orig.peach||!state.out.peach) return;
+  const ob=document.getElementById("origBody");
+  const rb=document.getElementById("rollBody");
+  sizeCanvas(ob, 128*z, 64*z);
+  sizeCanvas(rb, 128*z, 64*z);
+  blitNN(state.orig.peach, ob, 0,0,z);
+  blitNN(state.out.peach, rb, 0,0,z);
+
+  const of=document.getElementById("origFaces");
+  const rf=document.getElementById("rollFaces");
+  const m0o=mirrorFace(state.orig.face0);
+  const m1o=mirrorFace(state.orig.face1);
+  const m0r=mirrorFace(state.out.face0);
+  const m1r=mirrorFace(state.out.face1);
+  const gap=8;
+  const colW=64*z, colH=128*z;
+  const W=colW*2+gap, H=colH*2+gap+24;
+  function pack(cv, a,b, labels){
+    const ctx=sizeCanvas(cv, W, H);
+    ctx.fillStyle="#2a2034"; ctx.fillRect(0,0,W,H);
+    blitNN(a, cv, 0, 0, z);
+    blitNN(b, cv, colW+gap, 0, z);
+    // also show raw 32-wide strips under? skip — mirrored is the portrait
+    ctx.fillStyle="#f3e9ff"; ctx.font="12px sans-serif";
+    ctx.fillText(labels[0], 4, colH+14);
+    ctx.fillText(labels[1], colW+gap+4, colH+14);
+    // blink row
+    // We only have one row of mirrored faces; put blink below
+  }
+  // two rows: open on top, blink below
+  function pack2(cv, open, blink){
+    const labelH=18;
+    const ctx=sizeCanvas(cv, W, colH*2+gap+labelH*2);
+    ctx.fillStyle="#2a2034"; ctx.fillRect(0,0,W,cv.height);
+    ctx.fillStyle="#f3e9ff"; ctx.font="12px sans-serif";
+    ctx.fillText("Open (mirrored)", 8, 13);
+    blitNN(open, cv, Math.floor((W-colW)/2), labelH, z);
+    ctx.fillStyle="#f3e9ff";
+    ctx.fillText("Blink (mirrored)", 8, labelH+colH+gap+13);
+    blitNN(blink, cv, Math.floor((W-colW)/2), labelH+colH+gap, z);
+  }
+  pack2(of, m0o, m1o);
+  pack2(rf, m0r, m1r);
+
+  const hold=document.getElementById("nativePreviews");
+  hold.innerHTML="";
+  const bits=[
+    ["peach.png 128×64", state.out.peach],
+    ["peach_face.0.png 32×128", state.out.face0],
+    ["peach_face.1.png 32×128", state.out.face1],
+    ["Mirrored face (preview only)", m0r]
+  ];
+  for(const [cap, src] of bits){
+    const fig=document.createElement("figure");
+    const c=document.createElement("canvas");
+    c.width=src.width; c.height=src.height;
+    c.getContext("2d",{willReadFrequently:true}).drawImage(src,0,0);
+    c.style.imageRendering="pixelated";
+    const fc=document.createElement("figcaption");
+    fc.textContent=cap;
+    fig.appendChild(c); fig.appendChild(fc);
+    hold.appendChild(fig);
+  }
+}
+
+/* ---------- UI ---------- */
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove("show"), 1800);
+}
+function fieldById(id){ return FIELDS.find(f=>f.id===id); }
+function setColor(id, hex, name, fromUser){
+  hex=hexNorm(hex); if(!hex) return;
+  const f=fieldById(id); if(!f) return;
+  if(fromUser && state.locked[id]) { toast(f.label+" is locked"); return; }
+  state.colors[id]=hex;
+  state.names[id]=name||nameOf(hex,f.palette);
+  state.lastField=id;
+  const el=document.getElementById("f-"+id);
+  if(el){
+    el.querySelector("input[type=color]").value=hex;
+    el.querySelector(".hex").value=hex;
+  }
+  recolorAll();
+  saveStore();
+}
+function toggleLock(id){
+  state.locked[id]=!state.locked[id];
+  const btn=document.querySelector("#f-"+id+" .lock");
+  if(btn){ btn.classList.toggle("on", !!state.locked[id]); btn.textContent=state.locked[id]?"🔒":"🔓"; }
+  saveStore();
+}
+function addPick(hex, name){
+  hex=hexNorm(hex); if(!hex) return;
+  if(state.picks.some(p=>p.hex===hex)) { toast("Already in My picks"); return; }
+  state.picks.push({hex, name:name||hex});
+  renderPicks(); saveStore(); toast("Added to My picks");
+}
+function removePick(hex){
+  state.picks=state.picks.filter(p=>p.hex!==hex);
+  renderPicks(); saveStore();
+}
+function renderPicks(){
+  const bar=document.getElementById("picksBar");
+  const hint=document.getElementById("picksHint");
+  bar.innerHTML="";
+  hint.textContent=state.picks.length? (state.picks.length+" saved. 🎯 rolls unlocked fields from this list.") : "No picks yet. Tap ➕ on a field (or a library swatch) to save colors you like.";
+  for(const p of state.picks){
+    const b=document.createElement("button");
+    b.className="pick"; b.style.background=p.hex; b.title=p.name+" "+p.hex;
+    b.addEventListener("click", ()=>setColor(state.lastField, p.hex, p.name, true));
+    const x=document.createElement("button");
+    x.className="x"; x.type="button"; x.textContent="×"; x.title="Remove";
+    x.addEventListener("click", ev=>{ ev.stopPropagation(); removePick(p.hex); });
+    b.appendChild(x);
+    bar.appendChild(b);
+  }
+}
+function renderFields(){
+  const root=document.getElementById("fields");
+  root.innerHTML="";
+  const sep=document.getElementById("sepShade").checked;
+  for(const f of FIELDS){
+    if(f.optional && !sep) continue;
+    const d=document.createElement("div");
+    d.className="field"; d.id="f-"+f.id;
+    d.innerHTML=`
+      <div class="fhead">
+        <button type="button" class="lock${state.locked[f.id]?" on":""}" title="Lock this field">${state.locked[f.id]?"🔒":"🔓"}</button>
+        <b>${f.label}</b>
+        <input type="color" value="${state.colors[f.id]}" aria-label="${f.label} color">
+        <input class="hex" type="text" spellcheck="false" value="${state.colors[f.id]}" maxlength="7" aria-label="${f.label} hex">
+      </div>
+      <div class="ftools">
+        <button type="button" class="copy btn-copy">📋 Copy</button>
+        <button type="button" class="btn-pick">➕ My picks</button>
+        <button type="button" class="btn-rollone">🎲</button>
+      </div>
+      <div class="swatches" data-for="${f.id}"></div>`;
+    const col=d.querySelector("input[type=color]");
+    const hex=d.querySelector(".hex");
+    col.addEventListener("input", ()=>setColor(f.id, col.value, null, true));
+    hex.addEventListener("change", ()=>{
+      const h=hexNorm(hex.value);
+      if(!h){ hex.value=state.colors[f.id]; return; }
+      setColor(f.id,h,null,true);
+    });
+    d.querySelector(".lock").addEventListener("click", ()=>toggleLock(f.id));
+    d.querySelector(".btn-copy").addEventListener("click", ev=>{
+      copyText(state.colors[f.id]).then(()=>{ ev.target.classList.add("done"); ev.target.textContent="✅ Copied"; setTimeout(()=>{ev.target.classList.remove("done"); ev.target.textContent="📋 Copy";},1200); });
+    });
+    d.querySelector(".btn-pick").addEventListener("click", ()=>addPick(state.colors[f.id], state.names[f.id]));
+    d.querySelector(".btn-rollone").addEventListener("click", ()=>rollOne(f.id));
+    d.addEventListener("focusin", ()=>{ state.lastField=f.id; });
+    // small swatch row from basic palette (no coolors)
+    const sw=d.querySelector(".swatches");
+    const pals=poolFor(f.palette, false).slice(0, 24);
+    for(const c of pals){
+      const b=document.createElement("button");
+      b.className="sw"; b.style.background=c.hex; b.title=c.name+" "+c.hex;
+      b.addEventListener("click", ()=>setColor(f.id,c.hex,c.name,true));
+      sw.appendChild(b);
+    }
+    root.appendChild(d);
+  }
+}
+function renderLib(){
+  const q=(document.getElementById("libSearch").value||"").trim().toLowerCase();
+  const use=document.getElementById("useCoolors").checked;
+  const grid=document.getElementById("libGrid");
+  const hint=document.getElementById("libHint");
+  let list=BASIC.map(c=>({hex:c.hex,name:c.name,label:c.label||c.name}));
+  if(use) list=list.concat(COOLORS);
+  if(q) list=list.filter(c=>(c.name+" "+c.hex+(c.label||"")).toLowerCase().includes(q));
+  hint.textContent=(use? (BASIC.length+" basic + "+COOLORS.length+" Coolors") : (BASIC.length+" basic colors"))+(q? " · showing "+list.length : "");
+  grid.innerHTML="";
+  const max=use? list.length : Math.min(list.length, 200);
+  for(let i=0;i<max;i++){
+    const c=list[i];
+    const b=document.createElement("button");
+    b.style.background=c.hex; b.title=c.name+" "+c.hex;
+    b.addEventListener("click", ()=>{
+      setColor(state.lastField, c.hex, c.name, true);
+    });
+    grid.appendChild(b);
+  }
+}
+function randOf(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function rollOne(id, fromPicks){
+  const f=fieldById(id);
+  if(!f || state.locked[id]) return false;
+  if(f.optional && !document.getElementById("sepShade").checked) return false;
+  let pool;
+  if(fromPicks){
+    if(!state.picks.length) return false;
+    pool=state.picks;
+  } else {
+    pool=poolFor(f.palette, document.getElementById("useCoolors").checked);
+  }
+  if(!pool.length) return false;
+  const c=randOf(pool);
+  setColor(id, c.hex, c.name, false);
+  return true;
+}
+function rollAll(fromPicks){
+  if(fromPicks && !state.picks.length){ toast("Add some colors to My picks first"); return; }
+  let n=0;
+  for(const f of FIELDS){ if(rollOne(f.id, fromPicks)) n++; }
+  toast(fromPicks? "Rolled from your picks" : "New roll");
+  // setColor already recolors each time; that's ok
+}
+function resetAll(){
+  for(const f of FIELDS){
+    if(state.locked[f.id]) continue;
+    state.colors[f.id]=f.def;
+    state.names[f.id]=f.defName;
+  }
+  renderFields();
+  recolorAll();
+  saveStore();
+  toast("Reset to original colors (locked fields kept)");
+}
+function updateSummary(){
+  const sep=document.getElementById("sepShade").checked;
+  const lines=["DS Peach Randomizer roll","New Super Mario Bros. DS (USA)"];
+  for(const f of FIELDS){
+    if(f.optional && !sep) continue;
+    lines.push((state.locked[f.id]?"[locked] ":"")+f.label+": "+state.colors[f.id]+"  "+(state.names[f.id]||""));
+  }
+  lines.push("Separate dress shade: "+(sep?"yes":"no"));
+  lines.push("Coolors library in rolls: "+(document.getElementById("useCoolors").checked?"yes":"no"));
+  lines.push("Files: peach.png (128x64), peach_face.0.png (32x128), peach_face.1.png (32x128)");
+  lines.push("Re-inject into enemy/peach.nsbmd and map/cursor_peach.nsbmd via NSMBe.");
+  document.getElementById("summary").value=lines.join("\n");
+}
+function copyText(s){
+  if(navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(s);
+  return new Promise((res,rej)=>{
+    const ta=document.createElement("textarea"); ta.value=s; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); res(); }catch(e){ rej(e); }
+    ta.remove();
+  });
+}
+function canvasToBlob(c){
+  return new Promise(res=>c.toBlob(res, "image/png"));
+}
+async function downloadCanvas(c, name){
+  const blob=await canvasToBlob(c);
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+async function downloadAll(){
+  await downloadCanvas(state.out.peach, "peach.png");
+  await new Promise(r=>setTimeout(r, 250));
+  await downloadCanvas(state.out.face0, "peach_face.0.png");
+  await new Promise(r=>setTimeout(r, 250));
+  await downloadCanvas(state.out.face1, "peach_face.1.png");
+  toast("Downloaded all three PNGs");
+}
+
+function saveStore(){
+  try{
+    localStorage.setItem(STORE, JSON.stringify({
+      colors:state.colors, names:state.names, locked:state.locked, picks:state.picks,
+      sep:document.getElementById("sepShade").checked,
+      coolors:document.getElementById("useCoolors").checked,
+      zoom:state.zoom
+    }));
+  }catch(e){}
+}
+function loadStore(){
+  try{
+    const raw=localStorage.getItem(STORE); if(!raw) return;
+    const o=JSON.parse(raw);
+    if(o.colors) Object.assign(state.colors, o.colors);
+    if(o.names) Object.assign(state.names, o.names);
+    if(o.locked) state.locked=o.locked;
+    if(Array.isArray(o.picks)) state.picks=o.picks;
+    if(typeof o.sep==="boolean") document.getElementById("sepShade").checked=o.sep;
+    if(typeof o.coolors==="boolean") document.getElementById("useCoolors").checked=o.coolors;
+    if(o.zoom) state.zoom=o.zoom;
+  }catch(e){}
+}
+
+function loadImage(src){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>res(img);
+    img.onerror=()=>rej(new Error("Failed to load image"));
+    img.src=src;
+  });
+}
+async function setBase(which, img, expectW, expectH){
+  if(img.naturalWidth!==expectW || img.naturalHeight!==expectH){
+    toast("Wrong size: need "+expectW+"×"+expectH+" (got "+img.naturalWidth+"×"+img.naturalHeight+")");
+    return false;
+  }
+  const c=canvasFromImage(img);
+  if(which==="peach"){ state.imgs.peach=img; state.orig.peach=c; }
+  if(which==="face0"){ state.imgs.face0=img; state.orig.face0=c; }
+  if(which==="face1"){ state.imgs.face1=img; state.orig.face1=c; }
+  return true;
+}
+function bindUpload(id, which, w, h){
+  document.getElementById(id).addEventListener("change", async ev=>{
+    const f=ev.target.files && ev.target.files[0]; if(!f) return;
+    const url=URL.createObjectURL(f);
+    try{
+      const img=await loadImage(url);
+      const ok=await setBase(which,img,w,h);
+      if(ok){ document.getElementById("upStatus").textContent="Loaded "+f.name+" ("+w+"×"+h+")"; recolorAll(); }
+    } finally { URL.revokeObjectURL(url); }
+  });
+}
+
+
+/* ---------- site variant (public vs discreet HOA copy) ---------- */
+function applySite(){
+  const S = window.__DS_SITE || {};
+  const back = document.getElementById("backLink");
+  if(back){
+    back.href = S.backHref || "../";
+    back.textContent = S.backLabel || "← Back";
+  }
+  if(S.title) document.title = S.title;
+  const h = document.getElementById("pageTitle");
+  if(h && S.heading) h.innerHTML = S.heading;
+  const sub = document.getElementById("pageSub");
+  if(sub && S.sub) sub.textContent = S.sub;
+}
+
+/* ---------- ZIP (STORE, no compression, no CDN) ---------- */
+const CRC_TABLE = (function(){
+  const t = new Uint32Array(256);
+  for(let n=0;n<256;n++){
+    let c=n;
+    for(let k=0;k<8;k++) c = (c&1) ? (0xEDB88320 ^ (c>>>1)) : (c>>>1);
+    t[n]=c>>>0;
+  }
+  return t;
+})();
+function crc32(u8){
+  let c=0xFFFFFFFF;
+  for(let i=0;i<u8.length;i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c>>>8);
+  return (c ^ 0xFFFFFFFF)>>>0;
+}
+function u16(n){ return [n&0xFF, (n>>>8)&0xFF]; }
+function u32(n){ return [n&0xFF, (n>>>8)&0xFF, (n>>>16)&0xFF, (n>>>24)&0xFF]; }
+function zipStore(files){
+  // files: [{name, data: Uint8Array}]
+  const enc = new TextEncoder();
+  const parts=[], central=[];
+  let offset=0, now=new Date();
+  const dosTime = ((now.getHours()&31)<<11) | ((now.getMinutes()&63)<<5) | (Math.floor(now.getSeconds()/2)&31);
+  const dosDate = (((now.getFullYear()-1980)&127)<<9) | (((now.getMonth()+1)&15)<<5) | (now.getDate()&31);
+  for(const f of files){
+    const name=enc.encode(f.name);
+    const data=f.data;
+    const crc=crc32(data);
+    const local=new Uint8Array([
+      0x50,0x4B,0x03,0x04, 0x14,0x00, 0x00,0x00, 0x00,0x00,
+      ...u16(dosTime), ...u16(dosDate),
+      ...u32(crc), ...u32(data.length), ...u32(data.length),
+      ...u16(name.length), 0x00,0x00
+    ]);
+    parts.push(local, name, data);
+    const cen=new Uint8Array([
+      0x50,0x4B,0x01,0x02, 0x14,0x00, 0x14,0x00, 0x00,0x00, 0x00,0x00,
+      ...u16(dosTime), ...u16(dosDate),
+      ...u32(crc), ...u32(data.length), ...u32(data.length),
+      ...u16(name.length), 0x00,0x00, 0x00,0x00, 0x00,0x00, 0x00,0x00,
+      0x00,0x00, 0x00,0x00, ...u32(offset)
+    ]);
+    central.push(cen, name);
+    offset += local.length + name.length + data.length;
+  }
+  const cenSize = central.reduce((n,x)=>n+x.length,0);
+  const eocd=new Uint8Array([
+    0x50,0x4B,0x05,0x06, 0x00,0x00, 0x00,0x00,
+    ...u16(files.length), ...u16(files.length),
+    ...u32(cenSize), ...u32(offset), 0x00,0x00
+  ]);
+  const blob=new Blob([...parts, ...central, eocd], {type:"application/zip"});
+  return blob;
+}
+async function canvasBytes(c){
+  const blob=await canvasToBlob(c);
+  const buf=await blob.arrayBuffer();
+  return new Uint8Array(buf);
+}
+async function pngFiles(){
+  const specs=[
+    ["peach.png", state.out.peach],
+    ["peach_face.0.png", state.out.face0],
+    ["peach_face.1.png", state.out.face1]
+  ];
+  const out=[];
+  for(const [name,cv] of specs){
+    out.push({name, data: await canvasBytes(cv), canvas: cv});
+  }
+  return out;
+}
+async function downloadZip(){
+  const files=await pngFiles();
+  const blob=zipStore(files.map(f=>({name:f.name, data:f.data})));
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="ds-peach-textures.zip";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  toast("Downloaded ds-peach-textures.zip");
+}
+async function shareTextures(){
+  const files=await pngFiles();
+  const fileObjs=files.map(f=>new File([f.data], f.name, {type:"image/png"}));
+  const title=(window.__DS_SITE && window.__DS_SITE.shareTitle) || "DS Peach textures";
+  const text=document.getElementById("summary").value + "\n" + rollLink();
+  try{
+    if(navigator.canShare && navigator.canShare({files: fileObjs})){
+      await navigator.share({title, text, files: fileObjs});
+      toast("Shared the three PNGs");
+      return;
+    }
+    const zip=zipStore(files.map(f=>({name:f.name, data:f.data})));
+    const zf=new File([zip], "ds-peach-textures.zip", {type:"application/zip"});
+    if(navigator.canShare && navigator.canShare({files:[zf]})){
+      await navigator.share({title, text, files:[zf]});
+      toast("Shared the ZIP");
+      return;
+    }
+    if(navigator.share){
+      await navigator.share({title, text, url: rollLink()});
+      toast("Shared the roll link");
+      return;
+    }
+  }catch(e){
+    if(e && e.name==="AbortError") return;
+    console.warn(e);
+  }
+  toast("Share isn't available here — use Download ZIP or Copy link");
+}
+
+/* ---------- roll code + URL hash ---------- */
+const FIDS = FIELDS.map(f=>f.id);
+function encodeRoll(){
+  const cols=FIDS.map(id=>(state.colors[id]||"").replace(/^#/,"").toUpperCase());
+  const locks=FIDS.filter(id=>state.locked[id]).join(",");
+  const s=document.getElementById("sepShade").checked?"1":"0";
+  return "DSP3:"+cols.join(".")+":"+locks+":"+s;
+}
+function decodeRoll(str){
+  if(!str) return null;
+  str=String(str).trim();
+  // allow a full URL or a hash
+  const hashIdx=str.indexOf("#");
+  if(hashIdx>=0) str=str.slice(hashIdx+1);
+  if(str.startsWith("r=")) str=str.slice(2);
+  str=decodeURIComponent(str);
+  if(!str.startsWith("DSP3:")) return null;
+  const parts=str.split(":");
+  // DSP3 : colors : locks : shade   — colors contain no colons
+  if(parts.length<3) return null;
+  const cols=parts[1].split(".");
+  if(cols.length!==FIDS.length) return null;
+  const locks=new Set((parts[2]||"").split(",").filter(Boolean));
+  const sep=parts[3]==="1";
+  const colors={}; const names={}; const locked={};
+  for(let i=0;i<FIDS.length;i++){
+    const hex=hexNorm("#"+cols[i]);
+    if(!hex) return null;
+    const id=FIDS[i];
+    const f=fieldById(id);
+    colors[id]=hex;
+    names[id]=nameOf(hex, f.palette);
+    locked[id]=locks.has(id);
+  }
+  return {colors, names, locked, sep};
+}
+function applyRoll(decoded, silent){
+  if(!decoded) return false;
+  Object.assign(state.colors, decoded.colors);
+  Object.assign(state.names, decoded.names);
+  state.locked=decoded.locked||{};
+  const sepEl=document.getElementById("sepShade");
+  if(sepEl) sepEl.checked=!!decoded.sep;
+  renderFields();
+  recolorAll();
+  saveStore();
+  if(!silent) toast("Loaded roll");
+  return true;
+}
+function rollLink(){
+  const u=new URL(location.href);
+  u.hash=encodeRoll();
+  return u.toString();
+}
+function syncHash(){
+  if(!state.ready) return;
+  const code=encodeRoll();
+  const el=document.getElementById("rollCode");
+  if(el && document.activeElement!==el) el.value=code;
+  if(location.hash.replace(/^#/,"")!==code){
+    history.replaceState(null, "", "#"+code);
+  }
+}
+function loadFromHash(){
+  const raw=location.hash.replace(/^#/,"");
+  if(!raw) return false;
+  const d=decodeRoll(raw);
+  if(!d) return false;
+  return applyRoll(d, true);
+}
+function copyRollCode(){
+  const code=encodeRoll();
+  document.getElementById("rollCode").value=code;
+  copyText(code).then(()=>toast("Roll code copied"));
+}
+function copyRollLink(){
+  syncHash();
+  copyText(rollLink()).then(()=>toast("Link to this roll copied"));
+}
+function loadRollInput(){
+  const raw=document.getElementById("rollCode").value;
+  const d=decodeRoll(raw);
+  if(!d){ toast("Couldn't read that roll code"); return; }
+  applyRoll(d);
+  syncHash();
+}
+
+async function init(){
+  applySite();
+  loadStore();
+  const imgP=await loadImage(window.__BASE_PEACH);
+  const img0=await loadImage(window.__BASE_FACE0);
+  const img1=await loadImage(window.__BASE_FACE1);
+  await setBase("peach", imgP, 128, 64);
+  await setBase("face0", img0, 32, 128);
+  await setBase("face1", img1, 32, 128);
+  renderFields();
+  renderPicks();
+  renderLib();
+  document.querySelectorAll("#zoomBtns button").forEach(b=>{
+    b.classList.toggle("on", Number(b.dataset.zoom)===state.zoom);
+    b.addEventListener("click", ()=>{
+      state.zoom=Number(b.dataset.zoom);
+      document.querySelectorAll("#zoomBtns button").forEach(x=>x.classList.toggle("on", x===b));
+      drawAll(); saveStore();
+    });
+  });
+  document.getElementById("btnRoll").addEventListener("click", ()=>rollAll(false));
+  document.getElementById("btnPicks").addEventListener("click", ()=>rollAll(true));
+  document.getElementById("btnReset").addEventListener("click", resetAll);
+  document.getElementById("sepShade").addEventListener("change", ()=>{ renderFields(); recolorAll(); saveStore(); });
+  document.getElementById("useCoolors").addEventListener("change", ()=>{ renderLib(); saveStore(); });
+  document.getElementById("libSearch").addEventListener("input", renderLib);
+  document.getElementById("btnClearPicks").addEventListener("click", ()=>{ state.picks=[]; renderPicks(); saveStore(); });
+  document.getElementById("dlPeach").addEventListener("click", ()=>downloadCanvas(state.out.peach,"peach.png"));
+  document.getElementById("dlFace0").addEventListener("click", ()=>downloadCanvas(state.out.face0,"peach_face.0.png"));
+  document.getElementById("dlFace1").addEventListener("click", ()=>downloadCanvas(state.out.face1,"peach_face.1.png"));
+  document.getElementById("dlAll").addEventListener("click", downloadAll);
+  document.getElementById("btnCopySum").addEventListener("click", ev=>{
+    copyText(document.getElementById("summary").value).then(()=>{ ev.target.classList.add("done"); ev.target.textContent="✅ Copied"; setTimeout(()=>{ev.target.classList.remove("done"); ev.target.textContent="📋 Copy summary";},1200); });
+  });
+  bindUpload("upPeach","peach",128,64);
+  bindUpload("upFace0","face0",32,128);
+  bindUpload("upFace1","face1",32,128);
+  document.getElementById("dlZip").addEventListener("click", ()=>downloadZip().catch(err=>{console.error(err);toast("ZIP failed")}));
+  document.getElementById("btnShare").addEventListener("click", ()=>shareTextures());
+  document.getElementById("btnCopyCode").addEventListener("click", copyRollCode);
+  document.getElementById("btnCopyLink").addEventListener("click", copyRollLink);
+  document.getElementById("btnLoadCode").addEventListener("click", loadRollInput);
+  document.getElementById("rollCode").addEventListener("keydown", ev=>{ if(ev.key==="Enter") loadRollInput(); });
+  window.addEventListener("hashchange", ()=>loadFromHash());
+  recolorAll();
+  state.ready=true;
+  if(!loadFromHash()) syncHash();
+}
+
+window.__dsPeach = {
+  getState: ()=>state,
+  setColor, rollAll, resetAll, recolorAll,
+  downloadCanvas, downloadZip, zipStore, canvasBytes, pngFiles,
+  encodeRoll, decodeRoll, applyRoll, rollLink, loadFromHash, syncHash,
+  getOut: ()=>state.out,
+  classifyBody, classifyFace
+};
+
+init().catch(err=>{
+  console.error(err);
+  toast("Failed to load base textures");
+});
+})();
+
+</script>
+</body>
+</html>

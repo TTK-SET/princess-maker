@@ -25,6 +25,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose)}
 .chk{display:flex;align-items:center;gap:10px;font-weight:600;margin-top:12px;min-height:44px}
 .chk input{width:26px;height:26px;accent-color:var(--purple)}
 button,.btn{font-size:16px;font-weight:700;border:none;border-radius:16px;padding:12px 18px;min-height:48px;background:var(--lav);color:var(--ink);cursor:pointer;font-family:inherit}
+a.primary,a.btn{display:block;text-decoration:none;text-align:center;box-sizing:border-box}
+.sitenav{display:flex;flex-direction:column;gap:8px}
+.sitenav .hint{text-align:center;margin:0}
 button:active{transform:scale(.97)}
 .primary{background:linear-gradient(135deg,var(--rose),var(--purple));color:#fff;width:100%;font-size:19px;min-height:56px;margin-top:16px}
 .primary[disabled]{opacity:.6}
@@ -63,6 +66,10 @@ button:active{transform:scale(.97)}
 <body>
 <header><h1>👑 Shaun's Princess <span>Maker</span></h1><div class="sub">Character.AI edition — picture + idea → ready-to-paste princess</div></header>
 <main>
+<div class="card sitenav">
+  <a class="primary" href="ds-peach/">🎮 DS Peach Randomizer</a>
+  <p class="hint">Recolor New Super Mario Bros. DS Peach textures, then download or share them to your PC.</p>
+</div>
 <div class="card"><details id="setDet"><summary>⚙️ Settings</summary>
 <label for="preset">Model preset</label><select id="preset"></select>
 <div class="hint" id="presetHint">One tap fills API URL, model and the image checkbox.</div>
