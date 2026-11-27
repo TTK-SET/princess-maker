@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#7e57c2">
 <title>DS Peach Randomizer — NSMB DS</title>
@@ -82,6 +83,57 @@ details[open]>summary::before{content:"▾ "}
 a.primary,a.btn{display:block;text-decoration:none;text-align:center}
 #rollCode{width:100%;font-size:13px;font-family:ui-monospace,Menlo,monospace;padding:10px 12px;border-radius:14px;border:2px solid var(--lav);background:#fffafd;color:var(--ink);min-height:44px}
 
+/* Update 44 */
+.modebtns{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.modebtns button{flex:1 1 auto;min-height:44px;font-size:14px;padding:8px 10px;background:#efe8ff}
+.modebtns button.on{background:var(--purple);color:#fff}
+.selcur{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-size:14px}
+.pillb{background:var(--lav);border-radius:12px;padding:4px 10px;font-weight:700;color:var(--purple)}
+.tb{font-size:14px;min-height:40px;padding:8px 10px;margin:3px;background:#f3eeff;border-radius:12px}
+.tb.on{background:var(--rose);color:#fff}
+.tb.liked{box-shadow:inset 0 -3px 0 #2e7d32}.tb.nope{opacity:.55;text-decoration:line-through}
+.tbrow{display:flex;flex-wrap:wrap;margin-bottom:6px}
+.pickgrid{max-height:380px;overflow:auto;margin-top:8px;-webkit-overflow-scrolling:touch}
+.pickgrid details{border:1px solid var(--lav);border-radius:12px;padding:4px 8px;margin:6px 0}
+.pickgrid details>summary{font-size:15px;min-height:40px}
+.card details.sec>summary{font-size:19px}
+.ck{display:inline-flex;align-items:center;gap:6px;background:#f6f1ff;border-radius:12px;padding:8px 10px;margin:3px;font-size:14px;font-weight:600;min-height:40px}
+.ck input{width:20px;height:20px;accent-color:var(--purple)}
+.lrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 0;border-top:1px dashed var(--lav)}
+.lname{flex:1 1 140px;font-size:14px;font-weight:600}
+.mini{min-height:38px;padding:6px 10px;font-size:13px;border-radius:12px;flex:0 0 auto}
+select.mini{width:auto;min-height:38px;font-size:13px;padding:4px 8px}
+.mchips{display:inline-flex;gap:2px;flex:0 0 auto}.mchips i{width:16px;height:22px;border-radius:5px;display:inline-block;box-shadow:0 0 0 1px #d7c8ef}
+.rchips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.rchip{display:inline-flex;align-items:center;gap:6px;background:#faf6ff;border:1px solid var(--lav);border-radius:12px;padding:4px 8px;font-size:13px}
+.rchip i,.qchip i{width:18px;height:18px;border-radius:6px;display:inline-block;box-shadow:0 0 0 1px #d7c8ef}
+.qchip{display:inline-flex;align-items:center;gap:6px;background:#faf6ff;border:1px solid var(--lav);border-radius:12px;padding:4px 4px 4px 8px;margin:3px;font-size:13px}
+.qchip button{min-height:28px;width:28px;padding:0;border-radius:50%;background:#fff;color:#a3213a;font-size:14px}
+.reslabel{font-size:18px;font-weight:800;color:var(--purple)}
+.ratebox{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.ratebox button{min-height:40px;padding:6px 12px;font-size:14px}
+#rateUp.on{background:#2e7d32;color:#fff}#rateDn.on{background:#6d4c41;color:#fff}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
+.statgrid div{background:#faf6ff;border-radius:12px;padding:8px 4px}.statgrid b{display:block;font-size:20px;color:var(--purple)}.statgrid span{font-size:12px;opacity:.75}
+.statcols{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:13px}.statcols h4{margin:10px 0 4px;color:var(--purple)}.statcols ol{margin:0;padding-left:18px}
+@media(max-width:520px){.statgrid{grid-template-columns:repeat(2,1fr)}.statcols{grid-template-columns:1fr}}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.bcard{background:#2a2034;border-radius:12px;padding:6px;border:3px solid transparent;color:#f3e9ff}
+.bcard.picked{border-color:#ff9f43}
+.bthumb{width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;display:block;border-radius:8px;cursor:pointer}
+.bcap{font-size:12px;margin:4px 0;min-height:2.4em}
+.brow{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.brow .mini{min-height:34px;padding:4px 8px}
+.bpick{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#f3e9ff;flex:1}.bpick input{width:18px;height:18px}
+#rbCanvas{width:100%;max-width:576px;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;display:block;margin:8px auto;border-radius:12px;background:#2a2034}
+.hday{margin:10px 0 2px;color:var(--purple);font-size:14px}
+#panic{display:none;position:fixed;right:12px;bottom:12px;z-index:30;width:44px;height:44px;min-height:44px;border-radius:50%;padding:0;background:#eee;border:1px solid #bbb;font-size:20px;opacity:.6}
+#mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fff7fbee;padding:8px;gap:6px;border-top:2px solid var(--lav);padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+#mbar button{flex:1;min-height:48px;font-size:15px;padding:6px}
+#mbar .g{flex:2;background:linear-gradient(135deg,var(--rose),var(--purple));color:#fff}
+@media(max-width:640px){#mbar{display:flex}body{padding-bottom:90px}#panic{bottom:86px}.toast{bottom:96px}}
+kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px 6px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.prev-col{min-width:0}
+.stage canvas{max-width:100%;height:auto}
 </style>
 </head>
 <body>
@@ -129,21 +181,156 @@ a.primary,a.btn{display:block;text-decoration:none;text-align:center}
   </div>
 
   <div class="card">
+    <div class="modebtns" id="modeBtns">
+      <button type="button" data-m="classic" title="Every part gets its own random color (the old way)">🎲 Classic</button>
+      <button type="button" data-m="curated" title="Hand-picked princess combos">💖 Curated</button>
+      <button type="button" data-m="match" title="Colors that go together">🎨 Matching</button>
+      <button type="button" data-m="wild" title="Anything goes">🌪️ Wild</button>
+    </div>
+    <div class="selcur">Theme: <span class="pillb" id="selCur">No theme</span> <span class="muted">(pick one in 🗂️ Themes &amp; characters)</span></div>
     <div class="row">
-      <button type="button" class="primary" id="btnRoll" style="margin:0">🎲 Roll all</button>
+      <button type="button" class="primary" id="btnRoll" style="margin:0">🎲 Roll</button>
     </div>
     <div class="row" style="margin-top:8px">
-      <button type="button" id="btnPicks">🎯 Random from my picks</button>
-      <button type="button" class="ghost" id="btnReset">↩ Reset to original</button>
+      <button type="button" id="btnUndo">⏪ Undo (0)</button>
+      <button type="button" id="btnFav" style="background:#ffe9a8">⭐ Save</button>
+      <button type="button" id="btnPicks">🎯 From my picks</button>
+      <button type="button" class="ghost" id="btnReset">↩ Original</button>
     </div>
+    <details style="margin-top:8px">
+      <summary>➕ More re-rolls</summary>
+      <div class="row">
+        <button type="button" id="btnGirl" title="Keep hair, eyes, skin and lips">👧 Same girl, new outfit</button>
+        <button type="button" id="btnOutfit" title="Keep dress, gloves, crown and gems">👗 Same outfit, new girl</button>
+        <button type="button" id="btnSwap">🔄 Swap hair &amp; dress</button>
+        <button type="button" id="btnTrim">🎀 New trim &amp; gems</button>
+      </div>
+    </details>
+    <label class="chk"><input type="checkbox" id="optGloves"> 🧤 Keep gloves white (white stays on the gloves, never the dress)</label>
+    <label class="chk"><input type="checkbox" id="optTrim"> 🎀 Trim color goes on the dress shade (the darker panels), like a two-tone gown</label>
+    <label class="chk"><input type="checkbox" id="optSkin"> 🎨 Theme rolls also change skin &amp; lips</label>
     <label class="chk"><input type="checkbox" id="sepShade"> Separate dress shade / trim (otherwise shadows follow the dress color)</label>
-    <label class="chk"><input type="checkbox" id="useCoolors"> Include Coolors library (~540 named colors) when rolling. Off by default — rolls use the basic hair / eye / dress list.</label>
+    <label class="chk"><input type="checkbox" id="useCoolors"> 📚 Full color library (~540 shades) for Classic, Matching and Wild rolls. Off by default — rolls use the basic hair / eye / dress list.</label>
+  </div>
+
+  <div class="card">
+    <h2>🏷️ This look</h2>
+    <div class="reslabel" id="resLabel">Original colors</div>
+    <div class="ratebox" id="rateBox" style="display:none">
+      <button type="button" id="rateUp">👍 More</button>
+      <button type="button" id="rateDn">👎 Never</button>
+      <span class="muted">Rate <span id="rateName">this theme</span>: 👍 rolls it 3× more, 👎 skips it.</span>
+    </div>
+    <div class="rchips" id="resChips"></div>
+    <button type="button" class="copy" id="btnCopyAll">📋 Copy all colors + link</button>
   </div>
 
   <div class="card" id="fieldsCard">
     <h2>🎨 Colors</h2>
     <p class="muted">Lock a field to keep it on the next roll. Add colors to My picks, then use 🎯 Random from my picks.</p>
     <div id="fields"></div>
+    <button type="button" class="copy" id="btnCopyAll2" style="margin-top:8px">📋 Copy all colors + link</button>
+  </div>
+
+  <div class="card">
+    <details class="sec" id="pickerCard">
+      <summary>🗂️ Themes &amp; characters</summary>
+      <p class="muted">Tap a theme or character to roll it. “🎲 Any …” picks a random one from that group every roll. Only colors change — the sprite shape stays the same.</p>
+      <input type="search" id="tq" placeholder="🔎 Search themes &amp; characters…" autocomplete="off">
+      <select id="tcat" style="margin-top:6px"></select>
+      <select id="ccat" style="margin-top:6px"></select>
+      <div class="pickgrid" id="tgrid"></div>
+      <h3 style="margin:12px 0 4px;font-size:16px;color:var(--purple)">🎮 Characters</h3>
+      <div class="pickgrid" id="cgrid"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>🎛️ Multi-category mix</summary>
+      <p class="muted">Tick any theme groups and character groups, then roll from all of them together.</p>
+      <div class="row"><button type="button" id="mixUse">🎛️ Roll from my mix</button><button type="button" class="ghost" id="mixClear">Clear</button></div>
+      <p class="muted" id="mixCount"></p>
+      <div id="mixGrid"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>🧪 Mashups</summary>
+      <p class="muted">Hair, eyes and crown from A · dress, trim and gems from B.</p>
+      <h4>Character × Theme</h4>
+      <select id="mxA" aria-label="Character"></select><select id="mxB" aria-label="Theme" style="margin-top:6px"></select>
+      <button type="button" id="mxGo" style="margin-top:6px;width:100%">🔀 Character × Theme</button>
+      <h4>Theme × Theme</h4>
+      <select id="myA" aria-label="Theme A"></select><select id="myB" aria-label="Theme B" style="margin-top:6px"></select>
+      <button type="button" id="myGo" style="margin-top:6px;width:100%">🔀 Theme × Theme</button>
+      <h4>Character × Character</h4>
+      <select id="mzA" aria-label="Character A"></select><select id="mzB" aria-label="Character B" style="margin-top:6px"></select>
+      <button type="button" id="mzGo" style="margin-top:6px;width:100%">🔀 Character × Character</button>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2>📅 Today</h2>
+    <select id="dfil" aria-label="Daily filter"></select>
+    <div id="dailyBox" style="margin-top:6px"></div>
+  </div>
+
+  <div class="card" id="batchCard">
+    <details class="sec">
+      <summary>🧺 Batch &amp; cherry-pick</summary>
+      <p class="muted">Rolls several looks at once with your current mode, theme and locks. Tap a picture (or Keep) to keep it, then ZIP or save the keepers.</p>
+      <div class="row" id="batchBtns"><button type="button" data-n="4">4</button><button type="button" data-n="8">8</button><button type="button" data-n="12">12</button><button type="button" data-n="24">24</button></div>
+      <div class="row" style="margin-top:6px"><button type="button" class="copy" id="batchZip">📦 ZIP kept</button><button type="button" class="copy" id="batchFav">⭐ Save kept</button><button type="button" class="ghost" id="batchAll">☑️ All / none</button></div>
+      <p class="muted" id="batchCount"></p>
+      <div class="bgrid" id="batchGrid"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>🌈 Rainbow GIF</summary>
+      <p class="muted">Cycles one part through the rainbow and saves an animated GIF preview (face + body sheet). It's a preview only — the DS still uses one set of PNGs.</p>
+      <div class="row">
+        <select id="rbTarget" aria-label="Rainbow part"><option value="hair">🌈 Hair</option><option value="dress">👗 Dress</option><option value="iris">👁️ Eyes</option><option value="gems">💎 Gems</option><option value="all">✨ Everything</option></select>
+        <select id="rbFrames" aria-label="Frames"><option value="8">8 frames</option><option value="12" selected>12 frames</option><option value="24">24 frames</option></select>
+        <select id="rbSpeed" aria-label="Speed"><option value="80">Fast</option><option value="120" selected>Normal</option><option value="220">Slow</option></select>
+      </div>
+      <canvas id="rbCanvas" width="576" height="384"></canvas>
+      <div class="row"><button type="button" id="rbGo">▶️ Preview</button><button type="button" class="ghost" id="rbStop">⏹ Stop</button><button type="button" class="copy" id="rbGif">⬇️ Download GIF</button></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>⭐ Favorites (<span id="favCount">0</span>)</summary>
+      <div class="row"><select id="favFilter" aria-label="Folder"></select><select id="favSort" aria-label="Sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="name">A–Z</option></select></div>
+      <label for="favFolderNew" style="display:block;margin-top:8px">Save new favorites to</label>
+      <select id="favFolderNew"></select>
+      <input type="search" id="favQ" placeholder="🔎 Search favorites…" autocomplete="off" style="margin-top:6px">
+      <div class="row" style="margin-top:6px"><button type="button" class="mini" id="favNewFolder">📁 New folder</button><button type="button" class="mini ghost" id="favDelFolder">Remove folder</button><button type="button" class="mini" id="favExport">⬇️ Export</button><label class="mini btn" style="display:inline-flex;align-items:center;background:var(--lav)">⬆️ Import<input type="file" id="favImport" accept="application/json" style="display:none"></label></div>
+      <div id="favList"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>🕘 Last 7 days (<span id="histCount">0</span>)</summary>
+      <button type="button" class="mini ghost" id="histClear">🗑 Clear history</button>
+      <div id="histList"></div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>🚫 Banned colors &amp; 👍/👎 ratings</summary>
+      <div class="row"><input type="text" id="banIn" placeholder="Color name or #hex (e.g. orange, #FF8800)" autocomplete="off"><button type="button" id="banGo" style="flex:0 0 auto">🚫 Ban</button></div>
+      <div class="row" style="margin-top:6px"><button type="button" class="mini" id="banDress">🚫 Ban current dress</button><button type="button" class="mini" id="banHair">🚫 Ban current hair</button></div>
+      <div id="banList" style="margin-top:8px"></div>
+      <h4 style="margin:12px 0 4px;color:var(--purple)">Rated themes &amp; characters</h4>
+      <div id="ratedList"></div>
+    </details>
   </div>
 
   <div class="card">
@@ -158,7 +345,7 @@ a.primary,a.btn{display:block;text-decoration:none;text-align:center}
   <div class="card">
     <details>
       <summary>📚 Color library</summary>
-      <p class="muted">Basic named colors always show here. Turn on the Coolors toggle above to browse all 540 and include them in rolls.</p>
+      <p class="muted">Basic named colors always show here. Turn on 📚 Full color library above to browse all 540 and include them in rolls.</p>
       <input type="search" id="libSearch" placeholder="Search colors…" autocomplete="off">
       <p class="muted" id="libHint"></p>
       <div class="libgrid" id="libGrid"></div>
@@ -189,6 +376,33 @@ a.primary,a.btn{display:block;text-decoration:none;text-align:center}
   </div>
 
   <div class="card">
+    <details class="sec">
+      <summary>📊 Stats</summary>
+      <div id="statsBox"></div>
+      <button type="button" class="mini ghost" id="statsReset" style="margin-top:8px">Reset stats</button>
+    </details>
+  </div>
+
+  <div class="card">
+    <details class="sec">
+      <summary>✨ What's new &amp; shortcuts</summary>
+      <h4 style="margin:6px 0;color:var(--purple)">Update 44</h4>
+      <ul class="muted" style="padding-left:20px;line-height:1.5">
+        <li>🗂️ Every theme from the main randomizer (Jobs, Mythology, Eras, Aesthetics and more) and every character, turned into sprite colors: hair → hair, eyes → eyes, shirt → dress, pants / trim → dress shade, hat → crown, gems → crown gems, brooch and earrings. Plus a ⭐ Original princesses group.</li>
+        <li>🎲 Classic / Curated / Matching / Wild modes, “Any …” category rolls, 🎛️ multi-category mix, 👍/👎 ratings and 🔎 search.</li>
+        <li>🧪 Character × Theme, Theme × Theme and Character × Character mashups.</li>
+        <li>👧 Same girl / 👗 same outfit / 🔄 swap / 🎀 new trim re-rolls, ⏪ undo, and 🔒 locks on every color.</li>
+        <li>⭐ Favorites with folders (characters and jobs sort themselves), export / import, 🔗 links that open the exact look (theme name included).</li>
+        <li>📅 Daily pick and 💼 job of the day, 🕘 7-day history, 📊 stats, 🚫 banned colors.</li>
+        <li>🧺 Batch 4 / 8 / 12 / 24 with cherry-pick → ZIP, 🌈 rainbow GIF preview, add-to-home-screen app, and a bottom bar on phones.</li>
+        <li>🧤 Gloves stay white and the dress never rolls white (both can be changed).</li>
+      </ul>
+      <p class="muted">Keys on PC: <kbd>R</kbd> roll · <kbd>Z</kbd> undo · <kbd>F</kbd> save favorite · <kbd>G</kbd> same girl · <kbd>O</kbd> same outfit · <kbd>B</kbd> batch of 8 · <kbd>D</kbd> daily pick</p>
+      <button type="button" class="mini danger" id="wipeAll">🙈 Hide everything saved on this device</button>
+    </details>
+  </div>
+
+  <div class="card">
     <h2>📤 Use your own base PNGs</h2>
     <p class="muted">Optional. Upload stock (or already edited) textures of the exact sizes to recolor from those instead of the built-in originals.</p>
     <label class="file">Upload peach.png (128×64)<input type="file" id="upPeach" accept="image/png"></label>
@@ -206,10 +420,14 @@ a.primary,a.btn{display:block;text-decoration:none;text-align:center}
     </ul>
   </div>
 </main>
+<button type="button" id="panic" title="Home">🏠</button>
+<div id="mbar"><button type="button" id="mbUndo">⏪</button><button type="button" class="g" id="mbRoll">🎲 Roll</button><button type="button" id="mbFav">⭐</button><button type="button" id="mbDl">📦</button></div>
 <div class="toast" id="toast"></div>
 
 <script>
 window.__DS_SITE = {"title": "DS Peach Randomizer \u2014 NSMB DS", "heading": "\ud83d\udc51 DS Peach <span>Randomizer</span>", "sub": "New Super Mario Bros. DS texture recolor \u2014 hair, dress, gems & face", "backHref": "../", "backLabel": "\u2190 Shaun's Princess Maker", "shareTitle": "DS Peach textures", "variant": "public"};
+/* Theme + character colors from the main Princess Randomizer (same order; Original princesses appended). Append new entries at the end so share links stay valid. */
+window.__DSX = {"G":["Cute / Pastel","Holidays","Seasons","Weather","Sky / Time of Day","Space","Fruits","Desserts / Candy","Flowers","Gems","Ocean / Beach","Animals","Fantasy","Elements","Food / Drink","Nature","Music / Party","Sports Colors","Jobs / Occupations","Super Mario","Donkey Kong","Sonic","Pok\u00e9mon","The Legend of Zelda","Kirby","Metroid","Animal Crossing","Splatoon","Fire Emblem","Smash Bros. & Nintendo","Pac-Man","Mega Man","Street Fighter","Final Fantasy","Kingdom Hearts","Crash & Spyro","Disney Princesses","Classic Disney","Winnie the Pooh","Pixar","Sanrio","My Little Pony","Care Bears","Powerpuff Girls","SpongeBob SquarePants","Looney Tunes","Marvel","DC","Star Wars","Sailor Moon","Dragon Ball","Naruto","One Piece","Demon Slayer","Anime (Other)","Minecraft","Five Nights at Freddy's","Undertale","Among Us","Kids TV","Mythology & Legends","Historical Eras","Aesthetics & Vibes","Cozy Fall & Winter","Vocaloid","Persona","Xenoblade","Original princesses"],"T":[[0,"Cute",0,"blonde/pink/light pink/lavender/gold/pink/heart;light pink/blue/lavender/light pink/silver/pink/pink;light blue/pink/pink/light blue/silver/light blue/heart;brown/green/mint green/pink/gold/pink/pink"],[0,"Pastel Dream",0,"light pink/blue/light blue/lavender/silver/pink/star;light blue/pink/lavender/mint green/silver/light blue/light blue;light orange/green/mint green/light pink/gold/pink/pink"],[0,"Kawaii Bunny",0,"white/pink/light pink/pink/silver/pink/pink;light pink/blue/light blue/pink/silver/pink/pink;blonde/brown/lavender/light pink/gold/purple/purple"],[0,"Lolita Sweet",0,"blonde/blue/light pink/lavender/gold/pink/heart;black/pink/lavender/pink/silver/purple/purple;brown/green/light blue/pink/gold/blue/blue"],[0,"Teddy Bear",0,"brown/brown/light orange/brown/gold/orange/orange;light orange/green/pink/brown/gold/pink/pink;blonde/brown/brown/pink/gold/red/red"],[0,"Kitty Cat",0,"black/green/pink/black/gold/pink/pink;white/blue/light blue/pink/silver/blue/blue;orange/green/mint green/orange/gold/green/green"],[0,"Rainbow",0,"blonde/blue/light blue/pink/gold/purple/rainbow;pink/green/lavender/yellow/silver/blue/rainbow;white/pink/pink/light blue/gold/yellow/rainbow"],[0,"Cotton Candy Pastel",0,"light pink/blue/light blue/pink/silver/pink/pink;light blue/pink/light pink/light blue/silver/light blue/light blue;purple/pink/mint green/light pink/silver/purple/purple"],[1,"Halloween",0,"black/green/orange/black/gold/purple/purple;purple/pink/black/orange/silver/orange/orange;orange/green/purple/black/gold/green/green;white/blue/black/purple/silver/purple/purple"],[1,"Christmas",0,"blonde/green/red/gold/gold/green/green;red/green/dark green/gold/gold/red/red;white/blue/red/green/silver/green/green;brown/brown/green/red/gold/red/red"],[1,"Valentine's Day",0,"blonde/blue/red/pink/gold/pink/heart;black/pink/pink/red/gold/red/heart;light pink/pink/red/light pink/silver/pink/heart;brown/green/light pink/red/gold/red/heart"],[1,"Easter",0,"blonde/blue/lavender/yellow/gold/purple/purple;light pink/green/mint green/pink/silver/pink/pink;light blue/pink/yellow/lavender/silver/blue/blue"],[1,"St. Patrick's Day",0,"red/green/green/gold/gold/green/clover;orange/green/dark green/gold/gold/green/clover;blonde/green/green/gold/gold/green/clover"],[1,"Thanksgiving",0,"brown/brown/orange/brown/gold/orange/orange;red/green/brown/gold/gold/orange/orange;blonde/brown/dark red/orange/gold/red/red"],[1,"New Year",0,"black/blue/gold/silver/silver/blue/star;blonde/blue/navy/gold/gold/blue/blue;silver/pink/black/gold/gold/pink/pink;red/brown/silver/gold/gold/red/star"],[1,"4th of July",0,"blonde/blue/red/blue/silver/blue/star;brown/blue/navy/red/silver/red/star;white/blue/blue/red/silver/red/red;red/blue/navy/silver/silver/blue/blue"],[1,"Lunar New Year",0,"black/brown/red/gold/gold/red/red;black/brown/gold/red/gold/red/red;brown/brown/red/gold/gold/green/green"],[1,"Birthday",0,"pink/blue/light blue/pink/gold/pink/star;blonde/green/pink/yellow/gold/purple/purple;brown/blue/lavender/light pink/silver/pink/pink"],[1,"Day of the Dead",0,"black/brown/purple/orange/gold/orange/orange;white/green/black/pink/gold/pink/pink;red/brown/orange/purple/gold/purple/purple"],[1,"Hanukkah",0,"brown/blue/blue/silver/silver/blue/star;black/blue/navy/gold/gold/blue/star;blonde/blue/light blue/silver/silver/blue/blue"],[2,"Spring",0,"light pink/green/mint green/pink/gold/pink/pink;brown/green/light pink/light green/gold/green/green;blonde/blue/light green/yellow/gold/pink/pink"],[2,"Summer",0,"blonde/blue/yellow/orange/gold/blue/blue;brown/brown/light blue/yellow/gold/orange/orange;orange/green/teal/yellow/gold/teal/teal"],[2,"Autumn",0,"red/brown/orange/brown/gold/orange/orange;brown/green/dark red/gold/gold/orange/orange;orange/brown/brown/orange/gold/red/red"],[2,"Winter",0,"white/blue/light blue/silver/silver/blue/blue;silver/blue/navy/light blue/silver/light blue/light blue;black/blue/blue/silver/silver/light blue/snowflake"],[3,"Rainy Day",0,"blue/blue/light blue/navy/silver/blue/blue;black/green/teal/light blue/silver/blue/blue;brown/blue/yellow/navy/gold/blue/blue"],[3,"Thunderstorm",0,"blonde/blue/navy/yellow/gold/yellow/yellow;silver/blue/purple/yellow/silver/purple/purple;black/blue/dark blue/yellow/gold/yellow/yellow"],[3,"Snowy",0,"white/blue/light blue/silver/silver/blue/blue;light blue/blue/lavender/silver/silver/light blue/light blue;brown/brown/red/silver/silver/red/red"],[3,"Sunny",0,"blonde/blue/yellow/orange/gold/orange/orange;orange/brown/light orange/yellow/gold/yellow/yellow;brown/green/light yellow/orange/gold/orange/orange"],[3,"Rainbow After Rain",0,"light blue/pink/lavender/yellow/silver/blue/rainbow;blonde/blue/light blue/pink/gold/pink/rainbow"],[3,"Windy",0,"green/green/teal/light green/silver/green/green;blonde/blue/light blue/silver/gold/blue/blue;pink/green/mint green/pink/silver/pink/pink"],[4,"Sunrise",0,"light orange/blue/light pink/orange/gold/orange/orange;blonde/pink/light orange/pink/gold/pink/pink;pink/brown/yellow/light pink/gold/orange/orange"],[4,"Sunset",0,"orange/brown/purple/orange/gold/orange/orange;red/brown/orange/purple/gold/purple/purple;blonde/blue/pink/orange/gold/orange/orange"],[4,"Twilight",0,"purple/pink/navy/lavender/silver/purple/star;light blue/pink/purple/light pink/silver/pink/pink;silver/blue/lavender/navy/silver/blue/blue"],[4,"Midnight",0,"silver/blue/navy/silver/silver/blue/moon;black/blue/dark blue/silver/silver/blue/blue;white/pink/black/silver/silver/purple/moon"],[4,"Starry Night",0,"blonde/blue/navy/gold/gold/blue/star;light blue/blue/dark blue/silver/silver/light blue/star;purple/pink/black/gold/gold/purple/star"],[5,"Galaxy",0,"purple/blue/navy/pink/silver/purple/star;pink/blue/purple/light blue/silver/pink/star;silver/pink/black/purple/silver/blue/star"],[5,"Moon",0,"silver/blue/navy/silver/silver/light blue/moon;white/blue/light blue/silver/silver/blue/moon;black/pink/lavender/silver/silver/purple/moon"],[5,"Sun",0,"blonde/blue/orange/gold/gold/orange/orange;red/brown/yellow/orange/gold/red/red;orange/brown/red/gold/gold/yellow/yellow"],[5,"Mars",0,"black/brown/red/orange/gold/red/red;blonde/blue/orange/red/gold/red/red;brown/brown/dark red/orange/gold/orange/orange"],[5,"Saturn",0,"blonde/brown/light orange/brown/gold/orange/planet;brown/brown/yellow/brown/gold/yellow/planet;light orange/blue/brown/yellow/gold/yellow/planet"],[5,"Neptune",0,"silver/blue/blue/light blue/silver/blue/planet;light blue/blue/navy/silver/silver/blue/planet;white/blue/teal/blue/silver/blue/planet"],[5,"Comet",0,"silver/blue/navy/light blue/silver/blue/star;light blue/blue/purple/silver/silver/light blue/star"],[6,"Strawberry",0,"blonde/green/red/pink/gold/red/red;pink/green/light pink/red/gold/red/red;brown/brown/pink/green/gold/red/red"],[6,"Cherry",0,"black/brown/red/pink/gold/red/red;brown/green/light pink/red/gold/red/red;blonde/blue/dark red/pink/gold/red/red"],[6,"Lemon",0,"blonde/blue/yellow/green/gold/yellow/yellow;green/green/yellow/green/gold/yellow/yellow;brown/green/light yellow/green/gold/yellow/yellow"],[6,"Orange",0,"orange/green/light orange/green/gold/orange/orange;blonde/brown/orange/green/gold/orange/orange;brown/green/orange/yellow/gold/orange/orange"],[6,"Peach",0,"light pink/brown/light orange/pink/gold/pink/pink;light orange/blue/pink/light orange/gold/pink/pink;brown/green/light orange/pink/gold/pink/pink"],[6,"Blueberry",0,"light blue/blue/blue/navy/silver/blue/blue;silver/blue/navy/light blue/silver/blue/blue;black/blue/purple/blue/silver/blue/blue"],[6,"Grape",0,"light pink/pink/purple/green/gold/purple/purple;blonde/green/purple/light green/gold/purple/purple;black/pink/lavender/purple/silver/purple/purple"],[6,"Watermelon",0,"green/green/pink/green/gold/pink/pink;black/green/red/green/gold/green/green;pink/green/green/red/gold/red/red"],[6,"Apple",0,"red/green/green/red/gold/red/red;blonde/green/red/green/gold/green/green;brown/brown/red/gold/gold/red/red"],[6,"Pineapple",0,"blonde/green/yellow/green/gold/yellow/yellow;brown/brown/green/yellow/gold/yellow/yellow"],[7,"Cupcake",0,"pink/brown/light pink/brown/gold/pink/pink;brown/pink/lavender/pink/silver/pink/pink;blonde/blue/mint green/pink/gold/red/red"],[7,"Candy",0,"pink/blue/light blue/pink/silver/pink/pink;light blue/pink/pink/light blue/silver/blue/blue;red/green/mint green/red/gold/red/red"],[7,"Candy Cane",0,"white/green/red/green/silver/red/red;red/blue/green/red/gold/red/red;blonde/green/red/green/gold/red/red"],[7,"Chocolate",0,"brown/brown/pink/brown/gold/pink/pink;black/brown/brown/pink/gold/red/red;blonde/brown/dark red/brown/gold/red/red"],[7,"Ice Cream",0,"light pink/blue/mint green/pink/silver/pink/pink;brown/pink/light pink/brown/gold/pink/pink;blonde/blue/light blue/pink/silver/blue/blue"],[7,"Macaron",0,"light pink/green/mint green/pink/gold/pink/pink;purple/pink/light pink/lavender/silver/purple/purple;light blue/pink/lavender/light blue/silver/blue/blue"],[7,"Cotton Candy",0,"light pink/blue/light blue/pink/silver/pink/pink;light blue/pink/pink/light blue/silver/blue/blue"],[7,"Gingerbread",0,"brown/brown/red/green/gold/red/red;light orange/green/brown/red/gold/green/green"],[7,"Honey",0,"blonde/brown/yellow/brown/gold/orange/orange;brown/brown/orange/yellow/gold/yellow/yellow;black/brown/yellow/black/gold/yellow/yellow"],[8,"Rose",0,"black/pink/red/gold/gold/red/red;blonde/blue/red/pink/gold/red/red;brown/green/pink/red/gold/pink/pink"],[8,"Cherry Blossom",0,"light pink/pink/pink/light pink/silver/pink/pink;black/brown/light pink/pink/gold/pink/pink;brown/green/lavender/pink/silver/pink/pink"],[8,"Sunflower",0,"blonde/blue/yellow/brown/gold/orange/orange;brown/brown/yellow/green/gold/yellow/yellow;orange/green/light orange/yellow/gold/yellow/yellow"],[8,"Lavender",0,"silver/pink/lavender/purple/silver/purple/purple;blonde/blue/purple/lavender/gold/purple/purple;brown/green/lavender/light green/silver/purple/purple"],[8,"Lily",0,"blonde/green/light green/yellow/gold/green/green;red/green/orange/yellow/gold/orange/orange;brown/blue/light pink/green/gold/pink/pink"],[8,"Lotus",0,"light pink/green/pink/green/gold/pink/pink;black/brown/light pink/mint green/gold/pink/pink"],[8,"Tulip",0,"blonde/blue/red/yellow/gold/red/red;brown/green/pink/yellow/gold/pink/pink;orange/green/purple/yellow/gold/purple/purple"],[8,"Hydrangea",0,"light blue/blue/lavender/blue/silver/blue/blue;pink/blue/light blue/purple/silver/purple/purple"],[9,"Ruby",0,"black/pink/red/gold/gold/red/red;blonde/blue/dark red/gold/gold/red/red;silver/pink/red/silver/silver/red/red"],[9,"Sapphire",0,"blonde/blue/blue/gold/gold/blue/blue;silver/blue/navy/silver/silver/blue/blue;black/blue/blue/silver/silver/blue/blue"],[9,"Emerald",0,"red/green/green/gold/gold/green/green;black/green/dark green/gold/gold/green/green;blonde/green/green/gold/gold/green/green"],[9,"Amethyst",0,"silver/pink/purple/silver/silver/purple/purple;blonde/blue/purple/gold/gold/purple/purple;black/pink/lavender/purple/silver/purple/purple"],[9,"Diamond",0,"silver/blue/light blue/silver/silver/light blue/light blue;blonde/blue/lavender/silver/silver/light blue/light blue;black/blue/navy/silver/silver/light blue/light blue"],[9,"Pearl",0,"brown/blue/light pink/lavender/silver/pink/pink;blonde/blue/lavender/light pink/silver/purple/purple;black/blue/light blue/lavender/silver/light blue/light blue"],[9,"Opal",0,"silver/pink/lavender/light blue/silver/pink/pink;light blue/pink/mint green/pink/silver/light blue/light blue"],[9,"Topaz",0,"brown/brown/orange/gold/gold/orange/orange;blonde/blue/light orange/gold/gold/orange/orange"],[10,"Beach",0,"blonde/blue/light blue/yellow/gold/blue/blue;brown/brown/teal/light orange/gold/teal/teal;light pink/blue/yellow/light blue/gold/pink/pink"],[10,"Under the Sea",0,"blue/blue/teal/light blue/silver/blue/blue;pink/blue/light blue/pink/silver/pink/pink;green/blue/blue/teal/silver/teal/teal"],[10,"Coral Reef",0,"orange/blue/light orange/teal/gold/orange/orange;pink/green/teal/pink/gold/pink/pink;red/blue/teal/orange/gold/orange/orange"],[10,"Tropical Island",0,"black/brown/red/yellow/gold/red/red;brown/brown/orange/teal/gold/teal/teal;blonde/green/pink/teal/gold/pink/pink"],[10,"Sailor",0,"blonde/blue/navy/red/gold/red/red;brown/blue/blue/red/silver/red/red;red/blue/light blue/navy/silver/blue/blue"],[11,"Bunny",0,"white/pink/pink/light pink/silver/pink/pink;brown/brown/light pink/brown/gold/pink/pink"],[11,"Butterfly",0,"blonde/blue/light blue/purple/gold/blue/blue;black/blue/blue/orange/gold/orange/orange;pink/green/lavender/pink/silver/purple/purple"],[11,"Fox",0,"orange/brown/brown/orange/gold/orange/orange;white/blue/orange/brown/gold/orange/orange;light orange/green/green/orange/gold/orange/orange"],[11,"Swan",0,"blonde/blue/light blue/silver/silver/blue/blue;white/pink/black/silver/silver/red/red;silver/blue/lavender/light blue/silver/blue/blue"],[11,"Peacock",0,"black/green/teal/gold/gold/blue/blue;blonde/blue/blue/green/gold/green/green;purple/green/green/blue/gold/blue/blue"],[11,"Bee",0,"blonde/brown/yellow/black/gold/yellow/yellow;black/brown/yellow/brown/gold/orange/orange"],[11,"Ladybug",0,"black/green/red/black/gold/red/red;blonde/blue/red/black/gold/red/red"],[11,"Panda",0,"black/brown/light green/black/silver/green/green;white/blue/pink/black/silver/pink/pink"],[11,"Penguin",0,"black/blue/light blue/black/silver/blue/blue;white/blue/navy/light blue/silver/blue/blue"],[11,"Unicorn",0,"light pink/blue/lavender/light blue/silver/purple/star;white/pink/light pink/lavender/silver/pink/star;light blue/pink/pink/mint green/gold/pink/star"],[12,"Fairy",0,"green/green/mint green/pink/gold/green/green;blonde/blue/light pink/light green/gold/pink/pink;light blue/pink/lavender/mint green/silver/purple/purple"],[12,"Mermaid",0,"red/blue/teal/purple/gold/teal/teal;pink/blue/light blue/purple/silver/pink/pink;blue/green/purple/teal/silver/purple/purple"],[12,"Dragon",0,"red/green/dark red/gold/gold/red/red;black/blue/green/gold/gold/green/green;silver/blue/purple/silver/silver/purple/purple"],[12,"Witch",0,"black/green/purple/black/silver/purple/purple;purple/pink/black/purple/silver/purple/purple;orange/green/dark green/black/gold/green/green"],[12,"Angel",0,"blonde/blue/light blue/gold/gold/blue/blue;silver/blue/light pink/gold/gold/pink/pink;white/blue/lavender/gold/gold/purple/purple"],[12,"Vampire",0,"black/pink/dark red/black/silver/red/red;silver/pink/black/red/silver/red/red;white/pink/purple/black/silver/red/red"],[12,"Demon",0,"black/pink/red/black/gold/red/red;white/pink/black/red/gold/red/red;purple/pink/dark red/black/silver/purple/purple"],[12,"Elf",0,"blonde/green/green/gold/gold/green/green;silver/blue/light green/silver/silver/green/green;green/green/teal/gold/gold/green/green"],[12,"Ice Queen",0,"white/blue/light blue/silver/silver/blue/blue;silver/blue/blue/silver/silver/light blue/light blue;light blue/blue/navy/silver/silver/blue/snowflake"],[12,"Moon Goddess",0,"silver/blue/navy/silver/silver/blue/moon;white/pink/lavender/silver/silver/purple/moon"],[12,"Phoenix",0,"red/brown/orange/gold/gold/red/red;orange/brown/red/gold/gold/orange/orange;blonde/brown/red/orange/gold/orange/orange"],[12,"Magical Girl",0,"pink/blue/light pink/light blue/silver/pink/heart;blonde/pink/light blue/pink/gold/blue/star;purple/pink/lavender/pink/silver/purple/heart"],[13,"Fire",0,"red/brown/orange/gold/gold/red/red;orange/brown/red/gold/gold/orange/orange;black/brown/dark red/orange/gold/red/red"],[13,"Ice",0,"white/blue/light blue/silver/silver/blue/blue;light blue/blue/navy/silver/silver/light blue/light blue"],[13,"Thunder",0,"blonde/blue/purple/yellow/gold/yellow/yellow;yellow/blue/navy/yellow/gold/yellow/yellow"],[13,"Water",0,"blue/blue/light blue/navy/silver/blue/blue;light blue/blue/teal/silver/silver/blue/blue"],[13,"Earth",0,"brown/green/green/brown/gold/green/green;green/brown/brown/green/gold/green/green"],[13,"Wind",0,"green/green/mint green/silver/silver/green/green;silver/blue/light blue/mint green/silver/blue/blue"],[13,"Light",0,"blonde/blue/yellow/gold/gold/yellow/yellow;white/blue/light yellow/gold/gold/yellow/yellow"],[13,"Shadow",0,"black/pink/purple/black/silver/purple/purple;silver/pink/black/purple/silver/purple/purple;white/blue/navy/black/silver/purple/purple"],[14,"Tea Party",0,"blonde/blue/light blue/pink/gold/blue/blue;brown/green/mint green/pink/gold/pink/pink"],[14,"Coffee",0,"brown/brown/light orange/brown/gold/brown/brown;black/brown/brown/light orange/gold/orange/orange"],[14,"Boba Tea",0,"brown/brown/light pink/brown/gold/pink/pink;black/brown/lavender/brown/silver/purple/purple"],[14,"Sushi",0,"black/brown/red/black/gold/red/red;pink/brown/light orange/green/gold/orange/orange"],[14,"Pizza Party",0,"brown/green/red/yellow/gold/green/green;blonde/blue/orange/red/gold/red/red"],[14,"Milk & Cookies",0,"brown/blue/light blue/brown/silver/blue/blue;blonde/brown/light orange/brown/gold/orange/orange"],[15,"Enchanted Forest",0,"brown/green/green/gold/gold/green/green;green/green/teal/brown/gold/green/green;red/green/dark green/gold/gold/green/green"],[15,"Desert",0,"black/brown/orange/gold/gold/teal/teal;brown/brown/teal/gold/gold/orange/orange;blonde/green/red/gold/gold/red/red"],[15,"Mountain",0,"brown/green/green/brown/silver/green/green;black/blue/blue/silver/silver/blue/blue"],[15,"Jungle",0,"black/green/green/yellow/gold/green/green;orange/green/teal/orange/gold/orange/orange"],[15,"Mushroom Forest",0,"brown/green/red/gold/gold/red/red;brown/brown/light pink/red/gold/red/red;blonde/green/green/red/gold/red/red"],[15,"Crystal Cave",0,"silver/blue/purple/light blue/silver/purple/purple;light blue/pink/lavender/silver/silver/blue/blue"],[15,"Meadow",0,"blonde/blue/light green/yellow/gold/pink/pink;brown/green/yellow/light green/gold/green/green"],[16,"Idol Concert",0,"pink/blue/light pink/light blue/silver/pink/heart;blue/pink/light blue/pink/silver/blue/star;blonde/pink/red/pink/gold/red/heart"],[16,"Disco",0,"blonde/blue/purple/silver/silver/purple/star;pink/blue/silver/pink/silver/pink/pink;black/pink/gold/purple/gold/purple/purple"],[16,"Masquerade",0,"black/blue/purple/gold/gold/purple/purple;blonde/blue/dark red/gold/gold/red/red;silver/pink/black/silver/silver/purple/purple"],[16,"Classical Music",0,"brown/brown/dark red/gold/gold/red/red;blonde/blue/navy/gold/gold/blue/blue"],[16,"Rock Star",0,"black/pink/red/black/silver/red/star;pink/blue/black/pink/silver/pink/pink;purple/green/black/purple/silver/purple/star"],[16,"Carnival",0,"black/brown/purple/gold/gold/green/green;red/green/green/yellow/gold/purple/purple"],[17,"Red & Blue",0,"blonde/blue/red/blue/silver/blue/blue;brown/blue/blue/red/silver/red/red"],[17,"Green & Gold",0,"brown/green/green/gold/gold/green/green;blonde/green/dark green/yellow/gold/yellow/yellow"],[17,"Black & Orange",0,"black/brown/orange/black/gold/orange/orange;orange/brown/black/orange/gold/orange/orange"],[17,"Purple & Gold",0,"blonde/blue/purple/gold/gold/purple/purple;black/brown/purple/yellow/gold/yellow/yellow"],[17,"Navy & Silver",0,"silver/blue/navy/silver/silver/blue/blue;blonde/blue/navy/gray/silver/blue/blue"],[17,"Teal & Black",0,"black/blue/teal/black/silver/teal/teal;silver/blue/teal/black/silver/teal/teal"],[17,"Red & Gold",0,"blonde/brown/red/gold/gold/red/red;brown/brown/dark red/gold/gold/yellow/yellow"],[18,"Baker",0,"brown/blue/light pink/pink/gold/pink/heart;blonde/green/mint green/pink/gold/pink/pink;red/brown/light orange/gold/gold/red/red"],[18,"Chef",0,"black/brown/red/gold/gold/red/red;blonde/green/green/red/gold/red/red;brown/blue/navy/red/silver/red/red"],[18,"Veterinarian",0,"brown/green/light green/pink/gold/pink/heart;blonde/blue/light blue/pink/silver/pink/heart;orange/brown/mint green/orange/gold/orange/orange"],[18,"Librarian",0,"brown/green/green/gold/gold/green/green;black/blue/navy/gold/gold/blue/blue;red/brown/purple/gold/gold/purple/purple"],[18,"Teacher",0,"brown/blue/red/gold/gold/red/red;blonde/green/light green/red/gold/red/red;black/brown/teal/yellow/gold/yellow/yellow"],[18,"Artist",0,"pink/blue/yellow/blue/gold/red/red;blonde/blue/red/yellow/gold/blue/blue;purple/green/teal/orange/gold/orange/orange"],[18,"Ballerina",0,"blonde/blue/light pink/silver/silver/pink/pink;black/brown/lavender/silver/silver/purple/purple;brown/green/mint green/pink/gold/pink/pink"],[18,"Photographer",0,"brown/brown/orange/navy/gold/orange/orange;black/blue/light blue/navy/silver/blue/blue;blonde/green/green/gold/gold/green/green"],[18,"Detective",0,"brown/green/teal/gold/gold/teal/teal;blonde/blue/navy/gold/gold/blue/blue;red/brown/orange/navy/gold/orange/orange"],[18,"Scientist",0,"blonde/green/mint green/silver/silver/teal/teal;light blue/blue/lavender/silver/silver/purple/purple;pink/pink/teal/silver/silver/pink/pink"],[18,"Astronomer",0,"silver/blue/navy/gold/gold/blue/star;black/pink/purple/gold/gold/purple/star;blonde/blue/blue/silver/silver/light blue/star"],[18,"Pilot",0,"brown/blue/navy/gold/gold/blue/blue;blonde/blue/light orange/navy/gold/orange/orange;red/green/teal/gold/gold/teal/teal"],[18,"Flight Attendant",0,"blonde/blue/navy/red/gold/red/red;black/brown/red/navy/gold/navy/navy;brown/blue/light blue/navy/silver/blue/blue"],[18,"Train Conductor",0,"brown/blue/navy/gold/gold/red/red;black/green/green/gold/gold/red/red;blonde/blue/red/navy/gold/navy/navy"],[18,"Mail Carrier",0,"blonde/blue/light blue/red/gold/red/heart;brown/brown/red/navy/gold/red/heart;pink/blue/lavender/pink/silver/pink/heart"],[18,"Florist",0,"blonde/blue/light pink/mint green/gold/pink/pink;brown/green/lavender/light green/silver/purple/purple;red/green/yellow/green/gold/red/red"],[18,"Gardener",0,"brown/green/light green/yellow/gold/green/green;blonde/green/green/pink/gold/pink/pink;orange/green/mint green/green/gold/green/green"],[18,"Nurse",0,"blonde/blue/light pink/pink/gold/pink/heart;brown/pink/mint green/pink/silver/pink/heart;black/blue/light blue/pink/silver/pink/heart"],[18,"Magician",0,"black/pink/purple/gold/gold/red/star;blonde/blue/navy/gold/gold/red/red;silver/blue/red/gold/gold/navy/star"],[18,"Architect",0,"brown/blue/blue/silver/silver/light blue/light blue;blonde/green/teal/gold/gold/teal/teal;black/brown/orange/navy/gold/navy/navy"],[18,"Seamstress",0,"pink/blue/lavender/pink/silver/purple/purple;blonde/green/red/gold/gold/red/red;black/pink/light pink/lavender/silver/pink/pink"],[18,"Royal Knight",0,"blonde/blue/blue/gold/gold/red/red;silver/blue/navy/silver/silver/blue/blue;red/green/green/gold/gold/green/green"],[18,"Firefighter",0,"blonde/blue/red/gold/gold/red/red;brown/brown/red/yellow/gold/orange/orange;black/brown/orange/yellow/gold/red/red"],[18,"Judge",0,"black/brown/navy/gold/gold/red/red;blonde/blue/purple/gold/gold/purple/purple;silver/blue/red/gold/gold/red/red"],[18,"Ship Captain",0,"blonde/blue/navy/gold/gold/red/red;brown/blue/blue/gold/gold/navy/navy;red/green/teal/gold/gold/teal/teal"],[18,"Pirate",0,"red/green/navy/gold/gold/red/red;black/brown/red/gold/gold/red/red;blonde/blue/purple/gold/gold/purple/purple"],[18,"Lighthouse Keeper",0,"blonde/blue/red/navy/gold/red/star;brown/green/navy/red/silver/red/star;orange/blue/light blue/navy/silver/blue/star"],[18,"Marine Biologist",0,"brown/green/teal/silver/silver/teal/teal;blonde/blue/light blue/navy/silver/blue/blue;pink/blue/mint green/pink/gold/pink/pink"],[18,"Pearl Diver",0,"black/blue/teal/silver/silver/light blue/light blue;blonde/blue/light blue/silver/silver/blue/blue;pink/pink/lavender/silver/silver/purple/purple"],[18,"Lifeguard",0,"blonde/blue/red/yellow/gold/red/red;brown/brown/orange/yellow/gold/orange/orange;black/blue/light blue/red/silver/red/red"],[18,"Gondolier",0,"brown/blue/navy/red/gold/red/red;blonde/green/red/navy/gold/navy/navy;black/brown/light blue/navy/silver/blue/blue"],[18,"Aquarium Trainer",0,"blonde/blue/light blue/teal/silver/teal/teal;brown/green/teal/light blue/silver/blue/blue;pink/blue/mint green/teal/silver/teal/teal"],[18,"Surfer",0,"blonde/blue/teal/orange/gold/orange/orange;brown/brown/light orange/teal/gold/teal/teal;pink/green/yellow/pink/gold/pink/pink"],[18,"Submarine Explorer",0,"red/brown/navy/gold/gold/teal/teal;blonde/green/teal/gold/gold/teal/teal;brown/blue/blue/gold/gold/orange/orange"],[18,"Harbor Angler",0,"brown/blue/light blue/navy/gold/blue/blue;blonde/green/green/yellow/gold/green/green;orange/brown/teal/navy/silver/teal/teal"],[18,"Cruise Hostess",0,"blonde/blue/navy/gold/gold/red/red;black/brown/light blue/navy/silver/blue/blue;brown/blue/red/gold/gold/navy/navy"],[18,"Astronaut",0,"silver/blue/navy/silver/silver/blue/star;blonde/blue/lavender/silver/silver/purple/star;black/brown/light blue/navy/silver/blue/star"],[18,"Starship Captain",0,"silver/blue/purple/gold/gold/purple/star;blonde/green/navy/gold/gold/teal/teal;pink/pink/teal/silver/silver/pink/pink"],[18,"Inventor",0,"brown/green/teal/gold/gold/orange/orange;red/brown/navy/gold/gold/teal/teal;blonde/blue/orange/navy/gold/navy/navy"],[18,"Mechanic",0,"blonde/blue/red/navy/silver/red/red;brown/brown/orange/navy/silver/orange/orange;pink/blue/light blue/pink/silver/pink/pink"],[18,"Robotics Engineer",0,"light blue/blue/navy/silver/silver/light blue/light blue;pink/pink/lavender/silver/silver/purple/purple;blonde/green/mint green/silver/silver/teal/teal"],[18,"Programmer",0,"purple/blue/teal/silver/silver/teal/teal;brown/green/green/silver/silver/green/green;light pink/pink/navy/pink/silver/pink/pink"],[18,"Game Designer",0,"pink/blue/purple/light blue/silver/light blue/star;blonde/green/teal/pink/gold/pink/star;black/pink/light pink/purple/silver/purple/star"],[18,"Film Director",0,"black/brown/red/gold/gold/red/star;blonde/blue/navy/gold/gold/red/red;brown/green/purple/gold/gold/purple/star"],[18,"News Anchor",0,"blonde/blue/navy/silver/silver/blue/blue;brown/brown/red/gold/gold/red/red;black/blue/teal/silver/silver/teal/teal"],[18,"Journalist",0,"brown/green/teal/gold/gold/teal/teal;red/brown/navy/gold/gold/red/red;blonde/blue/light blue/navy/silver/blue/blue"],[18,"Weather Forecaster",0,"blonde/blue/light blue/yellow/silver/blue/blue;brown/brown/yellow/light blue/gold/blue/blue;light blue/blue/lavender/silver/silver/blue/blue"],[18,"Tour Guide",0,"brown/green/orange/navy/gold/orange/orange;blonde/blue/teal/yellow/gold/teal/teal;black/brown/yellow/navy/gold/navy/navy"],[18,"Museum Curator",0,"brown/green/green/gold/gold/green/green;black/brown/purple/gold/gold/purple/purple;blonde/blue/navy/gold/gold/blue/blue"],[18,"Zookeeper",0,"blonde/green/green/yellow/gold/green/green;brown/brown/light green/orange/gold/orange/orange;red/green/teal/yellow/gold/teal/teal"],[18,"Hair Stylist",0,"pink/blue/lavender/pink/silver/pink/heart;blonde/blue/light pink/purple/silver/purple/purple;black/pink/teal/pink/silver/pink/pink"],[18,"Toymaker",0,"brown/blue/red/green/gold/green/green;blonde/green/green/red/gold/red/red;red/brown/navy/red/gold/red/red"],[18,"Dollmaker",0,"blonde/blue/light pink/lavender/silver/pink/heart;brown/green/lavender/pink/silver/purple/purple;black/pink/red/pink/gold/red/heart"],[18,"Candle Maker",0,"blonde/brown/orange/gold/gold/orange/orange;brown/green/yellow/gold/gold/orange/orange;red/brown/purple/gold/gold/purple/purple"],[18,"Perfumer",0,"light pink/blue/lavender/silver/silver/pink/pink;blonde/green/light pink/purple/gold/purple/purple;black/pink/mint green/pink/silver/pink/pink"],[18,"Milliner",0,"brown/blue/light blue/pink/gold/pink/pink;blonde/green/lavender/green/gold/purple/purple;red/brown/teal/gold/gold/teal/teal"],[18,"Cobbler",0,"brown/blue/blue/gold/gold/light blue/light blue;blonde/green/red/gold/gold/red/red;black/brown/purple/silver/silver/purple/purple"],[18,"Locksmith",0,"black/brown/navy/gold/gold/blue/blue;brown/green/teal/gold/gold/teal/teal;blonde/blue/purple/gold/gold/purple/purple"],[18,"Jeweler",0,"black/blue/purple/gold/gold/blue/blue;blonde/green/teal/silver/silver/pink/pink;brown/brown/red/gold/gold/green/green"],[18,"Clockmaker",0,"brown/green/teal/gold/gold/teal/teal;red/brown/navy/gold/gold/orange/orange;blonde/blue/purple/gold/gold/purple/purple"],[18,"Calligrapher",0,"black/brown/red/gold/gold/red/red;brown/green/teal/gold/gold/teal/teal;blonde/blue/navy/silver/silver/navy/navy"],[18,"Potter",0,"brown/green/teal/orange/gold/orange/orange;blonde/blue/light orange/teal/gold/teal/teal;red/brown/mint green/orange/gold/orange/orange"],[18,"Stained Glass Artist",0,"blonde/blue/purple/gold/gold/red/red;brown/green/teal/gold/gold/purple/purple;black/pink/blue/gold/gold/red/red"],[18,"Sculptor",0,"black/brown/lavender/gold/gold/purple/purple;brown/green/light blue/silver/silver/blue/blue;blonde/blue/teal/gold/gold/teal/teal"],[18,"Origami Artist",0,"black/brown/red/gold/gold/red/red;pink/blue/light blue/pink/silver/pink/pink;blonde/green/mint green/purple/silver/purple/purple"],[18,"Weaver",0,"brown/green/red/gold/gold/red/red;blonde/blue/teal/orange/gold/orange/orange;red/brown/purple/gold/gold/purple/purple"],[18,"Beekeeper",0,"brown/brown/yellow/orange/gold/orange/orange;black/green/light orange/yellow/gold/yellow/yellow;red/blue/yellow/gold/gold/orange/orange"],[18,"Farmer",0,"brown/green/red/yellow/gold/red/red;blonde/blue/light blue/yellow/gold/blue/blue;red/green/green/yellow/gold/green/green"],[18,"Shepherdess",0,"blonde/blue/light blue/pink/gold/pink/pink;brown/green/light pink/green/gold/pink/pink;light orange/blue/lavender/pink/gold/purple/purple"],[18,"Orchard Keeper",0,"brown/green/red/green/gold/red/red;blonde/blue/green/red/gold/red/red;red/green/light green/red/gold/red/red"],[18,"Park Ranger",0,"brown/green/green/gold/gold/green/green;blonde/brown/teal/orange/gold/orange/orange;red/green/light green/navy/gold/green/green"],[18,"Archaeologist",0,"brown/green/teal/gold/gold/teal/teal;red/brown/orange/gold/gold/orange/orange;blonde/blue/navy/gold/gold/blue/blue"],[18,"Paleontologist",0,"brown/green/orange/navy/gold/orange/orange;blonde/blue/green/gold/gold/green/green;black/brown/teal/gold/gold/teal/teal"],[18,"Botanist",0,"brown/green/green/gold/gold/green/green;blonde/blue/mint green/pink/gold/pink/pink;red/green/light green/yellow/gold/green/green"],[18,"Entomologist",0,"brown/green/yellow/green/gold/green/green;blonde/blue/light blue/orange/gold/orange/orange;black/green/mint green/purple/silver/purple/purple"],[18,"Cartographer",0,"brown/green/teal/gold/gold/teal/teal;blonde/blue/navy/gold/gold/blue/blue;red/brown/green/gold/gold/green/green"],[18,"Treasure Hunter",0,"brown/green/red/gold/gold/red/red;blonde/blue/teal/gold/gold/teal/teal;black/brown/purple/gold/gold/purple/purple"],[18,"Storm Chaser",0,"blonde/blue/navy/yellow/silver/yellow/yellow;black/blue/purple/yellow/silver/yellow/yellow;silver/blue/teal/silver/silver/blue/blue"],[18,"Mountaineer",0,"brown/blue/red/navy/silver/red/red;blonde/blue/light blue/navy/silver/blue/blue;black/brown/orange/navy/silver/orange/orange"],[18,"Cave Explorer",0,"black/blue/purple/silver/silver/teal/teal;brown/green/teal/silver/silver/purple/purple;blonde/blue/navy/silver/silver/light blue/light blue"],[18,"Race Car Driver",0,"blonde/blue/red/navy/silver/red/red;black/brown/yellow/navy/silver/yellow/yellow;brown/blue/blue/orange/silver/orange/orange"],[18,"Equestrian",0,"brown/green/navy/gold/gold/red/red;blonde/blue/green/gold/gold/green/green;black/brown/purple/silver/silver/purple/purple"],[18,"Figure Skater",0,"silver/blue/light blue/silver/silver/blue/blue;blonde/blue/lavender/silver/silver/purple/purple;black/pink/light pink/silver/silver/pink/pink"],[18,"Flamenco Dancer",0,"black/brown/red/gold/gold/red/red;brown/green/orange/navy/gold/orange/orange;blonde/blue/purple/gold/gold/purple/purple"],[18,"Acrobat",0,"pink/blue/teal/gold/gold/red/star;blonde/blue/red/gold/gold/blue/star;purple/green/yellow/purple/gold/purple/star"],[18,"Juggler",0,"blonde/green/purple/yellow/gold/red/star;red/blue/yellow/blue/gold/blue/blue;black/brown/teal/orange/gold/orange/orange"],[18,"Fortune Teller",0,"black/pink/purple/gold/gold/purple/purple;silver/blue/navy/gold/gold/teal/teal;red/green/teal/gold/gold/purple/purple"],[18,"Alchemist",0,"purple/green/teal/gold/gold/green/green;black/blue/navy/gold/gold/purple/purple;silver/pink/purple/silver/silver/pink/pink"],[18,"Apothecary",0,"brown/green/green/gold/gold/purple/purple;blonde/green/lavender/green/gold/green/green;red/brown/teal/gold/gold/teal/teal"],[18,"Harpist",0,"blonde/blue/light blue/gold/gold/blue/blue;brown/green/lavender/gold/gold/purple/purple;black/pink/light pink/gold/gold/pink/pink"],[18,"Opera Singer",0,"black/brown/red/gold/gold/red/red;blonde/blue/purple/gold/gold/purple/purple;brown/green/teal/gold/gold/teal/teal"],[18,"Court Jester",0,"red/blue/purple/yellow/gold/yellow/yellow;blonde/green/red/green/gold/green/green;black/pink/teal/purple/gold/purple/purple"],[18,"Bard",0,"brown/green/green/gold/gold/red/red;red/brown/teal/gold/gold/teal/teal;blonde/blue/purple/gold/gold/purple/purple"],[18,"Royal Scribe",0,"brown/green/navy/gold/gold/red/red;black/brown/purple/gold/gold/purple/purple;blonde/blue/teal/gold/gold/teal/teal"],[18,"Royal Herald",0,"blonde/blue/blue/gold/gold/red/red;brown/green/red/gold/gold/blue/blue;red/blue/purple/gold/gold/purple/purple"],[18,"Blacksmith",0,"red/brown/navy/gold/gold/orange/orange;black/blue/red/silver/silver/orange/orange;blonde/green/teal/gold/gold/orange/orange"],[18,"Archer",0,"red/green/green/gold/gold/green/green;blonde/blue/teal/gold/gold/teal/teal;brown/brown/navy/silver/silver/blue/blue"],[18,"Fencer",0,"blonde/blue/navy/silver/silver/blue/blue;black/brown/red/silver/silver/red/red;silver/blue/purple/silver/silver/purple/purple"],[18,"Falconer",0,"brown/green/green/gold/gold/orange/orange;blonde/blue/navy/gold/gold/blue/blue;red/brown/teal/gold/gold/teal/teal"],[18,"Secret Agent",0,"black/blue/navy/silver/silver/blue/blue;blonde/blue/red/silver/silver/red/red;silver/green/purple/silver/silver/purple/purple"],[18,"Dentist",0,"blonde/blue/mint green/light blue/silver/blue/blue;pink/pink/light blue/pink/silver/pink/pink;brown/green/lavender/mint green/silver/purple/purple"],[18,"Coast Guard",0,"blonde/blue/navy/orange/gold/orange/orange;brown/blue/red/navy/gold/navy/navy;black/brown/blue/orange/silver/orange/orange"],[18,"Harbor Master",0,"brown/blue/navy/gold/gold/red/red;blonde/green/teal/gold/gold/teal/teal;red/blue/blue/gold/gold/navy/navy"],[18,"Riverboat Captain",0,"brown/blue/red/gold/gold/navy/navy;blonde/green/green/gold/gold/red/red;black/brown/navy/gold/gold/red/red"],[18,"Deep Sea Diver",0,"silver/blue/navy/gold/gold/teal/teal;blonde/blue/teal/gold/gold/light blue/light blue;pink/pink/purple/silver/silver/pink/pink"],[19,"Mario",1,"brown/blue/red/blue/brown/gold/red/red"],[19,"Luigi",1,"brown/blue/green/blue/brown/gold/green/green"],[19,"Princess Peach",1,"blonde/blue/pink//light pink/gold/blue/blue"],[19,"Princess Daisy",1,"brown/blue/yellow//orange/gold/green/green"],[19,"Rosalina",1,"platinum blonde/blue/light blue//silver/silver/light blue/light blue"],[19,"Bowser",1,"red/green/green/yellow/orange/gold/red/red"],[19,"Bowser Jr.",1,"orange/green/green/yellow/light orange/gold/red/red"],[19,"Wario",1,"brown/blue/yellow/purple/green/gold/yellow/yellow"],[19,"Waluigi",1,"black/blue/purple/navy/orange/gold/purple/purple"],[19,"Yoshi",1,"green/blue/red//orange/gold/red/red"],[19,"Toad",1,"white/blue/blue//gold/gold/red/red"],[19,"Toadette",1,"pink/blue/light pink//pink/gold/pink/pink"],[19,"Koopa Troopa",1,"yellow/blue/green//red/gold/green/green"],[19,"Goomba",1,"brown/brown/light orange//brown/gold/orange/orange"],[19,"Boo",1,"white/brown/silver//pink/silver/pink/pink"],[19,"King Boo",1,"white/pink/light blue//gold/gold/red/red"],[19,"Kamek",1,"yellow/brown/blue//silver/silver/red/red"],[19,"Lakitu",1,"yellow/blue/green//orange/gold/green/green"],[19,"Shy Guy",1,"black/brown/red//navy/gold/red/red"],[19,"Piranha Plant",1,"red/brown/green//gold/gold/red/red"],[19,"Birdo",1,"pink/brown/red//light pink/gold/red/red"],[19,"Pauline",1,"brown/blue/red//gold/gold/red/red"],[19,"Larry Koopa",1,"blue/blue/light blue//yellow/gold/light blue/light blue"],[19,"Morton Koopa Jr.",1,"silver/blue/brown//yellow/gold/brown/brown"],[19,"Wendy O. Koopa",1,"pink/blue/light pink//gold/gold/pink/pink"],[19,"Iggy Koopa",1,"green/blue/light green//yellow/gold/green/green"],[19,"Roy Koopa",1,"pink/blue/light pink//purple/gold/pink/pink"],[19,"Lemmy Koopa",1,"orange/blue/yellow//green/gold/orange/orange"],[19,"Ludwig von Koopa",1,"blue/blue/navy//silver/gold/blue/blue"],[20,"Donkey Kong",1,"brown/brown/red//yellow/gold/red/red"],[20,"Diddy Kong",1,"brown/brown/red//yellow/gold/red/red"],[20,"Dixie Kong",1,"blonde/brown/pink//pink/gold/pink/pink"],[20,"King K. Rool",1,"green/green/red/yellow/gold/gold/red/red"],[21,"Sonic the Hedgehog",1,"blue/green/red//gold/gold/green/green"],[21,"Miles \"Tails\" Prower",1,"orange/blue/light orange//red/gold/orange/orange"],[21,"Knuckles the Echidna",1,"red/pink/green//yellow/gold/green/green"],[21,"Amy Rose",1,"pink/green/red//light pink/gold/red/red"],[21,"Shadow the Hedgehog",1,"black/pink/red//gold/gold/red/red"],[21,"Rouge the Bat",1,"white/green/pink/black/light pink/silver/pink/pink"],[21,"Cream the Rabbit",1,"light orange/brown/orange//blue/gold/blue/blue"],[21,"Silver the Hedgehog",1,"silver/brown/light blue//teal/gold/teal/teal"],[21,"Blaze the Cat",1,"purple/brown/light purple//pink/gold/red/red"],[21,"Dr. Eggman",1,"orange/blue/red/black/yellow/gold/blue/blue"],[21,"Metal Sonic",1,"blue/pink/silver//red/silver/red/red"],[21,"Espio the Chameleon",1,"purple/brown/yellow//purple/gold/purple/purple"],[21,"Vector the Crocodile",1,"green/brown/yellow//gold/gold/orange/orange"],[21,"Charmy Bee",1,"yellow/brown/orange//black/gold/orange/orange"],[21,"Big the Cat",1,"purple/brown/yellow//purple/gold/purple/purple"],[22,"Pikachu",1,"blonde/brown/yellow//brown/gold/red/red"],[22,"Eevee",1,"brown/brown/light orange//brown/gold/orange/orange"],[22,"Vaporeon",1,"light blue/blue/blue//navy/silver/blue/blue"],[22,"Jolteon",1,"blonde/brown/yellow//light orange/gold/yellow/yellow"],[22,"Flareon",1,"orange/brown/red//yellow/gold/orange/orange"],[22,"Espeon",1,"purple/pink/light purple//purple/gold/red/red"],[22,"Umbreon",1,"black/pink/navy//yellow/gold/yellow/yellow"],[22,"Leafeon",1,"blonde/brown/green//brown/gold/green/green"],[22,"Glaceon",1,"light blue/blue/blue//navy/silver/blue/blue"],[22,"Sylveon",1,"white/blue/pink//light blue/silver/blue/blue"],[22,"Bulbasaur",1,"green/pink/teal//green/gold/green/green"],[22,"Charmander",1,"orange/blue/yellow//red/gold/red/red"],[22,"Squirtle",1,"light blue/brown/brown//light orange/gold/blue/blue"],[22,"Charizard",1,"orange/blue/teal//light orange/gold/red/red"],[22,"Mudkip",1,"light blue/brown/orange//blue/gold/orange/orange"],[22,"Piplup",1,"blue/blue/light blue//yellow/gold/blue/blue"],[22,"Greninja",1,"blue/pink/navy//pink/silver/pink/pink"],[22,"Jigglypuff",1,"pink/blue/light pink//blue/silver/blue/blue"],[22,"Mewtwo",1,"silver/pink/purple//light purple/silver/purple/purple"],[22,"Mew",1,"pink/blue/light pink//light blue/silver/blue/blue"],[22,"Gengar",1,"purple/pink/light purple//red/silver/red/red"],[22,"Lucario",1,"blue/pink/yellow/black/silver/silver/blue/blue"],[22,"Gardevoir",1,"green/pink/light green//red/silver/red/red"],[22,"Lugia",1,"white/blue/light blue//navy/silver/blue/blue"],[22,"Articuno",1,"light blue/brown/blue//navy/silver/blue/blue"],[22,"Zapdos",1,"yellow/brown/orange//black/gold/yellow/yellow"],[22,"Moltres",1,"orange/brown/yellow//red/gold/orange/orange"],[22,"Celebi",1,"green/blue/light green//green/silver/blue/blue"],[22,"Meowth",1,"blonde/blue/light orange//brown/gold/orange/orange"],[23,"Link",1,"blonde/blue/green//brown/gold/green/green"],[23,"Princess Zelda",1,"blonde/blue/pink//gold/gold/red/red"],[23,"Ganondorf",1,"red/brown/black//gold/gold/blue/blue"],[23,"Midna",1,"orange/pink/black//teal/gold/teal/teal"],[24,"Kirby",1,"pink/blue/light pink//red/gold/red/red"],[24,"Meta Knight",1,"blue/brown/navy//gold/silver/gold/gold"],[24,"King Dedede",1,"blue/brown/red//gold/gold/red/red"],[24,"Waddle Dee",1,"orange/brown/light orange//yellow/gold/blue/blue"],[25,"Samus Aran (Power Suit)",1,"blonde/blue/red/orange/yellow/gold/green/green"],[25,"Zero Suit Samus",1,"blonde/blue/blue//light blue/silver/blue/blue"],[26,"Isabelle",1,"yellow/brown/green//red/gold/red/red"],[27,"Inkling Girl",1,"orange/brown/light blue//orange/silver/orange/orange"],[27,"Callie",1,"black/brown/pink//black/gold/pink/pink"],[27,"Marie",1,"silver/green/green//black/silver/green/green"],[28,"Marth",1,"blue/blue/navy//gold/gold/blue/blue"],[28,"Lucina",1,"blue/blue/navy//gold/gold/red/red"],[28,"Roy (Fire Emblem)",1,"red/blue/blue//gold/gold/blue/blue"],[29,"Fox McCloud",1,"orange/green/green//silver/silver/red/red"],[29,"Ness",1,"black/brown/blue//yellow/gold/red/red"],[30,"Pac-Man",1,"blonde/brown/yellow//orange/gold/yellow/yellow"],[30,"Ms. Pac-Man",1,"blonde/blue/yellow//red/gold/red/red"],[30,"Blinky",1,"red/blue/navy//blue/silver/red/red"],[30,"Pinky",1,"pink/blue/navy//blue/silver/pink/pink"],[30,"Inky",1,"light blue/blue/navy//blue/silver/light blue/light blue"],[30,"Clyde",1,"orange/blue/navy//blue/silver/orange/orange"],[31,"Mega Man",1,"brown/green/light blue/blue/blue/silver/blue/blue"],[31,"Roll",1,"blonde/blue/red//green/gold/green/green"],[31,"Proto Man",1,"black/brown/red//yellow/silver/red/red"],[31,"Mega Man X",1,"brown/green/blue//light blue/silver/red/red"],[31,"Zero (Mega Man)",1,"blonde/blue/red//silver/silver/green/green"],[32,"Ryu",1,"black/brown/silver//black/silver/red/red"],[32,"Ken Masters",1,"blonde/blue/red//black/gold/red/red"],[32,"Chun-Li",1,"black/brown/blue//gold/gold/blue/blue"],[32,"Cammy",1,"blonde/blue/green//red/gold/red/red"],[33,"Cloud Strife",1,"blonde/blue/navy//silver/silver/green/green"],[33,"Tifa Lockhart",1,"black/brown/silver/black/red/silver/red/red"],[33,"Aerith Gainsborough",1,"brown/green/pink//red/gold/pink/pink"],[33,"Sephiroth",1,"silver/green/black//silver/silver/green/green"],[33,"Chocobo",1,"yellow/brown/light orange//orange/gold/yellow/yellow"],[34,"Sora",1,"brown/blue/black/red/yellow/silver/silver/silver"],[34,"Riku",1,"silver/green/yellow/blue/black/silver/blue/blue"],[34,"Kairi",1,"red/blue/pink//purple/silver/pink/pink"],[35,"Crash Bandicoot",1,"orange/green/light orange/blue/red/gold/orange/orange"],[35,"Spyro",1,"purple/brown/yellow//gold/gold/purple/purple"],[36,"Snow White",1,"black/brown/blue/yellow/red/gold/red/red"],[36,"Cinderella",1,"blonde/blue/light blue//silver/silver/blue/blue"],[36,"Aurora",1,"blonde/blue/pink//gold/gold/pink/pink"],[36,"Ariel",1,"red/blue/purple/green/purple/gold/purple/purple"],[36,"Belle",1,"brown/brown/yellow//gold/gold/yellow/yellow"],[36,"Jasmine",1,"black/brown/teal//gold/gold/blue/blue"],[36,"Pocahontas",1,"black/brown/light orange//teal/gold/teal/teal"],[36,"Mulan",1,"black/brown/light pink/blue/red/gold/pink/pink"],[36,"Tiana",1,"black/brown/light green//green/gold/green/green"],[36,"Rapunzel",1,"blonde/green/purple/light purple/pink/gold/purple/purple"],[36,"Merida",1,"red/blue/teal//gold/gold/teal/teal"],[36,"Moana",1,"black/brown/red/light orange/brown/gold/red/red"],[36,"Elsa",1,"blonde/blue/light blue//silver/silver/blue/blue"],[36,"Anna",1,"red/blue/black/blue/pink/gold/green/green"],[37,"Mickey Mouse",1,"black/brown/red//yellow/gold/red/red"],[37,"Minnie Mouse",1,"black/brown/red//yellow/gold/red/red"],[37,"Donald Duck",1,"white/blue/blue//yellow/gold/red/red"],[37,"Daisy Duck",1,"white/blue/purple//pink/gold/pink/pink"],[37,"Goofy",1,"black/brown/orange/blue/black/gold/green/green"],[37,"Stitch",1,"blue/brown/light blue//pink/silver/pink/pink"],[37,"Tinker Bell",1,"blonde/blue/green//light green/gold/green/green"],[37,"Alice",1,"blonde/blue/light blue//black/silver/black/black"],[37,"Maleficent",1,"black/green/purple//black/gold/green/green"],[37,"Ursula",1,"white/blue/black//purple/gold/purple/purple"],[37,"Cruella de Vil",1,"white/brown/black//red/silver/red/red"],[38,"Winnie the Pooh",1,"yellow/brown/red//gold/gold/orange/orange"],[38,"Tigger",1,"orange/blue/light orange//black/gold/orange/orange"],[39,"Woody",1,"brown/brown/yellow/blue/red/gold/red/red"],[39,"Jessie",1,"red/green/yellow/blue/red/gold/red/red"],[39,"Buzz Lightyear",1,"purple/blue/green//purple/silver/green/green"],[39,"Nemo",1,"orange/brown/light orange//black/gold/orange/orange"],[39,"Dory",1,"blue/brown/yellow//black/silver/blue/blue"],[40,"Hello Kitty",1,"white/brown/yellow/blue/red/gold/red/red"],[40,"My Melody",1,"white/brown/pink//light pink/gold/pink/pink"],[40,"Kuromi",1,"white/brown/black//pink/silver/pink/pink"],[40,"Cinnamoroll",1,"white/blue/light blue//pink/silver/light blue/light blue"],[41,"Twilight Sparkle",1,"purple/pink/lavender//pink/gold/pink/pink"],[41,"Rainbow Dash",1,"red/pink/light blue//yellow/gold/blue/blue"],[41,"Pinkie Pie",1,"pink/blue/light pink//blue/gold/blue/blue"],[41,"Fluttershy",1,"light pink/green/yellow//pink/gold/pink/pink"],[41,"Rarity",1,"purple/blue/lavender//blue/silver/blue/blue"],[41,"Applejack",1,"blonde/green/orange//brown/gold/brown/brown"],[41,"Princess Celestia",1,"light blue/pink/light pink//gold/gold/purple/purple"],[41,"Princess Luna",1,"blue/blue/navy//silver/silver/blue/blue"],[42,"Tenderheart Bear",1,"brown/brown/red//gold/gold/red/red"],[42,"Cheer Bear",1,"pink/brown/light blue//yellow/gold/pink/pink"],[42,"Grumpy Bear",1,"blue/brown/light blue//navy/silver/blue/blue"],[42,"Funshine Bear",1,"yellow/brown/orange//gold/gold/orange/orange"],[42,"Share Bear",1,"purple/brown/pink//light pink/gold/pink/pink"],[42,"Good Luck Bear",1,"green/brown/light green//gold/gold/green/green"],[42,"Bedtime Bear",1,"blue/brown/yellow//navy/silver/yellow/yellow"],[42,"Love-a-Lot Bear",1,"pink/brown/red//light pink/gold/red/red"],[43,"Blossom (Powerpuff)",1,"orange/pink/pink//black/gold/red/red"],[43,"Bubbles (Powerpuff)",1,"blonde/blue/light blue//black/silver/blue/blue"],[43,"Buttercup (Powerpuff)",1,"black/green/green//black/gold/green/green"],[44,"SpongeBob SquarePants",1,"yellow/blue/silver/brown/red/gold/red/red"],[44,"Patrick Star",1,"pink/brown/light pink/green/purple/gold/pink/pink"],[44,"Sandy Cheeks",1,"brown/brown/purple//pink/silver/pink/pink"],[45,"Bugs Bunny",1,"silver/blue/pink//gray/silver/pink/pink"],[45,"Daffy Duck",1,"black/brown/orange//orange/gold/orange/orange"],[45,"Tweety",1,"blonde/blue/yellow//orange/gold/yellow/yellow"],[46,"Spider-Man",1,"brown/blue/red/blue/black/silver/red/red"],[46,"Iron Man",1,"black/brown/red/yellow/gold/gold/light blue/light blue"],[46,"Captain America",1,"blonde/blue/blue/red/silver/silver/red/red"],[46,"Thor",1,"blonde/blue/navy//silver/silver/red/red"],[46,"Hulk",1,"black/green/green/purple/purple/gold/green/green"],[46,"Black Widow",1,"red/green/black//silver/silver/red/red"],[46,"Scarlet Witch",1,"brown/green/red//gold/gold/red/red"],[46,"Captain Marvel",1,"blonde/blue/red/blue/gold/gold/gold/gold"],[46,"Wolverine",1,"black/brown/yellow/blue/blue/gold/yellow/yellow"],[46,"Storm (X-Men)",1,"white/blue/black//silver/silver/blue/blue"],[46,"Rogue (X-Men)",1,"brown/green/green/yellow/yellow/gold/green/green"],[46,"Jean Grey",1,"red/green/green//gold/gold/green/green"],[46,"Loki",1,"black/green/green//gold/gold/green/green"],[46,"Doctor Strange",1,"black/green/blue//red/gold/green/green"],[47,"Superman",1,"black/blue/blue/red/yellow/gold/red/red"],[47,"Wonder Woman",1,"black/blue/red/blue/gold/gold/red/red"],[47,"Batman",1,"black/blue/silver/black/yellow/silver/black/black"],[47,"Batgirl",1,"red/blue/purple/black/yellow/gold/yellow/yellow"],[47,"Supergirl",1,"blonde/blue/blue/red/gold/gold/red/red"],[47,"Catwoman",1,"black/green/purple//black/silver/purple/purple"],[47,"Harley Quinn",1,"blonde/blue/red/black/black/silver/red/red"],[47,"Poison Ivy",1,"red/green/green//gold/gold/green/green"],[47,"The Joker",1,"green/green/purple//orange/gold/green/green"],[47,"Robin (DC)",1,"black/blue/red/green/yellow/gold/red/red"],[47,"The Flash",1,"blonde/blue/red//gold/gold/yellow/yellow"],[47,"Raven (DC)",1,"purple/blue/blue//gold/gold/red/red"],[47,"Starfire",1,"red/green/purple//silver/silver/green/green"],[48,"Princess Leia",1,"brown/brown/silver//gold/silver/silver/silver"],[48,"Luke Skywalker",1,"blonde/blue/light orange//brown/gold/blue/blue"],[48,"Darth Vader",1,"silver/brown/black//red/silver/red/red"],[48,"Yoda",1,"green/green/light orange//brown/gold/green/green"],[48,"Rey",1,"brown/brown/light orange//brown/gold/brown/brown"],[48,"Grogu",1,"green/brown/light orange//brown/gold/green/green"],[48,"R2-D2",1,"white/blue/blue//silver/silver/blue/blue"],[48,"C-3PO",1,"blonde/blue/yellow//silver/gold/yellow/yellow"],[49,"Sailor Moon",1,"blonde/blue/blue//red/gold/red/red"],[49,"Sailor Mercury",1,"blue/blue/light blue//blue/gold/blue/blue"],[49,"Sailor Mars",1,"black/brown/red//purple/gold/red/red"],[49,"Sailor Jupiter",1,"brown/green/green//pink/gold/green/green"],[49,"Sailor Venus",1,"blonde/blue/orange//blue/gold/orange/orange"],[49,"Sailor Chibi Moon",1,"pink/pink/light pink//red/gold/pink/pink"],[50,"Goku",1,"black/brown/orange//blue/gold/orange/orange"],[50,"Vegeta",1,"black/brown/blue//gold/gold/blue/blue"],[50,"Bulma",1,"blue/blue/pink//purple/gold/pink/pink"],[50,"Piccolo",1,"green/brown/purple//light blue/silver/purple/purple"],[50,"Frieza",1,"purple/pink/silver//purple/silver/purple/purple"],[50,"Android 18",1,"blonde/blue/blue//black/silver/blue/blue"],[51,"Naruto Uzumaki",1,"blonde/blue/orange//navy/silver/blue/blue"],[51,"Sasuke Uchiha",1,"black/brown/navy//silver/silver/blue/blue"],[51,"Sakura Haruno",1,"pink/green/red//light pink/silver/blue/blue"],[51,"Hinata Hyuga",1,"blue/pink/lavender//purple/silver/blue/blue"],[51,"Kakashi Hatake",1,"silver/brown/green/navy/navy/silver/blue/blue"],[52,"Monkey D. Luffy",1,"black/brown/red/blue/yellow/gold/red/red"],[52,"Nami",1,"orange/brown/blue/orange/blue/gold/orange/orange"],[52,"Roronoa Zoro",1,"green/brown/silver/black/green/silver/green/green"],[53,"Tanjiro Kamado",1,"red/pink/green/black/black/gold/red/red"],[53,"Nezuko Kamado",1,"black/pink/pink//brown/gold/pink/pink"],[53,"Zenitsu Agatsuma",1,"blonde/brown/yellow/black/orange/gold/yellow/yellow"],[53,"Kyojuro Rengoku",1,"blonde/brown/orange//red/gold/red/red"],[54,"Hatsune Miku",1,"light blue/blue/silver/black/teal/silver/light blue/light blue"],[54,"Anya Forger",1,"pink/green/black//gold/gold/pink/pink"],[54,"Kiki",1,"black/brown/navy//red/gold/red/red"],[55,"Steve",1,"brown/blue/teal/blue/silver/silver/teal/teal"],[55,"Alex",1,"orange/green/green/brown/brown/gold/green/green"],[55,"Creeper",1,"green/brown/light green//black/silver/green/green"],[55,"Enderman",1,"black/pink/purple//black/silver/purple/purple"],[56,"Freddy Fazbear",1,"brown/blue/light orange//black/gold/black/black"],[56,"Bonnie",1,"purple/pink/lavender//red/silver/red/red"],[56,"Chica",1,"yellow/pink/orange//orange/gold/orange/orange"],[56,"Foxy",1,"red/brown/brown//yellow/gold/red/red"],[57,"Frisk",1,"brown/brown/blue//purple/gold/red/red"],[57,"Sans",1,"white/blue/blue/black/pink/silver/blue/blue"],[57,"Papyrus",1,"white/brown/silver/blue/red/silver/red/red"],[57,"Toriel",1,"white/pink/purple//gold/gold/purple/purple"],[57,"Undyne",1,"red/brown/black//blue/silver/blue/blue"],[58,"Red Crewmate",1,"black/blue/red//light blue/silver/light blue/light blue"],[58,"Blue Crewmate",1,"silver/blue/blue//light blue/silver/light blue/light blue"],[58,"Green Crewmate",1,"brown/blue/green//light blue/silver/light blue/light blue"],[58,"Pink Crewmate",1,"blonde/blue/pink//light blue/silver/light blue/light blue"],[58,"Yellow Crewmate",1,"brown/blue/yellow//light blue/silver/light blue/light blue"],[58,"Black Crewmate",1,"silver/blue/black//light blue/silver/light blue/light blue"],[59,"Bluey",1,"blue/brown/light blue//light orange/silver/blue/blue"],[59,"Peppa Pig",1,"pink/brown/red//light pink/gold/red/red"],[60,"Greek Goddess",0,"blonde/blue/light blue/gold/gold/blue/blue;brown/green/mint green/gold/gold/green/green;black/brown/lavender/gold/gold/purple/purple"],[60,"Norse Valkyrie",0,"blonde/blue/navy/silver/silver/blue/blue;red/green/teal/silver/silver/green/green;silver/blue/blue/gold/silver/light blue/light blue"],[60,"Egyptian Queen",0,"black/brown/teal/gold/gold/blue/blue;black/green/light blue/gold/gold/teal/teal;brown/brown/yellow/gold/gold/red/red"],[60,"Celtic Fae",0,"red/green/green/gold/gold/green/green;blonde/green/mint green/gold/gold/green/green;orange/blue/teal/silver/silver/teal/teal"],[60,"Lunar Priestess",0,"silver/blue/navy/silver/silver/light blue/moon;white/pink/lavender/silver/silver/purple/moon;black/blue/light purple/silver/silver/blue/moon"],[60,"Sun Goddess",0,"blonde/brown/orange/gold/gold/red/sun;red/brown/yellow/gold/gold/orange/sun;brown/green/light orange/gold/gold/yellow/yellow"],[60,"Phoenix Maiden",0,"red/brown/orange/gold/gold/red/red;blonde/brown/red/gold/gold/orange/orange;orange/green/yellow/red/gold/red/red"],[60,"Kitsune Shrine",0,"orange/brown/red/gold/gold/red/red;white/pink/light pink/red/gold/red/red;silver/blue/purple/gold/silver/purple/purple"],[60,"Dragon Empress",0,"black/brown/red/gold/gold/green/green;silver/blue/teal/gold/gold/blue/blue;black/green/yellow/red/gold/red/red"],[60,"Siren Queen",0,"light blue/blue/purple/silver/silver/teal/teal;blue/green/teal/gold/silver/blue/pearl;red/blue/navy/silver/silver/teal/pearl"],[60,"Frost Valkyrie",0,"silver/blue/light blue/silver/silver/blue/blue;white/blue/navy/silver/silver/light blue/snowflake;light blue/blue/lavender/silver/silver/blue/blue"],[60,"Starlight Oracle",0,"purple/blue/navy/gold/gold/purple/star;silver/pink/purple/silver/silver/blue/star;black/blue/teal/gold/gold/blue/star"],[61,"Victorian Lady",0,"brown/green/navy/gold/gold/green/cameo;black/blue/purple/silver/silver/purple/cameo;blonde/blue/teal/gold/gold/blue/blue"],[61,"Regency Belle",0,"brown/blue/light blue/gold/gold/blue/pearl;blonde/green/mint green/pink/gold/pink/pearl;black/brown/lavender/silver/silver/purple/pearl"],[61,"Rococo Countess",0,"light pink/blue/light blue/pink/gold/pink/pink;blonde/blue/mint green/pink/gold/pink/pearl;silver/pink/lavender/light pink/silver/purple/purple"],[61,"Tudor Queen",0,"red/brown/navy/gold/gold/red/red;brown/green/green/gold/gold/red/red;blonde/blue/purple/gold/gold/blue/pearl"],[61,"1920s Flapper",0,"black/brown/teal/gold/gold/teal/pearl;brown/green/light pink/silver/silver/pink/pearl;blonde/blue/navy/silver/silver/blue/pearl"],[61,"1950s Retro",0,"black/blue/red/navy/silver/red/red;blonde/blue/light blue/pink/silver/pink/pink;brown/green/mint green/pink/silver/pink/pink"],[61,"1980s Synthpop",0,"pink/blue/purple/teal/silver/pink/pink;light blue/pink/pink/teal/silver/blue/blue;purple/blue/teal/pink/silver/purple/purple"],[61,"Medieval Maiden",0,"red/green/green/gold/gold/green/green;brown/blue/blue/gold/gold/red/red;blonde/brown/purple/gold/gold/purple/purple"],[61,"Renaissance Noble",0,"brown/green/teal/gold/gold/red/red;black/brown/red/gold/gold/green/pearl;blonde/blue/navy/gold/gold/blue/pearl"],[61,"Edwardian Rose",0,"brown/green/light pink/gold/gold/pink/rose;blonde/blue/lavender/light pink/silver/purple/pearl;black/brown/pink/silver/silver/pink/rose"],[62,"Cottagecore",0,"brown/green/light green/pink/gold/pink/pink;blonde/blue/light blue/yellow/gold/yellow/yellow;red/green/mint green/light pink/gold/pink/pink"],[62,"Dark Academia",0,"brown/green/navy/gold/gold/green/green;black/brown/purple/gold/gold/red/red;red/brown/teal/gold/gold/green/green"],[62,"Light Academia",0,"blonde/blue/light orange/gold/gold/light blue/pearl;light orange/green/light blue/gold/gold/mint green/pearl;brown/green/light green/gold/gold/green/pearl"],[62,"Dreamcore",0,"light pink/blue/light blue/lavender/silver/pink/heart;light blue/pink/lavender/light pink/silver/blue/star;blonde/pink/light purple/mint green/silver/pink/heart"],[62,"Cyberpop",0,"pink/blue/teal/purple/silver/pink/pink;light blue/pink/purple/teal/silver/blue/blue;purple/blue/pink/light blue/silver/purple/heart"],[62,"Fairycore",0,"green/green/light pink/mint green/gold/pink/pink;blonde/blue/mint green/lavender/gold/green/green;light pink/green/light green/lavender/silver/purple/purple"],[62,"Mermaidcore",0,"blue/green/lavender/mint green/silver/teal/pearl;light blue/pink/mint green/lavender/silver/light blue/pearl;pink/blue/teal/light purple/silver/pink/pearl"],[62,"Pastel Goth",0,"light pink/pink/lavender/purple/silver/pink/pink;light blue/pink/light pink/lavender/silver/purple/purple;black/pink/light purple/light pink/silver/pink/heart"],[62,"Coquette Ribbon",0,"brown/blue/light pink/pink/silver/pink/heart;blonde/blue/light blue/light pink/silver/pink/pearl;black/pink/lavender/light pink/silver/pink/heart"],[62,"Royalcore",0,"blonde/blue/navy/gold/gold/red/red;black/brown/purple/gold/gold/blue/blue;brown/green/red/gold/gold/green/green"],[62,"Y2K Pop",0,"pink/blue/light blue/silver/silver/pink/heart;blonde/blue/pink/silver/silver/light blue/star;light blue/pink/lavender/silver/silver/blue/star"],[62,"Steampunk Rose",0,"brown/green/teal/gold/gold/red/rose;black/brown/red/gold/gold/red/red;red/green/navy/gold/gold/green/green"],[62,"Witchcore",0,"black/green/purple/gold/gold/purple/purple;red/green/teal/gold/gold/green/green;silver/blue/navy/silver/silver/purple/moon"],[62,"Angelcore",0,"blonde/blue/light blue/gold/gold/blue/pearl;silver/pink/light pink/gold/gold/pink/pearl;white/blue/lavender/silver/gold/light blue/pearl"],[63,"Pumpkin Spice",0,"orange/brown/orange/brown/gold/orange/orange;brown/green/light orange/brown/gold/orange/orange;red/brown/brown/orange/gold/orange/orange"],[63,"Cranberry Harvest",0,"red/brown/dark red/gold/gold/red/red;brown/green/dark red/gold/gold/red/red;black/brown/red/gold/gold/red/red"],[63,"Maple Grove",0,"orange/green/red/gold/gold/orange/orange;red/brown/orange/gold/gold/red/red;blonde/brown/dark red/gold/gold/orange/orange"],[63,"Harvest Moon",0,"blonde/brown/navy/gold/gold/orange/moon;silver/blue/purple/gold/silver/orange/moon;brown/brown/dark red/gold/gold/yellow/yellow"],[63,"Hot Cocoa",0,"brown/brown/brown/pink/gold/pink/pink;light pink/brown/pink/brown/gold/red/red;black/brown/dark red/light pink/gold/pink/heart"],[63,"Snow Globe",0,"blonde/blue/light blue/silver/silver/blue/snowflake;pink/blue/lavender/silver/silver/light blue/light blue;red/green/navy/silver/silver/red/red"],[63,"Winter Ball",0,"silver/blue/navy/silver/silver/light blue/light blue;black/purple/lavender/silver/silver/purple/purple;blonde/blue/teal/silver/silver/blue/snowflake"],[63,"Evergreen",0,"brown/green/green/gold/gold/red/red;red/green/green/red/gold/green/green;black/green/teal/gold/gold/red/red"],[64,"Kagamine Rin",1,"blonde/blue/yellow//black/silver/yellow/yellow"],[64,"Kagamine Len",1,"blonde/blue/yellow//black/silver/yellow/yellow"],[64,"Megurine Luka",1,"pink/blue/black//gold/gold/teal/teal"],[64,"MEIKO",1,"brown/brown/red//black/gold/red/red"],[64,"KAITO",1,"blue/blue/light blue//navy/silver/blue/blue"],[64,"GUMI",1,"green/green/orange//yellow/gold/orange/orange"],[65,"Ann Takamaki",1,"blonde/blue/red//pink/gold/red/red"],[65,"Makoto Niijima",1,"brown/red/navy//silver/silver/blue/blue"],[65,"Futaba Sakura",1,"orange/purple/green//black/gold/green/green"],[65,"Haru Okumura",1,"light orange/pink/light pink//gold/gold/pink/pink"],[65,"Yukiko Amagi",1,"black/brown/red//gold/gold/red/red"],[65,"Rise Kujikawa",1,"red/brown/orange//yellow/gold/red/red"],[65,"Chie Satonaka",1,"brown/brown/green//yellow/gold/green/green"],[66,"Pyra",1,"red/red/navy//red/gold/teal/teal"],[66,"Mythra",1,"blonde/yellow/light blue//gold/gold/teal/teal"],[66,"Nia",1,"silver/yellow/teal//silver/silver/teal/teal"],[66,"Melia",1,"white/blue/blue//gold/gold/purple/purple"],[66,"Fiora",1,"brown/blue/green//silver/silver/green/green"],[23,"Tetra",1,"blonde/blue/blue//red/gold/blue/blue"],[23,"Paya",1,"white/brown/navy//red/gold/red/red"],[23,"Urbosa",1,"red/green/blue//gold/gold/teal/teal"],[23,"Riju",1,"red/green/light blue//gold/gold/green/green"],[24,"Adeleine",1,"black/brown/blue//red/gold/red/red"],[24,"Ribbon",1,"pink/blue/red//pink/gold/red/red"],[24,"Bandana Waddle Dee",1,"orange/brown/blue//light orange/gold/blue/blue"],[27,"Pearl",1,"white/pink/pink//yellow/gold/pink/pink"],[27,"Marina",1,"black/green/teal//mint green/silver/teal/teal"],[27,"Frye",1,"yellow/brown/blue//red/gold/red/red"],[27,"Shiver",1,"light blue/blue/purple//light blue/silver/blue/blue"],[26,"Celeste",1,"pink/brown/light blue//pink/gold/pink/pink"],[26,"Ankha",1,"blue/brown/yellow//blue/gold/blue/blue"],[26,"Tom Nook",1,"brown/brown/green//light green/gold/green/green"],[26,"Judy",1,"light blue/blue/light pink//lavender/silver/pink/pink"],[49,"Sailor Pluto",1,"green/red/black//red/gold/red/red"],[49,"Sailor Neptune",1,"light blue/blue/teal//navy/gold/teal/teal"],[49,"Sailor Uranus",1,"blonde/blue/navy//yellow/gold/yellow/yellow"],[49,"Sailor Saturn",1,"black/purple/purple//light purple/gold/purple/purple"],[36,"Raya",1,"black/brown/navy//gold/gold/teal/teal"],[28,"Edelgard",1,"white/purple/red//black/gold/red/red"],[28,"Lyn",1,"green/green/blue//gold/gold/green/green"],[28,"Celica",1,"red/red/light blue//red/gold/red/red"],[28,"Camilla",1,"purple/purple/black//purple/gold/purple/purple"],[28,"Corrin",1,"white/red/black//gold/silver/red/red"],[28,"Alear",1,"red/blue/navy//gold/gold/red/red"],[33,"Yuna",1,"brown/blue/light blue/navy/yellow/silver/green/green"],[33,"Lightning",1,"pink/blue/brown//red/silver/blue/blue"],[33,"Rinoa",1,"black/brown/blue//black/silver/blue/blue"],[33,"Terra Branford",1,"green/purple/red//gold/gold/red/red"],[33,"Garnet",1,"black/brown/orange//blue/gold/blue/blue"],[33,"Lulu",1,"black/red/purple//black/silver/red/red"],[67,"Maria",1,"brown/blue/red/blue/gold/gold/red/red"],[67,"Luisa",1,"brown/blue/green/blue/yellow/gold/emerald/emerald"],[67,"Waluigina",1,"purple/blue/purple//orange/gold/purple/purple"],[67,"Lakitia",1,"blonde/green/teal//light blue/gold/green/green"],[67,"Wariette",1,"brown/blue/yellow/purple/purple/gold/purple/purple"],[67,"Boo-tiful",1,"white/pink/light pink//pink/silver/pink/pink"],[67,"Petunia",1,"red/green/teal//red/gold/red/red"],[67,"Lily",1,"silver/purple/light blue//silver/silver/sapphire/sapphire"],[67,"Rosie",1,"pink/red/pink//gold/gold/red/red"],[67,"Mia",1,"silver/light blue/light blue//silver/silver/blue/pearl"],[67,"Seraphina",1,"black/brown/black//silver/silver/pearl/pearl"]],"hex":{"red":"#e53935","saturated red":"#ff1515","pastel red":"#ff8a80","dark red":"#b71c1c","neon red":"#ff1744","crimson":"#c62828","saturated crimson":"#e0122a","light crimson":"#ef5350","dark crimson":"#7f0000","maroon":"#800000","burgundy":"#6d0019","orange":"#ff9800","saturated orange":"#ff6d00","light orange":"#ffd1a1","pastel orange":"#ffcc80","dark orange":"#e65100","neon orange":"#ff9100","coral":"#ff7f50","peach":"#ffcba4","yellow":"#ffeb3b","saturated yellow":"#ffe600","light yellow":"#fff59d","pastel yellow":"#fff9c4","dark yellow":"#f9a825","neon yellow":"#eeff00","gold":"#d4af37","rose gold":"#b76e79","bronze":"#cd7f32","copper":"#b87333","champagne":"#f7e7ce","dark gold":"#b8860b","lime":"#c0ff00","saturated lime":"#b0ff00","pastel lime":"#e6ee9c","dark lime":"#9e9d24","neon lime":"#d4ff00","green":"#4caf50","saturated green":"#00c853","light green":"#b9f6ca","pastel green":"#c8e6c9","dark green":"#2e7d32","neon green":"#00ff3a","mint green":"#a8f0d0","mint":"#98e0c0","emerald":"#00a86b","saturated emerald":"#00d47a","light emerald":"#7dcea0","dark emerald":"#006b3c","teal":"#20b2aa","saturated teal":"#00bfa5","light teal":"#80cbc4","dark teal":"#00695c","neon teal":"#1de9b6","turquoise":"#40e0d0","aqua":"#00d4d4","cyan":"#00bcd4","saturated aqua":"#00e5ee","light aqua":"#b2ebf2","dark aqua":"#00838f","neon cyan":"#00ffff","sky blue":"#87ceeb","saturated sky blue":"#00b0ff","light sky blue":"#b3e5fc","dark sky blue":"#0277bd","blue":"#2196f3","saturated blue":"#0066ff","light blue":"#9ad8ff","pastel blue":"#bbdefb","dark blue":"#1565c0","neon blue":"#3d5afe","navy":"#3949ab","saturated navy":"#1a237e","light navy":"#7986cb","indigo":"#3f51b5","saturated indigo":"#304ffe","light indigo":"#9fa8da","dark indigo":"#283593","violet":"#7c4dff","saturated violet":"#651fff","light violet":"#d1c4e9","dark violet":"#4527a0","neon violet":"#9d00ff","purple":"#9c27b0","saturated purple":"#aa00ff","light purple":"#d1b3ff","pastel purple":"#e1bee7","dark purple":"#6a1b9a","neon purple":"#e040fb","lavender":"#c8a2ff","lilac":"#c8a2c8","magenta":"#ff00ff","saturated magenta":"#ff00aa","light magenta":"#f8bbd0","dark magenta":"#ad1457","neon magenta":"#ff00e5","pink":"#ff8fc8","saturated pink":"#ff2d95","light pink":"#ffc8e0","pastel pink":"#f8bbd9","dark pink":"#c2185b","neon pink":"#ff1493","rose":"#e75480","saturated rose":"#ff3d7f","light rose":"#ffc1cc","dark rose":"#ad2d4e","dusty rose":"#c08081","brown":"#8b5a2b","saturated brown":"#8d4004","light brown":"#c4a574","dark brown":"#4e2e0e","chocolate":"#5d3a1a","auburn":"#922724","black":"#555","charcoal":"#36454f","jet black":"#111","silver":"#c0c0c0","light silver":"#e8e8e8","gray":"#999","gunmetal":"#5b6770","blonde":"#f5d76e","platinum blonde":"#f3e9c6","golden blonde":"#e8c547","dark blonde":"#c9a227","strawberry blonde":"#e2946e","white":"#fff","vibrant salmon":"#fe6f5e","dark garnet":"#660000","electric red":"#ff0800","deep crimson":"#960018","mahogany red":"#b31b1b","classic crimson":"#dc143c","hot fuchsia":"#ff004f","rosy copper":"#d05340","light salmon":"#f08080","ruby red":"#a50021","pure red":"#fe0000","brown red":"#a52a2a","carmine":"#c40234","dusty mauve":"#ab4e52","rosy taupe":"#bc8f8f","salmon":"#fa8072","amber gold":"#ffbf00","goldenrod":"#daa520","dusty taupe":"#9f8170","rich mahogany":"#3d0c02","charcoal brown":"#3b3c36","rust brown":"#993300","light bronze":"#daa06d","reddish brown":"#954535","dark khaki":"#4a412a","khaki beige":"#c3b091","ochre":"#cc7722","golden bronze":"#cba135","red ochre":"#cb410b","tan":"#d2b48c","taupe":"#483c32","taupe gray":"#645452","dark goldenrod":"#b8860b","light gold":"#eedc82","golden orange":"#ef9b0f","metallic gold":"#d4af37","bright amber":"#faca16","neon chartreuse":"#e3ff00","royal gold":"#fada5e","old gold":"#cfb53b","olive":"#808000","bright gold":"#ffd800","pale amber":"#e4d96f","deep forest":"#004225","celadon":"#ace1af","jade green":"#03c03c","electric green":"#00ff40","forest green":"#228b22","green yellow":"#adff2f","deep teal":"#49796b","hunter green":"#355e3b","chartreuse":"#c0ff00","malachite":"#0bda51","muted olive":"#9ab973","black forest":"#00401a","verdigris":"#00a693","dusty olive":"#6c7c59","strong cyan":"#00cccc","sea green":"#2e8b57","yellow green":"#9acd32","aquamarine":"#7fffd4","azure blue":"#007fff","blue green":"#0d98ba","deep sky blue":"#00bfff","cerulean":"#007ba7","dark cyan":"#008b8b","electric aqua":"#7df9ff","neon ice":"#15f4ee","soft cyan":"#99ffff","light sea green":"#20b2aa","bright sky":"#00b7eb","sky aqua":"#00ccff","steel blue":"#72a0c1","cool sky":"#6cb4ee","baby blue":"#89cff0","brilliant azure":"#318ce7","blue gray":"#6699cc","royal azure":"#3457d5","muted teal":"#85b09a","sapphire sky":"#246bce","cobalt blue":"#0047ab","pale sky":"#b9d9eb","true azure":"#0000b8","navy electric":"#00009c","electric indigo":"#6f00ff","baby blue ice":"#8ab9f1","medium blue":"#0000cd","medium slate blue":"#7b68ee","midnight blue":"#191970","electric sapphire":"#4666ff","bright indigo":"#273be2","deep navy":"#011f5b","electric royal":"#000f89","steel azure":"#224c98","powder blue":"#9eb9d4","true cobalt":"#002387","royal blue":"#4169e1","imperial blue":"#002366","sapphire":"#0f52ba","bright teal blue":"#0076b6","slate indigo":"#4b61d1","sky blue light":"#87ceeb","rich cerulean":"#2774ae","dark ultramarine":"#120a8f","wisteria blue":"#7c9ed9","regal navy":"#00356b","vivid royal":"#0014a8","lavender purple":"#9966cc","blue violet":"#8a2be2","dusty lavender":"#856088","midnight violet":"#301934","royal violet":"#8806ce","bright lavender":"#b57edc","mauve":"#e0b0ff","deep purple":"#682860","amethyst":"#9a4eae","deep lilac":"#7851a9","medium violet red":"#c71585","dark amethyst":"#32174d","slate blue":"#6a5acd","thistle":"#d8bfd8","soft periwinkle":"#9683ec","crimson violet":"#66023c","wisteria":"#c9a0dc","neon fuchsia":"#ff1dce","deep pink":"#f653a6","baby pink":"#ffa6c9","pale slate":"#bebfc5","cool steel":"#91a3b0","lavender gray":"#8c92ac","gray olive":"#848482","slate gray":"#708090","dim gray":"#696969","blue slate":"#536878","dark slate gray":"#2f4f4f","charcoal blue":"#36454f","ebony":"#555d50","onyx":"#111111","pearl":"#EDE6D6","cameo":"#E8C4B0"},"cur":[["blonde","blue","pink","light pink","gold","blue","blue"],["brown","blue","yellow","orange","gold","light blue","light blue"],["blonde","blue","light blue","gold","silver","blue","blue"],["light pink","pink","lavender","silver","silver","pink","pink"],["silver","blue","navy","silver","silver","light blue","light blue"],["red","green","green","gold","gold","green","green"],["black","pink","red","gold","gold","red","red"],["light orange","green","mint green","pink","gold","pink","pink"],["brown","green","light green","yellow","gold","pink","pink"],["blonde","pink","light purple","pink","gold","purple","purple"],["light blue","blue","blue","light blue","silver","blue","blue"],["pink","blue","light blue","pink","silver","pink","pink"],["purple","pink","light pink","purple","silver","purple","purple"],["orange","brown","teal","orange","gold","orange","orange"],["white","blue","purple","gold","gold","purple","purple"],["yellow","blue","blue","yellow","gold","yellow","yellow"],["brown","brown","orange","light orange","gold","red","red"],["green","green","light pink","green","gold","green","green"],["black","blue","light blue","navy","silver","blue","blue"],["light pink","green","light green","light pink","gold","pink","pink"],["blonde","green","teal","gold","gold","green","green"],["red","blue","navy","red","gold","red","red"],["silver","pink","pink","silver","silver","pink","pink"],["blue","blue","light orange","blue","gold","blue","blue"]],"comp":{"pink":["mint green","light green","light blue","gold"],"red":["gold","navy","silver"],"orange":["teal","blue","gold"],"yellow":["blue","purple","orange"],"green":["pink","gold","yellow"],"blue":["yellow","orange","gold","silver"],"purple":["gold","yellow","light pink"],"light blue":["pink","silver","navy"],"light pink":["mint green","lavender","gold"],"light orange":["teal","mint green","gold"],"mint green":["pink","light pink","gold"],"teal":["orange","gold","pink"],"navy":["gold","silver","light blue"],"light green":["pink","yellow","gold"],"light purple":["pink","gold","silver"],"lavender":["light pink","silver","gold"],"saturated red":["teal","saturated teal","light teal","gold","silver"],"pastel red":["teal","saturated teal","light teal","gold","silver"],"dark red":["teal","saturated teal","light teal","gold","silver"],"neon red":["teal","saturated teal","light teal","gold","silver"],"crimson":["teal","saturated teal","light teal","gold","silver"],"saturated crimson":["teal","saturated teal","light teal","gold","silver"],"light crimson":["teal","saturated teal","light teal","gold","silver"],"dark crimson":["teal","saturated teal","light teal","gold","silver"],"maroon":["teal","saturated teal","light teal","gold","silver"],"burgundy":["teal","saturated teal","light teal","gold","silver"],"saturated orange":["blue","saturated blue","pastel blue","gold","silver"],"pastel orange":["blue","saturated blue","pastel blue","gold","silver"],"dark orange":["blue","saturated blue","pastel blue","gold","silver"],"neon orange":["blue","saturated blue","pastel blue","gold","silver"],"coral":["blue","saturated blue","pastel blue","gold","silver"],"peach":["blue","saturated blue","pastel blue","gold","silver"],"saturated yellow":["navy","saturated navy","light navy","gold","silver"],"light yellow":["navy","saturated navy","light navy","gold","silver"],"pastel yellow":["navy","saturated navy","light navy","gold","silver"],"dark yellow":["navy","saturated navy","light navy","gold","silver"],"neon yellow":["navy","saturated navy","light navy","gold","silver"],"gold":["navy","saturated navy","light navy","gold","silver"],"rose gold":["navy","saturated navy","light navy","gold","silver"],"bronze":["navy","saturated navy","light navy","gold","silver"],"copper":["navy","saturated navy","light navy","gold","silver"],"champagne":["navy","saturated navy","light navy","gold","silver"],"dark gold":["navy","saturated navy","light navy","gold","silver"],"lime":["violet","saturated violet","light violet","gold","silver"],"saturated lime":["violet","saturated violet","light violet","gold","silver"],"pastel lime":["violet","saturated violet","light violet","gold","silver"],"dark lime":["violet","saturated violet","light violet","gold","silver"],"neon lime":["violet","saturated violet","light violet","gold","silver"],"saturated green":["purple","saturated purple","pastel purple","gold","silver"],"pastel green":["purple","saturated purple","pastel purple","gold","silver"],"dark green":["magenta","saturated magenta","light magenta","gold","silver"],"neon green":["purple","saturated purple","pastel purple","gold","silver"],"mint":["pink","saturated pink","pastel pink","gold","silver"],"emerald":["magenta","saturated magenta","light magenta","gold","silver"],"saturated emerald":["magenta","saturated magenta","light magenta","gold","silver"],"light emerald":["magenta","saturated magenta","light magenta","gold","silver"],"dark emerald":["magenta","saturated magenta","light magenta","gold","silver"],"saturated teal":["crimson","saturated crimson","light crimson","gold","silver"],"light teal":["crimson","saturated crimson","light crimson","gold","silver"],"dark teal":["crimson","saturated crimson","light crimson","gold","silver"],"neon teal":["crimson","saturated crimson","light crimson","gold","silver"],"turquoise":["crimson","saturated crimson","light crimson","gold","silver"],"aqua":["red","saturated red","pastel red","gold","silver"],"cyan":["red","saturated red","pastel red","gold","silver"],"saturated aqua":["red","saturated red","pastel red","gold","silver"],"light aqua":["red","saturated red","pastel red","gold","silver"],"dark aqua":["red","saturated red","pastel red","gold","silver"],"neon cyan":["red","saturated red","pastel red","gold","silver"],"sky blue":["orange","saturated orange","light orange","gold","silver"],"saturated sky blue":["orange","saturated orange","light orange","gold","silver"],"light sky blue":["orange","saturated orange","light orange","gold","silver"],"dark sky blue":["orange","saturated orange","light orange","gold","silver"],"saturated blue":["orange","saturated orange","light orange","gold","silver"],"pastel blue":["orange","saturated orange","light orange","gold","silver"],"dark blue":["gold","rose gold","bronze","silver"],"neon blue":["orange","saturated orange","light orange","gold","silver"],"saturated navy":["gold","rose gold","bronze","silver"],"light navy":["gold","rose gold","bronze","silver"],"indigo":["yellow","saturated yellow","light yellow","gold","silver"],"saturated indigo":["yellow","saturated yellow","light yellow","gold","silver"],"light indigo":["yellow","saturated yellow","light yellow","gold","silver"],"dark indigo":["yellow","saturated yellow","light yellow","gold","silver"],"violet":["lime","saturated lime","pastel lime","gold","silver"],"saturated violet":["lime","saturated lime","pastel lime","gold","silver"],"light violet":["lime","saturated lime","pastel lime","gold","silver"],"dark violet":["lime","saturated lime","pastel lime","gold","silver"],"neon violet":["lime","saturated lime","pastel lime","gold","silver"],"saturated purple":["lime","saturated lime","pastel lime","gold","silver"],"pastel purple":["lime","saturated lime","pastel lime","gold","silver"],"dark purple":["lime","saturated lime","pastel lime","gold","silver"],"neon purple":["lime","saturated lime","pastel lime","gold","silver"],"lilac":["lime","saturated lime","pastel lime","gold","silver"],"magenta":["dark green","emerald","saturated emerald","gold","silver"],"saturated magenta":["dark green","emerald","saturated emerald","gold","silver"],"light magenta":["dark green","emerald","saturated emerald","gold","silver"],"dark magenta":["dark green","emerald","saturated emerald","gold","silver"],"neon magenta":["dark green","emerald","saturated emerald","gold","silver"],"saturated pink":["mint green","mint","emerald","gold","silver"],"pastel pink":["mint green","mint","emerald","gold","silver"],"dark pink":["mint green","mint","emerald","gold","silver"],"neon pink":["mint green","mint","emerald","gold","silver"],"rose":["teal","saturated teal","light teal","gold","silver"],"saturated rose":["teal","saturated teal","light teal","gold","silver"],"light rose":["teal","saturated teal","light teal","gold","silver"],"dark rose":["teal","saturated teal","light teal","gold","silver"],"dusty rose":["teal","saturated teal","light teal","gold","silver"],"brown":["gold","silver"],"saturated brown":["gold","silver"],"light brown":["gold","silver"],"dark brown":["gold","silver"],"chocolate":["gold","silver"],"auburn":["gold","silver"],"black":["gold","silver"],"charcoal":["gold","silver"],"silver":["gold","silver"],"gray":["gold","silver"],"gunmetal":["gold","silver"]},"hair":["red","saturated red","pastel red","dark red","neon red","crimson","saturated crimson","light crimson","dark crimson","maroon","burgundy","orange","saturated orange","light orange","pastel orange","dark orange","neon orange","coral","peach","yellow","saturated yellow","light yellow","pastel yellow","dark yellow","neon yellow","gold","rose gold","bronze","copper","champagne","dark gold","lime","saturated lime","pastel lime","dark lime","neon lime","green","saturated green","light green","pastel green","dark green","neon green","mint green","mint","emerald","saturated emerald","light emerald","dark emerald","teal","saturated teal","light teal","dark teal","neon teal","turquoise","aqua","cyan","saturated aqua","light aqua","dark aqua","neon cyan","sky blue","saturated sky blue","light sky blue","dark sky blue","blue","saturated blue","light blue","pastel blue","dark blue","neon blue","navy","saturated navy","light navy","indigo","saturated indigo","light indigo","dark indigo","violet","saturated violet","light violet","dark violet","neon violet","purple","saturated purple","light purple","pastel purple","dark purple","neon purple","lavender","lilac","magenta","saturated magenta","light magenta","dark magenta","neon magenta","pink","saturated pink","light pink","pastel pink","dark pink","neon pink","rose","saturated rose","light rose","dark rose","dusty rose","brown","saturated brown","light brown","dark brown","chocolate","auburn","black","charcoal","jet black","silver","light silver","gray","gunmetal","blonde","platinum blonde","golden blonde","dark blonde","strawberry blonde","white"],"eyes":["red","saturated red","pastel red","dark red","neon red","crimson","saturated crimson","light crimson","dark crimson","maroon","burgundy","orange","saturated orange","light orange","pastel orange","dark orange","neon orange","coral","peach","yellow","saturated yellow","light yellow","pastel yellow","dark yellow","neon yellow","gold","rose gold","bronze","copper","champagne","dark gold","lime","saturated lime","pastel lime","dark lime","neon lime","green","saturated green","light green","pastel green","dark green","neon green","mint green","mint","emerald","saturated emerald","light emerald","dark emerald","teal","saturated teal","light teal","dark teal","neon teal","turquoise","aqua","cyan","saturated aqua","light aqua","dark aqua","neon cyan","sky blue","saturated sky blue","light sky blue","dark sky blue","blue","saturated blue","light blue","pastel blue","dark blue","neon blue","navy","saturated navy","light navy","indigo","saturated indigo","light indigo","dark indigo","violet","saturated violet","light violet","dark violet","neon violet","purple","saturated purple","light purple","pastel purple","dark purple","neon purple","lavender","lilac","magenta","saturated magenta","light magenta","dark magenta","neon magenta","pink","saturated pink","light pink","pastel pink","dark pink","neon pink","rose","saturated rose","light rose","dark rose","dusty rose","brown","saturated brown","light brown","dark brown","chocolate","auburn","black","charcoal","jet black","silver","light silver","gray","gunmetal"],"dress":["red","saturated red","pastel red","dark red","neon red","crimson","saturated crimson","light crimson","dark crimson","maroon","burgundy","orange","saturated orange","light orange","pastel orange","dark orange","neon orange","coral","peach","yellow","saturated yellow","light yellow","pastel yellow","dark yellow","neon yellow","gold","rose gold","bronze","copper","champagne","dark gold","lime","saturated lime","pastel lime","dark lime","neon lime","green","saturated green","light green","pastel green","dark green","neon green","mint green","mint","emerald","saturated emerald","light emerald","dark emerald","teal","saturated teal","light teal","dark teal","neon teal","turquoise","aqua","cyan","saturated aqua","light aqua","dark aqua","neon cyan","sky blue","saturated sky blue","light sky blue","dark sky blue","blue","saturated blue","light blue","pastel blue","dark blue","neon blue","navy","saturated navy","light navy","indigo","saturated indigo","light indigo","dark indigo","violet","saturated violet","light violet","dark violet","neon violet","purple","saturated purple","light purple","pastel purple","dark purple","neon purple","lavender","lilac","magenta","saturated magenta","light magenta","dark magenta","neon magenta","pink","saturated pink","light pink","pastel pink","dark pink","neon pink","rose","saturated rose","light rose","dark rose","dusty rose","brown","saturated brown","light brown","dark brown","chocolate","auburn","black","charcoal","silver","gray","gunmetal"]};
 window.__CDEF_JSON = "[[\"red\",\"red\",\"\\u2764\\ufe0f Red\",\"#e53935\",\"red\",\"hde\",\"base\"],\n[\"saturated red\",\"red\",\"\\u2764\\ufe0f Red\",\"#ff1515\",\"vivid red, saturated red\",\"hde\",\"saturated\"],\n[\"pastel red\",\"red\",\"\\u2764\\ufe0f Red\",\"#ff8a80\",\"pastel red, pale red\",\"hde\",\"pastel\"],\n[\"dark red\",\"red\",\"\\u2764\\ufe0f Red\",\"#b71c1c\",\"dark red, deep red\",\"hde\",\"dark\"],\n[\"neon red\",\"red\",\"\\u2764\\ufe0f Red\",\"#ff1744\",\"neon red, bright red\",\"hde\",\"neon\"],\n[\"crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#c62828\",\"crimson\",\"hde\",\"base\"],\n[\"saturated crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#e0122a\",\"vivid crimson, saturated crimson\",\"hde\",\"saturated\"],\n[\"light crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#ef5350\",\"light crimson\",\"hde\",\"light\"],\n[\"dark crimson\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#7f0000\",\"dark crimson, deep crimson\",\"hde\",\"dark\"],\n[\"maroon\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#800000\",\"maroon\",\"hde\",\"named\"],\n[\"burgundy\",\"crimson\",\"\\ud83e\\ude78 Crimson\",\"#6d0019\",\"burgundy\",\"hde\",\"named\"],\n[\"orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff9800\",\"orange\",\"hde\",\"base\"],\n[\"saturated orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff6d00\",\"vivid orange, saturated orange\",\"hde\",\"saturated\"],\n[\"light orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ffd1a1\",\"light orange\",\"hde\",\"light\"],\n[\"pastel orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ffcc80\",\"pastel orange, pale orange\",\"hde\",\"pastel\"],\n[\"dark orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#e65100\",\"dark orange, deep orange\",\"hde\",\"dark\"],\n[\"neon orange\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff9100\",\"neon orange, bright orange\",\"hde\",\"neon\"],\n[\"coral\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ff7f50\",\"coral\",\"hde\",\"named\"],\n[\"peach\",\"orange\",\"\\ud83e\\udde1 Orange\",\"#ffcba4\",\"peach\",\"hde\",\"named\"],\n[\"yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#ffeb3b\",\"yellow\",\"hde\",\"base\"],\n[\"saturated yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#ffe600\",\"vivid yellow, saturated yellow\",\"hde\",\"saturated\"],\n[\"light yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#fff59d\",\"light yellow\",\"hde\",\"light\"],\n[\"pastel yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#fff9c4\",\"pastel yellow, pale yellow\",\"hde\",\"pastel\"],\n[\"dark yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#f9a825\",\"dark yellow, deep yellow\",\"hde\",\"dark\"],\n[\"neon yellow\",\"yellow\",\"\\ud83d\\udc9b Yellow\",\"#eeff00\",\"neon yellow, bright yellow\",\"hde\",\"neon\"],\n[\"gold\",\"gold\",\"\\u2728 Gold\",\"#d4af37\",\"gold\",\"hde\",\"base\"],\n[\"rose gold\",\"gold\",\"\\u2728 Gold\",\"#b76e79\",\"rose gold\",\"hde\",\"named\"],\n[\"bronze\",\"gold\",\"\\u2728 Gold\",\"#cd7f32\",\"bronze\",\"hde\",\"named\"],\n[\"copper\",\"gold\",\"\\u2728 Gold\",\"#b87333\",\"copper\",\"hde\",\"named\"],\n[\"champagne\",\"gold\",\"\\u2728 Gold\",\"#f7e7ce\",\"champagne\",\"hde\",\"named\"],\n[\"dark gold\",\"gold\",\"\\u2728 Gold\",\"#b8860b\",\"dark gold, deep gold\",\"hde\",\"dark\"],\n[\"lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#c0ff00\",\"lime\",\"hde\",\"base\"],\n[\"saturated lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#b0ff00\",\"vivid lime, saturated lime\",\"hde\",\"saturated\"],\n[\"pastel lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#e6ee9c\",\"pastel lime, pale lime\",\"hde\",\"pastel\"],\n[\"dark lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#9e9d24\",\"dark lime, deep lime\",\"hde\",\"dark\"],\n[\"neon lime\",\"lime\",\"\\ud83d\\udfe2 Lime\",\"#d4ff00\",\"neon lime, bright lime\",\"hde\",\"neon\"],\n[\"green\",\"green\",\"\\ud83d\\udc9a Green\",\"#4caf50\",\"green\",\"hde\",\"base\"],\n[\"saturated green\",\"green\",\"\\ud83d\\udc9a Green\",\"#00c853\",\"vivid green, saturated green\",\"hde\",\"saturated\"],\n[\"light green\",\"green\",\"\\ud83d\\udc9a Green\",\"#b9f6ca\",\"light green\",\"hde\",\"light\"],\n[\"pastel green\",\"green\",\"\\ud83d\\udc9a Green\",\"#c8e6c9\",\"pastel green, pale green\",\"hde\",\"pastel\"],\n[\"dark green\",\"green\",\"\\ud83d\\udc9a Green\",\"#2e7d32\",\"dark green, deep green\",\"hde\",\"dark\"],\n[\"neon green\",\"green\",\"\\ud83d\\udc9a Green\",\"#00ff3a\",\"neon green, bright green\",\"hde\",\"neon\"],\n[\"mint green\",\"green\",\"\\ud83d\\udc9a Green\",\"#a8f0d0\",\"mint green\",\"hde\",\"named\"],\n[\"mint\",\"green\",\"\\ud83d\\udc9a Green\",\"#98e0c0\",\"mint, mint green\",\"hde\",\"named\"],\n[\"emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#00a86b\",\"emerald\",\"hde\",\"base\"],\n[\"saturated emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#00d47a\",\"vivid emerald, saturated emerald\",\"hde\",\"saturated\"],\n[\"light emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#7dcea0\",\"light emerald\",\"hde\",\"light\"],\n[\"dark emerald\",\"emerald\",\"\\ud83d\\udc8e Emerald\",\"#006b3c\",\"dark emerald, deep emerald\",\"hde\",\"dark\"],\n[\"teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#20b2aa\",\"teal\",\"hde\",\"base\"],\n[\"saturated teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#00bfa5\",\"vivid teal, saturated teal\",\"hde\",\"saturated\"],\n[\"light teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#80cbc4\",\"light teal\",\"hde\",\"light\"],\n[\"dark teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#00695c\",\"dark teal, deep teal\",\"hde\",\"dark\"],\n[\"neon teal\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#1de9b6\",\"neon teal, bright teal\",\"hde\",\"neon\"],\n[\"turquoise\",\"teal\",\"\\ud83e\\ude75 Teal\",\"#40e0d0\",\"turquoise\",\"hde\",\"named\"],\n[\"aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00d4d4\",\"aqua\",\"hde\",\"base\"],\n[\"cyan\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00bcd4\",\"cyan\",\"hde\",\"named\"],\n[\"saturated aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00e5ee\",\"vivid aqua, saturated aqua\",\"hde\",\"saturated\"],\n[\"light aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#b2ebf2\",\"light aqua, light cyan\",\"hde\",\"light\"],\n[\"dark aqua\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00838f\",\"dark aqua, deep aqua\",\"hde\",\"dark\"],\n[\"neon cyan\",\"aqua\",\"\\ud83d\\udca7 Aqua / Cyan\",\"#00ffff\",\"neon cyan, bright cyan\",\"hde\",\"neon\"],\n[\"sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#87ceeb\",\"sky blue\",\"hde\",\"base\"],\n[\"saturated sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#00b0ff\",\"vivid sky blue, saturated sky blue\",\"hde\",\"saturated\"],\n[\"light sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#b3e5fc\",\"light sky blue\",\"hde\",\"light\"],\n[\"dark sky blue\",\"sky\",\"\\ud83c\\udf24\\ufe0f Sky blue\",\"#0277bd\",\"dark sky blue, deep sky blue\",\"hde\",\"dark\"],\n[\"blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#2196f3\",\"blue\",\"hde\",\"base\"],\n[\"saturated blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#0066ff\",\"vivid blue, saturated blue\",\"hde\",\"saturated\"],\n[\"light blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#9ad8ff\",\"light blue\",\"hde\",\"light\"],\n[\"pastel blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#bbdefb\",\"pastel blue, pale blue\",\"hde\",\"pastel\"],\n[\"dark blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#1565c0\",\"dark blue, deep blue\",\"hde\",\"dark\"],\n[\"neon blue\",\"blue\",\"\\ud83d\\udc99 Blue\",\"#3d5afe\",\"neon blue, bright blue\",\"hde\",\"neon\"],\n[\"navy\",\"navy\",\"\\ud83c\\udf03 Navy\",\"#3949ab\",\"navy\",\"hde\",\"base\"],\n[\"saturated navy\",\"navy\",\"\\ud83c\\udf03 Navy\",\"#1a237e\",\"vivid navy, saturated navy\",\"hde\",\"saturated\"],\n[\"light navy\",\"navy\",\"\\ud83c\\udf03 Navy\",\"#7986cb\",\"light navy\",\"hde\",\"light\"],\n[\"indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#3f51b5\",\"indigo\",\"hde\",\"base\"],\n[\"saturated indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#304ffe\",\"vivid indigo, saturated indigo\",\"hde\",\"saturated\"],\n[\"light indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#9fa8da\",\"light indigo\",\"hde\",\"light\"],\n[\"dark indigo\",\"indigo\",\"\\ud83d\\udfe3 Indigo\",\"#283593\",\"dark indigo, deep indigo\",\"hde\",\"dark\"],\n[\"violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#7c4dff\",\"violet\",\"hde\",\"base\"],\n[\"saturated violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#651fff\",\"vivid violet, saturated violet\",\"hde\",\"saturated\"],\n[\"light violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#d1c4e9\",\"light violet\",\"hde\",\"light\"],\n[\"dark violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#4527a0\",\"dark violet, deep violet\",\"hde\",\"dark\"],\n[\"neon violet\",\"violet\",\"\\ud83d\\udd2e Violet\",\"#9d00ff\",\"neon violet, bright violet\",\"hde\",\"neon\"],\n[\"purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#9c27b0\",\"purple\",\"hde\",\"base\"],\n[\"saturated purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#aa00ff\",\"vivid purple, saturated purple\",\"hde\",\"saturated\"],\n[\"light purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#d1b3ff\",\"light purple\",\"hde\",\"light\"],\n[\"pastel purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#e1bee7\",\"pastel purple, pale purple\",\"hde\",\"pastel\"],\n[\"dark purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#6a1b9a\",\"dark purple, deep purple\",\"hde\",\"dark\"],\n[\"neon purple\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#e040fb\",\"neon purple, bright purple\",\"hde\",\"neon\"],\n[\"lavender\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#c8a2ff\",\"lavender\",\"hde\",\"named\"],\n[\"lilac\",\"purple\",\"\\ud83d\\udc9c Purple\",\"#c8a2c8\",\"lilac\",\"hde\",\"named\"],\n[\"magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ff00ff\",\"magenta\",\"hde\",\"base\"],\n[\"saturated magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ff00aa\",\"vivid magenta, saturated magenta\",\"hde\",\"saturated\"],\n[\"light magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#f8bbd0\",\"light magenta\",\"hde\",\"light\"],\n[\"dark magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ad1457\",\"dark magenta, deep magenta\",\"hde\",\"dark\"],\n[\"neon magenta\",\"magenta\",\"\\ud83d\\udc97 Magenta\",\"#ff00e5\",\"neon magenta, bright magenta\",\"hde\",\"neon\"],\n[\"pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ff8fc8\",\"pink\",\"hde\",\"base\"],\n[\"saturated pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ff2d95\",\"vivid pink, saturated pink\",\"hde\",\"saturated\"],\n[\"light pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ffc8e0\",\"light pink\",\"hde\",\"light\"],\n[\"pastel pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#f8bbd9\",\"pastel pink, pale pink\",\"hde\",\"pastel\"],\n[\"dark pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#c2185b\",\"dark pink, deep pink\",\"hde\",\"dark\"],\n[\"neon pink\",\"pink\",\"\\ud83c\\udf38 Pink\",\"#ff1493\",\"neon pink, bright pink\",\"hde\",\"neon\"],\n[\"rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#e75480\",\"rose\",\"hde\",\"base\"],\n[\"saturated rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#ff3d7f\",\"vivid rose, saturated rose\",\"hde\",\"saturated\"],\n[\"light rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#ffc1cc\",\"light rose\",\"hde\",\"light\"],\n[\"dark rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#ad2d4e\",\"dark rose, deep rose\",\"hde\",\"dark\"],\n[\"dusty rose\",\"rose\",\"\\ud83c\\udf39 Rose\",\"#c08081\",\"dusty rose\",\"hde\",\"named\"],\n[\"brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#8b5a2b\",\"brown\",\"hde\",\"base\"],\n[\"saturated brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#8d4004\",\"vivid brown, saturated brown\",\"hde\",\"saturated\"],\n[\"light brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#c4a574\",\"light brown\",\"hde\",\"light\"],\n[\"dark brown\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#4e2e0e\",\"dark brown, deep brown\",\"hde\",\"dark\"],\n[\"chocolate\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#5d3a1a\",\"chocolate\",\"hde\",\"named\"],\n[\"auburn\",\"brown\",\"\\ud83e\\udd0e Brown\",\"#922724\",\"auburn\",\"hde\",\"named\"],\n[\"black\",\"black\",\"\\u2b1b Black\",\"#555\",\"black\",\"hde\",\"base\"],\n[\"charcoal\",\"black\",\"\\u2b1b Black\",\"#36454f\",\"charcoal\",\"hde\",\"named\"],\n[\"jet black\",\"black\",\"\\u2b1b Black\",\"#111\",\"jet black, black\",\"he\",\"named\"],\n[\"silver\",\"silver\",\"\\u26aa Silver\",\"#c0c0c0\",\"silver\",\"hde\",\"base\"],\n[\"light silver\",\"silver\",\"\\u26aa Silver\",\"#e8e8e8\",\"light silver\",\"he\",\"light\"],\n[\"gray\",\"silver\",\"\\u26aa Silver\",\"#999\",\"gray\",\"hde\",\"named\"],\n[\"gunmetal\",\"silver\",\"\\u26aa Silver\",\"#5b6770\",\"gunmetal, dark silver\",\"hde\",\"dark\"],\n[\"blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#f5d76e\",\"blonde\",\"h\",\"base\"],\n[\"platinum blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#f3e9c6\",\"platinum blonde\",\"h\",\"named\"],\n[\"golden blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#e8c547\",\"golden blonde, gold blonde\",\"h\",\"named\"],\n[\"dark blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#c9a227\",\"dark blonde\",\"h\",\"dark\"],\n[\"strawberry blonde\",\"blonde\",\"\\ud83d\\udc9b Blonde\",\"#e2946e\",\"strawberry blonde\",\"h\",\"named\"],\n[\"white\",\"white\",\"\\u2b1c White\",\"#fff\",\"white\",\"h\",\"base\"]]";
 window.__LIBRAW = "AB274F|Cherry Rose;7C0902|Molten Lava;FE6F5E|Vibrant Coral;BF4F51|Blushed Brick;660000|Dark Garnet;FB607F|Bubblegum Pink;800020|Burgundy;FF0800|Electric Red;FDBCB4|Powder Blush;C51E3A|Intense Cherry;960018|Deep Crimson;DE3163|Magenta Bloom;E23D28|Burnt Tangerine;58111A|Night Bordeaux;E44D2E|Fiery Terracotta;7F1734|Dark Amaranth;FF3800|Blazing Flame;F88379|Sweet Salmon;893F45|Burnt Rose;B31B1B|Mahogany Red;DC143C|Classic Crimson;8B0000|Blood Red;801818|Dark Wine;B22222|Brick Red;CE2029|Flag Red;FF004F|Hot Fuchsia;733635|Bitter Chocolate;ED2939|Strawberry Red;CD5C5C|Lobster Pink;D05340|Rosy Copper;F08080|Light Coral;FF7F7F|Grapefruit Pink;A50021|Ruby Red;C04000|Burnt Orange;800000|Maroon;FFE4E1|Soft Blush;FE0000|Pure Red;C08081|Dusty Rose;841617|Crushed Berry;990000|Oxblood;CC3333|Tomato Jam;FFC0CB|Pastel Pink;DC343B|Scarlet Rush;FF0000|Red;A52A2A|Brown Red;ED1B24|Racing Red;EE204E|Watermelon;F2003C|Lipstick Red;C40234|Carmine;ED2839|Punch Red;E60026|Primary Scarlet;FF0080|Neon Pink;674846|Chocolate Plum;C21E56|Rosewood;905D5D|Smoky Rose;AB4E52|Dusty Mauve;65000B|Black Cherry;BC8F8F|Rosy Taupe;B7410E|Rusty Spice;DA2C43|Raspberry;FA8072|Salmon;FF91A4|Cotton Candy;FF2400|Scarlet Fire;D44500|Spicy Orange;F4C2C2|Cotton Rose;FF6347|Tomato;A91101|Inferno;E34234|Cinnabar;722F37|Wine Plum;FF4F00|Flame Orange;C46210|Burnt Caramel;FFBF00|Amber Gold;FBCEB1|Peach Fuzz;FF9966|Tangerine Dream;964B00|Chocolate Brown;BF5700|Autumn Ember;E09540|Golden Apricot;ED9121|Carrot Orange;F7E7CE|Champagne Mist;FF7F50|Coral Glow;FF8C00|Dark Orange;EDC9AF|Desert Sand;BA160C|Brick Ember;E25822|Spicy Paprika;FE5A1D|Tiger Flame;FFD700|Gold;F04A00|Molten Orange;DAA520|Goldenrod;E8AC41|Honey Bronze;FED8B1|Soft Apricot;FF7538|Atomic Tangerine;FF5800|Blaze Orange;FFA000|Amber Glow;FFA500|Orange;FF8000|Vivid Tangerine;FFEFD5|Papaya Whip;FFE5B4|Light Apricot;D99058|Toasted Almond;EC5800|Cayenne Red;FF8F00|Deep Saffron;FF7518|Pumpkin Spice;FF7900|Harvest Orange;F4C430|Saffron;E86100|Autumn Leaf;F94D00|Crimson Carrot;F28500|Tiger Orange;CD5700|Bronze Spice;B56917|Copperwood;FF8200|Princeton Orange;F1B42F|Sunflower Gold;EFDECD|Almond Cream;9F8170|Dusty Taupe;F5F5DC|Beige;3D2B1F|Dark Coffee;3D0C02|Rich Mahogany;3B3C36|Charcoal Brown;79443B|Clay Soil;E3DAC9|Bone;CD7F32|Bronze;993300|Rust Brown;AF6E4D|Cinnamon Wood;DAA06D|Light Bronze;E97451|Burnt Peach;8A3324|Chestnut;C19A6B|Camel;592720|Espresso;CC7F3B|Golden Chestnut;A0785A|Faded Copper;954535|Reddish Brown;7B3F00|Raw Umber;DDD06A|Golden Sand;D2691E|Chocolate;6F4E37|Coffee Bean;B87333|Copper;81613E|Olive Wood;4A412A|Dark Khaki;DAC8AE|Pale Oak;E1A95F|Sunlit Clay;C2B280|Sand;E5AA70|Light Caramel;6C541E|Olive Bark;E48400|Amber Earth;996515|Golden Earth;DA9100|Harvest Gold;C3B091|Khaki Beige;6B4423|Brown Bark;674C47|Mauve Bark;CC7722|Ochre;926644|Toffee Brown;A45A52|Terracotta Clay;A81C07|Oxidized Iron;80461B|Saddle Brown;F4A460|Sandy Brown;CBA135|Golden Bronze;59260B|Dark Walnut;704214|Walnut;882D17|Brandy;CB410B|Red Ochre;D2B48C|Tan;483C32|Taupe;635147|Ash Brown;44362F|Deep Mocha;5C5248|Stone Brown;645452|Taupe Grey;F5DEB3|Wheat;E9D66B|Straw Gold;FDEE00|Bright Lemon;E0AB76|Sandy Clay;FFEF00|Sunbeam Yellow;DFFF00|Lime Yellow;E4D00A|Golden Glow;FFF8E7|Ivory Mist;FFFDD0|Cream;B8860B|Dark Goldenrod;CDB280|Soft Fawn;EEDC82|Light Gold;EF9B0F|Golden Orange;D4AF37|Metallic Gold;E6A817|Amber Honey;FCF75E|Canary Yellow;FFFFF0|Ivory;F8DE7E|Jasmine;FACA16|Bright Amber;FFFACD|Lemon Chiffon;E3FF00|Neon Chartreuse;FFFFE0|Light Yellow;FBEC5D|Banana Cream;FFC40C|School Bus Yellow;E3F988|Lime Cream;FFDB58|Mustard;FADA5E|Royal Gold;FFDEAD|Navajo White;CFB53B|Old Gold;808000|Olive;FADFAD|Soft Peach;D1E231|Lemon Lime;F4C431|Tuscan Sun;FFD800|Bright Gold;FFBA00|Amber Flame;E4D96F|Pale Amber;FFCC33|Golden Pollen;FAD6A5|Apricot Cream;F3E5AB|Vanilla Custard;FFFF00|Yellow;8DB600|Lime Moss;00FFBF|Tropical Mint;7BA05B|Sage Green;568203|Forest Moss;66FF00|Neon Grass;004225|Deep Forest;1B4D3E|Pine Teal;1E4D2B|Dark Spruce;00563B|Emerald Depths;ACE1AF|Celadon;80FF00|Lime Flash;00FFFF|Cyan;013220|Evergreen;4A5D23|Olive Leaf;03C03C|Jade Green;177245|Turf Green;00693E|Dark Emerald;50C878|Emerald;00FF40|Electric Green;4F7942|Fern;228B22|Forest Green;00FF00|Lime;ADFF2F|Green Yellow;3FFF00|Spring Laser;F0FFF0|Honeydew;49796B|Deep Teal;355E3B|Hunter Green;138808|India Green;00A86B|Jungle Green;29AB87|Seaweed;4CBB17|Bright Fern;7CFC00|Lawn Green;90EE90|Light Green;C0FF00|Chartreuse;32CD32|Lime Green;0BDA51|Malachite;74C365|Moss Green;004953|Dark Teal;3EB489|Mint Leaf;8A9A5B|Palm Leaf;317873|Pine Blue;39FF14|Laser Green;008000|Green;9AB973|Muted Olive;00401A|Black Forest;00A693|Verdigris;00A550|Medium Jungle;01796F|Blue Spruce;93C572|Willow Green;6C7C59|Dusty Olive;00CCCC|Strong Cyan;BCB88A|Dry Sage;76FF7A|Mint Glow;2E8B57|Sea Green;55DD33|Radioactive Grass;009E60|Shamrock;A7FC00|Slime Lime;00FF7F|Spring Green;D0F0C0|Tea Green;008080|Teal;40E0D0|Turquoise;40826D|Jungle Teal;9ACD32|Yellow Green;F0F8FF|Alice Blue;0FFFFF|Cyan Glow;7FFFD4|Aquamarine;007FFF|Azure Blue;F0FFFF|Azure Mist;0D98BA|Blue Green;00BFFF|Deep Sky Blue;006D6F|Stormy Teal;B2FFFF|Icy Aqua;007BA7|Cerulean;008B8B|Dark Cyan;7DF9FF|Electric Aqua;15F4EE|Neon Ice;3AB09E|Ocean Mist;99FFFF|Soft Cyan;E0FFFF|Light Cyan;20B2AA|Light Sea Green;DFFFFD|Frozen Water;3AA8C1|Pacific Blue;1CA9C9|Turquoise Surf;00B7EB|Bright Sky;007A74|Deep Ocean;81D8D0|Pearl Aqua;43B3AE|Tropical Teal;00CCFF|Sky Aqua;39A78D|Seagrass;00B9E8|Sky Surge;5D8AA8|Air Force Blue;72A0C1|Steel Blue;6CB4EE|Cool Sky;0070BB|Bright Marine;89CFF0|Baby Blue;003262|Oxford Navy;2072AF|Cornflower Ocean;318CE7|Brilliant Azure;0000FF|Blue;6699CC|Blue Grey;0095B6|Bondi Blue;0070FF|Digital Blue;3457D5|Royal Azure;85B09A|Muted Teal;7BAFD4|Sky Reflection;4997D0|Blue Bell;246BCE|Sapphire Sky;468FEA|Blue Energy;3B00DB|Ultrasonic Blue;0047AB|Cobalt Blue;B9D9EB|Pale Sky;6495ED|Cornflower Blue;1F75FE|Crayola Blue;0000B8|True Azure;1F305E|Twilight Indigo;1560BD|Tech Blue;1E90FF|Dodger Blue;00009C|Navy Electric;1034A6|Egyptian Blue;16166B|Deep Twilight;6082B6|Glaucous;1164B4|Ocean Deep;6F00FF|Electric Indigo;0072BB|Twitter Blue;4B0082|Indigo;00416A|Yale Blue;002FA7|International Klein Blue;8AB9F1|Baby Blue Ice;26619C|Baltic Blue;ADD8E6|Light Blue;87CEFA|Sky Blue;6050DC|Majorelle Blue;2B4593|French Blue;73C2FB|Maya Blue;0000CD|Medium Blue;7B68EE|Medium Slate Blue;191970|Midnight Blue;0093AF|Pacific Cyan;000080|Navy;0087BD|Ocean Blue;4666FF|Electric Sapphire;A4DDED|Frosted Blue;002147|Prussian Blue;273BE2|Bright Indigo;87D3F8|Frozen Lake;011F5B|Deep Navy;CCCCFF|Periwinkle;1C39BB|Persian Blue;000F89|Electric Royal;45B1E8|Fresh Sky;224C98|Steel Azure;9EB9D4|Powder Blue;003153|Deep Space Blue;002387|True Cobalt;2454FF|Full Spectrum Blue;4169E1|Royal Blue;002366|Imperial Blue;76ABDF|Cool Horizon;0F52BA|Sapphire;0076B6|Bright Teal Blue;4B61D1|Slate Indigo;5D89BA|Dusty Denim;87CEEB|Sky Blue (Light);1E2952|Space Indigo;4682B4|Steel Blue;0059CF|Laser Blue;2D68C4|Smart Blue;3E8EDE|Bright Ocean;2774AE|Rich Cerulean;120A8F|Dark Ultramarine;4B92DB|Cloudy Sky;AFDBF5|Icy Blue;324AB2|Ocean Twilight;7C9ED9|Wisteria Blue;00356B|Regal Navy;2E5090|Dusk Blue;0014A8|Vivid Royal;B284BE|Amethyst Smoke;9966CC|Lavender Purple;8A2BE2|Blue Violet;702963|Royal Plum;856088|Dusty Lavender;301934|Midnight Violet;9400D3|Dark Violet;614051|Mauve Shadow;BF00FF|Hyper Magenta;8F00FF|Violet Ray;563C5C|Vintage Grape;6C3082|Velvet Orchid;F2C1D1|Pastel Petal;B53389|Raspberry Plum;D473D4|Orchid Mist;8806CE|Royal Violet;FF00FF|Magenta;6F2DA8|Indigo Bloom;DF73FF|Mauve Magic;5A4FCF|Violet Twilight;5B3256|Blackberry Cream;FFF0F5|Lavender Blush;B57EDC|Bright Lavender;E6E6FA|Lavender;C8A2C8|Lilac;880085|Dark Magenta;E0B0FF|Mauve;8D029B|Royal Orchid;997A8D|Dusty Mauve;C54B8C|Fuchsia Plum;8B004B|Dark Raspberry;DA70D6|Orchid;682860|Deep Purple;FAE6FA|Lavender Veil;32127A|Indigo Ink;DF00FF|Neon Violet;DBB2D1|Pink Orchid;DDA0DD|Plum;86608E|Vintage Lavender;CC8899|Old Rose;800080|Purple;9A4EAE|Amethyst;663399|Rebecca Purple;7851A9|Deep Lilac;C71585|Medium Violet Red;32174D|Dark Amethyst;6A5ACD|Slate Blue;CC33CC|Vivid Orchid;512888|Indigo Velvet;D8BFD8|Thistle;9683EC|Soft Periwinkle;66023C|Crimson Violet;645394|Dusty Grape;A020F0|Purple (X11);8000FF|Ultra Violet;C9A0DC|Wisteria;E52B50|Amaranth;FF91AF|Cotton Candy;8B008B|Dark Magenta;683068|Velvet Purple;FF1DCE|Neon Fuchsia;CA1F7B|Hot Rose;FF0090|Barbie Pink;F653A6|Deep Pink;D0417E|Rose Punch;9F4576|Berry Blush;8E4585|Grape Soda;FE4EDA|Cotton Bloom;8E3A59|Vintage Berry;E30B5C|Raspberry Red;FF33CC|Fuchsia Pop;FF66CC|Bubblegum Fizz;AA98A9|Lilac Ash;FC0FC0|Shocking Pink;FF6FFF|Bright Peony;CF71AF|Petal Pink;CF3476|Hot Berry;EE82EE|Violet;F19CBB|Pink Mist;DE5D83|Blush Rose;FFA6C9|Baby Pink;F1DDCF|Powder Petal;FFB7C5|Cherry Blossom;A8516E|Rosewood;F56FA1|Rose Kiss;FF1493|Deep Pink;D71868|Berry Lipstick;F64A8A|Wild Strawberry;C74375|Rose Wine;F400A1|Electric Rose;FF00CC|Neon Rose;FF69B4|Hot Pink (Web);FBAED2|Blush Pop;E4007C|Fuchsia Flame;FFDAE9|Petal Frost;F2BDCD|Soft Blossom;EDCDC2|Almond Silk;FFCBA4|Peach Glow;FE28A2|Brilliant Rose;F77FBE|Pink Carnation;ED7A9B|Petal Rouge;E3256B|Razzmatazz;B3446C|Berry Crush;F9429E|Dragonfruit;FFF5EE|Seashell;FC89AC|Bubblegum Tint;DE6FA1|Sweet Peony;EDEAE0|Soft Linen;F2F3F4|Platinum;FAEBD7|Antique White;FEFEFA|Porcelain;FFF8DC|Cornsilk;EFDFBB|Pearl Beige;F0EAD6|Eggshell;FFFAF0|Floral White;F8F8FF|Ghost White;F4F0EC|Parchment;FAF0E6|Linen;F8F4FF|Lavender Mist;F5FFFA|Mint Cream;E9FFDB|Frosted Mint;FDF5E6|Old Lace;F1E9D2|Vanilla Cream;EAE0C8|Sand Dune;E5E4E2|Alabaster Grey;F7F7F7|Bright Snow;FFFAFA|Snow;FFFFFF|White;F5F5F5|White Smoke;DBD7D2|Dust Grey;C0C0C0|Silver;BEBFC5|Pale Slate;B2BEB5|Ash Grey;98817B|Taupe;91A3B0|Cool Steel;8C92AC|Lavender Grey;8B8589|Rosy Granite;848482|Grey Olive;808080|Grey;708090|Slate Grey;696969|Dim Grey;555555|Charcoal;536878|Blue Slate;2A3439|Jet Black;4D5D53|Granite;2F4F4F|Dark Slate Grey;000000|Black;4B3621|Deep Walnut;36454F|Charcoal Blue;555D50|Ebony;1B1B1B|Carbon Black;343434|Graphite;1A1110|Coffee Bean;111111|Onyx;353839|Gunmetal;414A4C|Iron Grey;242124|Shadow Grey;010B13|Ink Black;100C08|Pitch Black";
 window.__BASE_PEACH = "data:image/png;base64,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";
@@ -480,10 +698,9 @@ function cloneCanvas(src){
   c.getContext("2d",{willReadFrequently:true}).drawImage(src,0,0);
   return c;
 }
-function recolorAll(){
-  const sep=document.getElementById("sepShade").checked;
+function recolorWith(colors, sep){
   const T={};
-  for(const f of FIELDS) T[f.id]=parseHex(state.colors[f.id]);
+  for(const f of FIELDS) T[f.id]=parseHex(colors[f.id]);
   const dressT=T.dress, shadeT=sep?T.dressShade:T.dress;
   const dressRef=parseHex("#FC83AB");
   const shadeRef=sep?parseHex("#DE4A7B"):dressRef;
@@ -573,9 +790,12 @@ function recolorAll(){
     ctx.putImageData(im,0,0);
     return c;
   }
-  state.out.peach=applyBody(state.orig.peach);
-  state.out.face0=applyFace(state.orig.face0, false);
-  state.out.face1=applyFace(state.orig.face1, true);
+  return {peach:applyBody(state.orig.peach), face0:applyFace(state.orig.face0, false), face1:applyFace(state.orig.face1, true)};
+}
+function recolorAll(){
+  const sep=document.getElementById("sepShade").checked;
+  const o=recolorWith(state.colors, sep);
+  state.out.peach=o.peach; state.out.face0=o.face0; state.out.face1=o.face1;
   drawAll();
   updateSummary();
   if(state.orig.peach) syncHash();
@@ -689,6 +909,7 @@ function setColor(id, hex, name, fromUser){
   state.colors[id]=hex;
   state.names[id]=name||nameOf(hex,f.palette);
   state.lastField=id;
+  if(fromUser && typeof X!=="undefined" && !/· edited$/.test(X.label)) X.label=(X.label||"Custom")+" · edited";
   const el=document.getElementById("f-"+id);
   if(el){
     el.querySelector("input[type=color]").value=hex;
@@ -696,12 +917,13 @@ function setColor(id, hex, name, fromUser){
   }
   recolorAll();
   saveStore();
+  if(typeof renderResult==="function") renderResult();
 }
 function toggleLock(id){
   state.locked[id]=!state.locked[id];
   const btn=document.querySelector("#f-"+id+" .lock");
   if(btn){ btn.classList.toggle("on", !!state.locked[id]); btn.textContent=state.locked[id]?"🔒":"🔓"; }
-  saveStore();
+  saveStore(); syncHash(); if(typeof renderResult==="function") renderResult();
 }
 function addPick(hex, name){
   hex=hexNorm(hex); if(!hex) return;
@@ -817,9 +1039,12 @@ function rollOne(id, fromPicks){
 }
 function rollAll(fromPicks){
   if(fromPicks && !state.picks.length){ toast("Add some colors to My picks first"); return; }
+  pushUndo();
+  X.label=fromPicks?"🎯 From my picks":"Every part random"; X.token="";
   let n=0;
   for(const f of FIELDS){ if(rollOne(f.id, fromPicks)) n++; }
   toast(fromPicks? "Rolled from your picks" : "New roll");
+  noteRoll(fromPicks?"picks":"classic"); renderResult(); syncHash();
   // setColor already recolors each time; that's ok
 }
 function resetAll(){
@@ -828,14 +1053,18 @@ function resetAll(){
     state.colors[f.id]=f.def;
     state.names[f.id]=f.defName;
   }
+  pushUndo();
+  X.label="Original colors"; X.token="";
   renderFields();
   recolorAll();
   saveStore();
+  renderResult();
   toast("Reset to original colors (locked fields kept)");
 }
 function updateSummary(){
   const sep=document.getElementById("sepShade").checked;
   const lines=["DS Peach Randomizer roll","New Super Mario Bros. DS (USA)"];
+  if(typeof X!=="undefined" && X.label) lines.push("Look: "+X.label);
   for(const f of FIELDS){
     if(f.optional && !sep) continue;
     lines.push((state.locked[f.id]?"[locked] ":"")+f.label+": "+state.colors[f.id]+"  "+(state.names[f.id]||""));
@@ -1062,7 +1291,8 @@ function encodeRoll(){
   const cols=FIDS.map(id=>(state.colors[id]||"").replace(/^#/,"").toUpperCase());
   const locks=FIDS.filter(id=>state.locked[id]).join(",");
   const s=document.getElementById("sepShade").checked?"1":"0";
-  return "DSP3:"+cols.join(".")+":"+locks+":"+s;
+  const tok=(typeof X!=="undefined" && X.token)? ":"+X.token : "";
+  return "DSP3:"+cols.join(".")+":"+locks+":"+s+tok;
 }
 function decodeRoll(str){
   if(!str) return null;
@@ -1090,7 +1320,8 @@ function decodeRoll(str){
     names[id]=nameOf(hex, f.palette);
     locked[id]=locks.has(id);
   }
-  return {colors, names, locked, sep};
+  const token=/^[a-z0-9.]{0,24}$/i.test(parts[4]||"")? (parts[4]||"") : "";
+  return {colors, names, locked, sep, token};
 }
 function applyRoll(decoded, silent){
   if(!decoded) return false;
@@ -1099,10 +1330,12 @@ function applyRoll(decoded, silent){
   state.locked=decoded.locked||{};
   const sepEl=document.getElementById("sepShade");
   if(sepEl) sepEl.checked=!!decoded.sep;
+  if(typeof X!=="undefined"){ X.token=decoded.token||""; X.label=tokenLabel(X.token)||"Shared look"; }
   renderFields();
   recolorAll();
   saveStore();
   if(!silent) toast("Loaded roll");
+  if(typeof renderResult==="function") renderResult();
   return true;
 }
 function rollLink(){
@@ -1143,6 +1376,813 @@ function loadRollInput(){
   syncHash();
 }
 
+/* ===================== Update 44: main-randomizer features ===================== */
+const DSX = window.__DSX || {G:[],T:[],hex:{},cur:[],comp:{},hair:[],eyes:[],dress:[]};
+const XS = STORE + ".x"; // localStorage prefix for the new features
+function lsGet(k, d){ try{ const v=localStorage.getItem(XS+"."+k); return v==null?d:JSON.parse(v); }catch(e){ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(XS+"."+k, JSON.stringify(v)); }catch(e){} }
+function escH(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function cap(s){ return String(s||"").replace(/\b\w/g, c=>c.toUpperCase()); }
+
+/* ---- theme table (same order as the main randomizer; Original princesses appended) ---- */
+const TT = DSX.T.map(([g,n,ch,data],i)=>{
+  const t={i, g:DSX.G[g], name:n, ch:!!ch};
+  if(ch){ const p=data.split("/"); t.c={hair:p[0],eyes:p[1],dress:p[2],bot:p[3],trim:p[4],tiara:p[5],gem:p[6],pend:p[7]||p[6]}; }
+  else t.pal=data.split(";").map(r=>r.split("/"));
+  return t;
+});
+const THEME_IDX = TT.filter(t=>!t.ch).map(t=>t.i);
+const CHAR_IDX = TT.filter(t=>t.ch).map(t=>t.i);
+const TGROUPS = [...new Set(THEME_IDX.map(i=>TT[i].g))];
+const CGROUPS = [...new Set(CHAR_IDX.map(i=>TT[i].g))];
+const JOBS = THEME_IDX.filter(i=>TT[i].g==="Jobs / Occupations");
+function tkey(t){ return t.g+"|"+t.name; }
+function tLabel(t){ return t.ch ? t.name+" ("+t.g+")" : t.name; }
+
+/* ---- random source (swappable for the seeded daily pick) ---- */
+let rnd = Math.random;
+function rOf(a){ return a[Math.floor(rnd()*a.length)]; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function seeded(seed){ let s=seed>>>0; return function(){ s=(s+0x6D2B79F5)>>>0; let t=s; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+function strSeed(str){ let h=2166136261; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+
+/* ---- settings ---- */
+const X = {
+  mode: lsGet("mode","match"),     // classic | curated | match | wild
+  sel: lsGet("sel",{k:"none"}),     // theme selection
+  mix: lsGet("mix",[]),             // multi-category picks ("t:Group" / "c:Franchise")
+  rate: lsGet("rate",{}),           // theme key -> 1 / -1
+  favs: lsGet("favs",[]),
+  folders: lsGet("folders",["Favorites","Characters","Jobs","Rainbow"]),
+  ffil: lsGet("ffil","All"), fsort: lsGet("fsort","new"),
+  hist: lsGet("hist",[]),
+  banned: lsGet("banned",[]),       // [{hex,name}]
+  stats: lsGet("stats",{rolls:0,mode:{},theme:{},hair:{},dress:{},days:{}}),
+  dfil: lsGet("dfil","all"),
+  opts: Object.assign({keepGloves:true, trimShade:true, rollSkin:false}, lsGet("opts",{})),
+  label: "Original colors", token: "",
+  undo: [], batch: []
+};
+function saveX(){ ["mode","sel","mix","rate","favs","folders","ffil","fsort","hist","banned","stats","dfil","opts"].forEach(k=>lsSet(k,X[k])); }
+
+/* ---- color names -> hex ---- */
+const METAL_MAP = {gold:"#F7A521", silver:"#C0C0C0"};
+function nameHex(n){
+  if(!n) return null;
+  if(n.startsWith("#")) return hexNorm(n);
+  const h = DSX.hex[n]; if(h) return hexNorm(h);
+  const b = BASIC.find(c=>c.name===n); return b? b.hex : null;
+}
+const SHAPES = new Set(["heart","star","rainbow","clover","snowflake","moon","planet","sun"]);
+function isWhiteish(hex){ const [r,g,b]=parseHex(hex); const [,s,v]=rgbToHsv(r,g,b); return s<0.12 && v>0.88; }
+function bannedHit(hex,name){
+  hex=hexNorm(hex);
+  return X.banned.some(b=>b.hex===hex || (name && b.name && b.name.toLowerCase()===String(name).toLowerCase()));
+}
+function freshFrom(fid, avoidWhite){
+  const f=fieldById(fid);
+  let pool=poolFor(f.palette, document.getElementById("useCoolors").checked).filter(c=>!bannedHit(c.hex,c.name));
+  if(avoidWhite) pool=pool.filter(c=>!isWhiteish(c.hex));
+  return pool.length? rOf(pool) : null;
+}
+
+/* ---- the main randomizer's pick(), ported for colors only ---- */
+function hairNot(d){ let h, n=0; do{ h=rOf(DSX.hair); }while(h===d && n++<20); return h; }
+function pickMain(mode, ti){
+  if(ti>=0 && TT[ti].ch){ const o=Object.assign({}, TT[ti].c);
+    if(mode==="match" && o.tiara!=="gold" && o.tiara!=="silver") o.tiara=rOf(["gold","silver"]);
+    if(mode==="wild"){ o.eyes=rOf(DSX.eyes); o.tiara=rOf(["gold","silver"]); }
+    return o; }
+  if(ti>=0){ const c=rOf(TT[ti].pal); const o={hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6]};
+    if(mode==="match" || mode==="wild") o.hair=hairNot(o.dress);
+    if(mode==="wild"){ o.eyes=rOf(DSX.eyes); o.tiara=rOf(["gold","silver"]); }
+    if(!DSX.hair.includes(o.hair)||o.hair===o.dress) o.hair=hairNot(o.dress);
+    if(!DSX.eyes.includes(o.eyes)) o.eyes=rOf(DSX.eyes);
+    if(o.dress==="white") o.dress="light blue";
+    return o; }
+  if(mode==="curated"){ const c=rOf(DSX.cur); return {hair:c[0],eyes:c[1],dress:c[2],trim:c[3],tiara:c[4],gem:c[5],pend:c[6]}; }
+  const dress=rOf(DSX.dress), hair=hairNot(dress);
+  if(mode==="wild"){ const dc=DSX.dress.concat(["gold","silver"]); return {hair,eyes:rOf(DSX.eyes),dress,trim:rOf(dc),tiara:rOf(["gold","silver"]),gem:rOf(DSX.dress),pend:rOf(DSX.dress)}; }
+  const comp=(DSX.comp[dress]&&DSX.comp[dress].length)?DSX.comp[dress]:DSX.dress.concat(["gold","silver"]).filter(x=>x!==dress);
+  const acc=rOf(comp);
+  const tiara=["navy","purple","blue","light blue","lavender","pink","light pink"].includes(dress)?rOf(["silver","gold"]):"gold";
+  const gemPool=(DSX.comp[dress]||[]).filter(x=>x!=="gold"&&x!=="silver").concat([dress]);
+  const gem=(acc==="gold"||acc==="silver")?rOf(gemPool):acc;
+  return {hair,eyes:rOf(DSX.eyes),dress,trim:acc,tiara,gem,pend:gem};
+}
+
+/* ---- turn a main-style look into DS field colors ---- */
+function lookToSet(o){
+  const C={}, N={};
+  function put(fid, name, hexOverride){ const h=hexOverride||nameHex(name); if(h){ C[fid]=h; N[fid]=name&&!String(name).startsWith("#")?cap(name):nameOf(h, fieldById(fid).palette); } }
+  put("hair", o.hair); put("iris", o.eyes);
+  let dress=o.dress; if(!dress || dress==="white" || isWhiteish(nameHex(dress)||"#FFFFFF")) dress="light blue";
+  put("dress", dress);
+  const shade = o.bot || o.trim;
+  if(shade && shade!=="white") put("dressShade", shade, METAL_MAP[shade]);
+  put("crownMetal", o.tiara, METAL_MAP[o.tiara]);
+  const gem = SHAPES.has(o.gem)? (o.trim||"gold") : o.gem;
+  const pend = SHAPES.has(o.pend)||!o.pend ? gem : o.pend;
+  ["crownGems","headJewel","earring"].forEach(f=>put(f, gem, METAL_MAP[gem]));
+  put("broochGem", pend, METAL_MAP[pend]);
+  return {C,N};
+}
+function classicSet(){
+  const C={}, N={}; const lib=document.getElementById("useCoolors").checked;
+  for(const f of FIELDS){
+    const pool=poolFor(f.palette, lib); if(!pool.length) continue;
+    let c=rOf(pool), n=0;
+    while(f.id==="dress" && isWhiteish(c.hex) && n++<30) c=rOf(pool);
+    C[f.id]=c.hex; N[f.id]=c.name;
+  }
+  return {C,N};
+}
+function libReplace(set){ // Full color library: slots roll from the ~540 Coolors shades
+  if(!COOLORS.length) return;
+  ["hair","iris","dress","dressShade","crownGems","broochGem","earring","headJewel"].forEach(fid=>{
+    let c=rOf(COOLORS), n=0; while(fid==="dress" && isWhiteish(c.hex) && n++<30) c=rOf(COOLORS);
+    set.C[fid]=c.hex; set.N[fid]=c.name;
+  });
+  set.C.earring=set.C.crownGems; set.N.earring=set.N.crownGems;
+}
+function finishSet(set, opts){
+  opts=opts||{};
+  const o=X.opts;
+  if(o.keepGloves){ set.C.gloves="#FFFFFF"; set.N.gloves="White"; }
+  else if(!set.C.gloves){ const c=freshFrom("gloves"); if(c){ set.C.gloves=c.hex; set.N.gloves=c.name; } }
+  if(opts.themed && o.rollSkin){
+    ["skin","lips"].forEach(fid=>{ const c=freshFrom(fid); if(c){ set.C[fid]=c.hex; set.N[fid]=c.name; } });
+  }
+  // banned colors: swap any banned slot for a fresh, allowed color
+  for(const fid of Object.keys(set.C)){
+    if(bannedHit(set.C[fid], set.N[fid])){
+      const c=freshFrom(fid, fid==="dress");
+      if(c){ set.C[fid]=c.hex; set.N[fid]=c.name; } else delete set.C[fid];
+    }
+  }
+  // the dress never goes white (white stays on the gloves)
+  if(set.C.dress && isWhiteish(set.C.dress)){ set.C.dress=nameHex("light blue"); set.N.dress="Light Blue"; }
+  return set;
+}
+
+/* ---- theme selection & pools ---- */
+function mixPool(){
+  const out=[];
+  for(const m of X.mix){
+    const k=m.slice(0,2), g=m.slice(2);
+    if(k==="t:") THEME_IDX.forEach(i=>{ if(TT[i].g===g) out.push(i); });
+    if(k==="c:") CHAR_IDX.forEach(i=>{ if(TT[i].g===g) out.push(i); });
+  }
+  return out;
+}
+function selPool(sel){
+  sel=sel||X.sel;
+  switch(sel.k){
+    case "any": return THEME_IDX;
+    case "anyChar": return CHAR_IDX;
+    case "group": return THEME_IDX.filter(i=>TT[i].g===sel.v);
+    case "fran": return CHAR_IDX.filter(i=>TT[i].g===sel.v);
+    case "mix": return mixPool();
+    case "liked": return TT.filter(t=>X.rate[tkey(t)]===1).map(t=>t.i);
+    case "idx": return [sel.v];
+    default: return null;
+  }
+}
+function tpick(p){
+  if(!p.length) return -1;
+  let a=p.filter(i=>X.rate[tkey(TT[i])]!==-1); if(!a.length) a=p;
+  const ws=a.map(i=>X.rate[tkey(TT[i])]===1?3:1), tot=ws.reduce((x,y)=>x+y,0);
+  let q=rnd()*tot; for(let j=0;j<a.length;j++){ q-=ws[j]; if(q<=0) return a[j]; } return a[a.length-1];
+}
+function selLabel(sel){
+  sel=sel||X.sel;
+  switch(sel.k){
+    case "none": return X.mode==="classic"?"No theme · every part random":"No theme";
+    case "any": return "🎲 Any theme";
+    case "anyChar": return "🎲 Any character";
+    case "group": return "🎲 Any "+sel.v+" theme";
+    case "fran": return "🎲 Any "+sel.v+" character";
+    case "mix": return "🎛️ My mix ("+X.mix.length+" categories, "+mixPool().length+" looks)";
+    case "liked": return "👍 Liked only";
+    case "idx": return TT[sel.v]? tLabel(TT[sel.v]) : "No theme";
+  }
+  return "No theme";
+}
+
+/* ---- make one roll (no side effects) ---- */
+function makeRoll(sel, mode){
+  sel=sel||X.sel; mode=mode||X.mode;
+  const pool=selPool(sel);
+  if(pool){
+    const ti=tpick(pool);
+    if(ti<0) return null;
+    const set=lookToSet(pickMain(mode==="classic"?"curated":mode, ti));
+    set.label=tLabel(TT[ti]); set.token="t"+ti; set.ti=ti;
+    return finishSet(set,{themed:true});
+  }
+  let set;
+  if(mode==="classic") set=classicSet();
+  else { set=lookToSet(pickMain(mode,-1)); if(document.getElementById("useCoolors").checked && mode!=="curated") libReplace(set); }
+  set.label = mode==="classic"?"Every part random":mode==="curated"?"Curated combo":mode==="wild"?"Wild colors":"Matching colors";
+  set.token="";
+  return finishSet(set,{themed:false});
+}
+function mashRoll(kind, a, b){
+  // kind x: Character × Theme · y: Theme × Theme · z: Character × Character
+  const pa = kind==="y"? THEME_IDX : CHAR_IDX;
+  const pb = kind==="z"? CHAR_IDX : THEME_IDX;
+  const ia = a>=0? a : tpick(pa), ib = b>=0? b : tpick(pb);
+  const A=pickMain(X.mode==="classic"?"curated":X.mode, ia), B=pickMain(X.mode==="classic"?"curated":X.mode, ib);
+  // A gives hair, eyes, tiara; B gives dress, trim, gems
+  const o={hair:A.hair, eyes:A.eyes, tiara:A.tiara, dress:B.dress, bot:B.bot||"", trim:B.trim, gem:B.gem, pend:B.pend};
+  if(o.hair===o.dress) o.hair=hairNot(o.dress);
+  const set=lookToSet(o);
+  set.label=TT[ia].name+" × "+TT[ib].name; set.token=kind+ia+"."+ib;
+  return finishSet(set,{themed:true});
+}
+function tokenLabel(tok){
+  if(!tok) return "";
+  let m=/^t(\d+)$/.exec(tok); if(m && TT[+m[1]]) return tLabel(TT[+m[1]]);
+  m=/^([xyz])(\d+)\.(\d+)$/.exec(tok); if(m && TT[+m[2]] && TT[+m[3]]) return TT[+m[2]].name+" × "+TT[+m[3]].name;
+  m=/^d(\d{8})$/.exec(tok); if(m) return "Daily pick "+m[1].slice(0,4)+"-"+m[1].slice(4,6)+"-"+m[1].slice(6);
+  m=/^j(\d{8})$/.exec(tok); if(m) return "Job of the day "+m[1].slice(0,4)+"-"+m[1].slice(4,6)+"-"+m[1].slice(6);
+  return "";
+}
+function tokenTheme(tok){ const m=/^t(\d+)$/.exec(tok||""); return m && TT[+m[1]] ? TT[+m[1]] : null; }
+
+/* ---- apply a set to the page (respects locks), one recolor ---- */
+function applySet(set, how){
+  if(!set){ toast("Nothing to roll here — check your picks / bans"); return false; }
+  pushUndo();
+  const sepEl=document.getElementById("sepShade");
+  let sepChanged=false;
+  if(X.opts.trimShade && set.C.dressShade && !sepEl.checked && !state.locked.dressShade && how!=="classic"){ sepEl.checked=true; sepChanged=true; }
+  for(const fid of Object.keys(set.C)){
+    if(state.locked[fid]) continue;
+    if(fid==="dressShade" && !sepEl.checked) continue;
+    state.colors[fid]=set.C[fid]; state.names[fid]=set.N[fid]||nameOf(set.C[fid], fieldById(fid).palette);
+  }
+  X.label=set.label||"Custom"; X.token=set.token||"";
+  renderFields(); recolorAll(); saveStore();
+  if(sepChanged) toast("Dress shade now uses the trim color");
+  noteRoll(how||"roll");
+  renderResult();
+  return true;
+}
+function doRoll(){
+  const set=makeRoll();
+  if(set && X.mode==="classic" && !selPool()){ applySet(set,"classic"); toast("New roll"); return; }
+  if(applySet(set,"roll")) toast("🎲 "+X.label);
+}
+
+/* ---- undo ---- */
+function pushUndo(){ if(!state.ready) return; X.undo.push({code:encodeRoll(), label:X.label, token:X.token}); if(X.undo.length>50) X.undo.shift(); renderUndo(); }
+function doUndo(){
+  const u=X.undo.pop(); if(!u){ toast("Nothing to undo"); return; }
+  const d=decodeRoll(u.code); if(d){ applyRoll(d,true); X.label=u.label; X.token=u.token; renderResult(); syncHash(); toast("⏪ Undone"); }
+  renderUndo();
+}
+function renderUndo(){ const b=document.getElementById("btnUndo"); if(b) b.textContent="⏪ Undo ("+X.undo.length+")"; }
+
+/* ---- same girl / same outfit / swap ---- */
+const GIRL=["hair","iris","skin","lips"], OUTFIT=["dress","dressShade","gloves","crownMetal","crownGems","broochGem","earring","headJewel"];
+function partialRoll(keep, label){
+  const set=makeRoll(); if(!set) return;
+  keep.forEach(fid=>{ delete set.C[fid]; });
+  // keep the old theme name when only the girl changes
+  const prev=X.label, prevTok=X.token;
+  applySet(set, "partial");
+  if(label==="girl"){ toast("👧 Same girl, new colors"); }
+  else { X.label=prev; X.token=prevTok; renderResult(); syncHash(); toast("👗 Same outfit, new girl"); }
+}
+function swapHairDress(){
+  if(state.locked.hair||state.locked.dress){ toast("Unlock hair and dress to swap"); return; }
+  pushUndo();
+  const h=state.colors.hair, hn=state.names.hair;
+  state.colors.hair=state.colors.dress; state.names.hair=state.names.dress;
+  state.colors.dress=isWhiteish(h)?nameHex("light blue"):h; state.names.dress=isWhiteish(h)?"Light Blue":hn;
+  renderFields(); recolorAll(); saveStore(); renderResult(); toast("🔄 Swapped hair & dress");
+}
+function rerollTrim(){
+  const set=makeRoll(); if(!set) return;
+  const only=["dressShade","crownGems","broochGem","earring","headJewel","crownMetal"];
+  Object.keys(set.C).forEach(k=>{ if(!only.includes(k)) delete set.C[k]; });
+  const prev=X.label, tok=X.token; applySet(set,"partial"); X.label=prev; X.token=tok; renderResult(); syncHash(); toast("🎀 New trim & gems");
+}
+
+/* ---- stats + 7-day history ---- */
+function dayKey(t){ const d=new Date(t||Date.now()); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function bump(o,k){ if(!k) return; o[k]=(o[k]||0)+1; }
+function noteRoll(how){
+  const S=X.stats; S.rolls=(S.rolls||0)+1; bump(S.mode, how==="roll"?X.mode:how); bump(S.days, dayKey());
+  const th=tokenLabel(X.token); if(th) bump(S.theme, th);
+  bump(S.hair, state.names.hair); bump(S.dress, state.names.dress);
+  X.hist.unshift({t:Date.now(), code:encodeRoll(), label:X.label, token:X.token});
+  const cut=Date.now()-7*864e5; X.hist=X.hist.filter(h=>h.t>=cut).slice(0,300);
+  saveX(); renderHistory(); renderStats();
+}
+function renderHistory(){
+  const el=document.getElementById("histList"); if(!el) return;
+  document.getElementById("histCount").textContent=X.hist.length;
+  if(!X.hist.length){ el.innerHTML='<p class="muted">No rolls in the last 7 days yet.</p>'; return; }
+  const byDay={}; X.hist.forEach((h,i)=>{ (byDay[dayKey(h.t)]=byDay[dayKey(h.t)]||[]).push([h,i]); });
+  let html="";
+  for(const day of Object.keys(byDay)){
+    html+='<h4 class="hday">'+escH(day)+' <span class="muted">('+byDay[day].length+')</span></h4>';
+    html+=byDay[day].slice(0,40).map(([h,i])=>'<div class="lrow">'+chipsFor(h.code)+'<span class="lname">'+escH(h.label||"Roll")+' <span class="muted">'+new Date(h.t).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})+'</span></span><button type="button" class="mini" data-h="'+i+'">Load</button></div>').join("");
+  }
+  el.innerHTML=html;
+  el.querySelectorAll("button[data-h]").forEach(b=>b.addEventListener("click",()=>loadCode(X.hist[+b.dataset.h].code, X.hist[+b.dataset.h])));
+}
+function topN(o,n){ return Object.entries(o||{}).sort((a,b)=>b[1]-a[1]).slice(0,n); }
+function renderStats(){
+  const el=document.getElementById("statsBox"); if(!el) return;
+  const S=X.stats, today=(S.days||{})[dayKey()]||0;
+  const liked=Object.values(X.rate).filter(v=>v===1).length, nope=Object.values(X.rate).filter(v=>v===-1).length;
+  const li=(arr)=>arr.length? arr.map(([k,v])=>'<li>'+escH(k)+' <span class="muted">×'+v+'</span></li>').join("") : '<li class="muted">—</li>';
+  el.innerHTML='<div class="statgrid"><div><b>'+(S.rolls||0)+'</b><span>rolls</span></div><div><b>'+today+'</b><span>today</span></div><div><b>'+X.favs.length+'</b><span>favorites</span></div><div><b>'+liked+' / '+nope+'</b><span>👍 / 👎</span></div></div>'+
+    '<div class="statcols"><div><h4>Top themes</h4><ol>'+li(topN(S.theme,5))+'</ol></div><div><h4>Top hair</h4><ol>'+li(topN(S.hair,5))+'</ol></div><div><h4>Top dress</h4><ol>'+li(topN(S.dress,5))+'</ol></div></div>'+
+    '<p class="muted">Themes: '+THEME_IDX.length+' in '+TGROUPS.length+' groups · Characters: '+CHAR_IDX.length+' in '+CGROUPS.length+' groups</p>';
+}
+
+/* ---- result card: label, 👍/👎, visual swatches, copy all ---- */
+function chipsFor(code){
+  const d=decodeRoll(code); if(!d) return "";
+  return '<span class="mchips">'+["hair","dress","iris","crownGems"].map(f=>'<i style="background:'+d.colors[f]+'"></i>').join("")+'</span>';
+}
+function renderResult(){
+  const el=document.getElementById("resLabel"); if(!el) return;
+  el.textContent=X.label||"Custom";
+  const th=tokenTheme(X.token);
+  const rb=document.getElementById("rateBox");
+  if(th){ const v=X.rate[tkey(th)]||0; rb.style.display="flex";
+    document.getElementById("rateUp").classList.toggle("on", v===1);
+    document.getElementById("rateDn").classList.toggle("on", v===-1);
+    document.getElementById("rateName").textContent=th.ch?"this character":"this theme";
+  } else rb.style.display="none";
+  const sep=document.getElementById("sepShade").checked;
+  document.getElementById("resChips").innerHTML=FIELDS.filter(f=>!f.optional||sep).map(f=>'<span class="rchip" title="'+escH(state.colors[f.id])+'"><i style="background:'+state.colors[f.id]+'"></i>'+escH(f.label)+': <b>'+escH(state.names[f.id]||state.colors[f.id])+'</b>'+(state.locked[f.id]?" 🔒":"")+'</span>').join("");
+  document.getElementById("selCur").textContent=selLabel();
+}
+function rate(v){
+  const th=tokenTheme(X.token); if(!th) return;
+  const k=tkey(th); X.rate[k]= X.rate[k]===v ? 0 : v; if(!X.rate[k]) delete X.rate[k];
+  saveX(); renderResult(); renderStats(); renderRated();
+  toast(X.rate[k]===1?"👍 Rolls this more often":X.rate[k]===-1?"👎 Won't roll this again":"Rating cleared");
+}
+function renderRated(){
+  const el=document.getElementById("ratedList"); if(!el) return;
+  const keys=Object.keys(X.rate);
+  el.innerHTML=keys.length? keys.map(k=>'<span class="qchip">'+(X.rate[k]===1?"👍 ":"👎 ")+escH(k.split("|")[1])+' <button type="button" data-k="'+escH(k)+'">×</button></span>').join("") : '<span class="muted">No ratings yet. Use 👍 / 👎 after a theme roll.</span>';
+  el.querySelectorAll("button[data-k]").forEach(b=>b.addEventListener("click",()=>{ delete X.rate[b.dataset.k]; saveX(); renderRated(); renderResult(); renderStats(); }));
+}
+function copyAllColors(){
+  const sep=document.getElementById("sepShade").checked;
+  const lines=[X.label||"Roll"].concat(FIELDS.filter(f=>!f.optional||sep).map(f=>f.label+": "+(state.names[f.id]||"")+" "+state.colors[f.id]));
+  lines.push(rollLink());
+  copyText(lines.join("\n")).then(()=>toast("📋 Copied all colors + link"));
+}
+
+/* ---- themes & characters picker ---- */
+function setSel(sel){
+  X.sel=sel; saveX(); renderPicker(); renderResult();
+}
+function renderPicker(){
+  const q=(document.getElementById("tq").value||"").trim().toLowerCase();
+  const tcat=document.getElementById("tcat"), ccat=document.getElementById("ccat");
+  const cur=X.sel;
+  tcat.innerHTML='<option value="">📂 Pick a theme category…</option>'+TGROUPS.map(g=>'<option value="'+escH(g)+'"'+(cur.k==="group"&&cur.v===g?" selected":"")+'>🎲 Any '+escH(g)+' theme ('+THEME_IDX.filter(i=>TT[i].g===g).length+')</option>').join("");
+  ccat.innerHTML='<option value="">📂 Pick a character group…</option>'+CGROUPS.map(g=>'<option value="'+escH(g)+'"'+(cur.k==="fran"&&cur.v===g?" selected":"")+'>🎲 Any '+escH(g)+' character ('+CHAR_IDX.filter(i=>TT[i].g===g).length+')</option>').join("");
+  const on=(k,v)=>cur.k===k&&(v===undefined||cur.v===v)?" on":"";
+  let h='<div class="tbrow"><button type="button" class="tb'+on("none")+'" data-s="none">🚫 No theme</button><button type="button" class="tb'+on("any")+'" data-s="any">🎲 Any theme</button><button type="button" class="tb'+on("anyChar")+'" data-s="anyChar">🎲 Any character</button><button type="button" class="tb'+on("liked")+'" data-s="liked">👍 Liked only</button><button type="button" class="tb'+on("mix")+'" data-s="mix">🎛️ My mix</button></div>';
+  function block(groups, idx, kind){
+    let out="";
+    groups.forEach(g=>{
+      const gm=g.toLowerCase().includes(q);
+      const items=idx.filter(i=>TT[i].g===g && (!q||gm||TT[i].name.toLowerCase().includes(q)));
+      if(!items.length) return;
+      const open=q || (cur.k===kind&&cur.v===g) || (cur.k==="idx"&&items.includes(cur.v));
+      out+='<details'+(open?" open":"")+'><summary>'+escH(g)+' ('+items.length+')</summary><button type="button" class="tb'+on(kind,g)+'" data-k="'+kind+'" data-v="'+escH(g)+'">🎲 Any '+escH(g)+'</button>'+
+        items.map(i=>'<button type="button" class="tb'+(cur.k==="idx"&&cur.v===i?" on":"")+(X.rate[tkey(TT[i])]===1?" liked":X.rate[tkey(TT[i])]===-1?" nope":"")+'" data-i="'+i+'">'+escH(TT[i].name)+'</button>').join("")+'</details>';
+    });
+    return out;
+  }
+  const tg=document.getElementById("tgrid"), cg=document.getElementById("cgrid");
+  tg.innerHTML=h+block(TGROUPS, THEME_IDX, "group");
+  cg.innerHTML=block(CGROUPS, CHAR_IDX, "fran")||'<p class="muted">No characters match.</p>';
+  [tg,cg].forEach(root=>root.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+    if(b.dataset.s) setSel({k:b.dataset.s});
+    else if(b.dataset.k) setSel({k:b.dataset.k, v:b.dataset.v});
+    else if(b.dataset.i!=null){ setSel({k:"idx", v:+b.dataset.i}); doRoll(); }
+    if(b.dataset.s==="mix" && !X.mix.length) toast("Tick some categories in 🎛️ Multi-category mix first");
+  })));
+}
+function renderMix(){
+  const el=document.getElementById("mixGrid"); if(!el) return;
+  const box=(v,l)=>'<label class="ck"><input type="checkbox" value="'+escH(v)+'"'+(X.mix.includes(v)?" checked":"")+'> '+escH(l)+'</label>';
+  el.innerHTML='<h4>Themes</h4>'+TGROUPS.map(g=>box("t:"+g,g)).join("")+'<h4>Characters</h4>'+CGROUPS.map(g=>box("c:"+g,g)).join("");
+  el.querySelectorAll("input").forEach(i=>i.addEventListener("change",()=>{
+    X.mix=[...el.querySelectorAll("input:checked")].map(x=>x.value); saveX();
+    document.getElementById("mixCount").textContent=X.mix.length+" picked · "+mixPool().length+" looks";
+    if(X.sel.k==="mix") renderResult();
+  }));
+  document.getElementById("mixCount").textContent=X.mix.length+" picked · "+mixPool().length+" looks";
+}
+
+/* ---- mashups ---- */
+function fillMashSelects(){
+  const opt=(idx)=>'<option value="-1">🎲 Random</option>'+idx.map(i=>'<option value="'+i+'">'+escH(TT[i].ch?TT[i].name+" ("+TT[i].g+")":TT[i].g+": "+TT[i].name)+'</option>').join("");
+  const T=opt(THEME_IDX), C=opt(CHAR_IDX);
+  document.getElementById("mxA").innerHTML=C; document.getElementById("mxB").innerHTML=T;
+  document.getElementById("myA").innerHTML=T; document.getElementById("myB").innerHTML=T;
+  document.getElementById("mzA").innerHTML=C; document.getElementById("mzB").innerHTML=C;
+}
+function doMash(kind){
+  const a=+document.getElementById("m"+kind+"A").value, b=+document.getElementById("m"+kind+"B").value;
+  if(applySet(mashRoll(kind,a,b),"mashup")) toast("🔀 "+X.label);
+}
+
+/* ---- daily pick + job of the day ---- */
+const DFL={all:["🎲 All themes",()=>THEME_IDX],jobs:["💼 Jobs only",()=>JOBS],fantasy:["🧚 Fantasy & myth",()=>THEME_IDX.filter(i=>/Fantasy|Mythology/.test(TT[i].g))],holidays:["🎄 Holidays & seasons",()=>THEME_IDX.filter(i=>/Holidays|Seasons|Cozy/.test(TT[i].g))],chars:["🎮 Characters",()=>CHAR_IDX]};
+function ymd(){ return dayKey().replace(/-/g,""); }
+function dailySet(kind){
+  const day=ymd();
+  const pool=kind==="job"?JOBS:(DFL[X.dfil]||DFL.all)[1]();
+  const save=rnd; rnd=seeded(strSeed(day+"|"+kind+"|"+(kind==="job"?"":X.dfil)));
+  let set=null;
+  try{
+    const ti=pool[Math.floor(rnd()*pool.length)];
+    set=lookToSet(pickMain("curated", ti));
+    set.label=(kind==="job"?"💼 Job of the day: ":"📅 Daily pick: ")+tLabel(TT[ti]); set.token="t"+ti; set.ti=ti;
+    finishSet(set,{themed:true});
+  } finally { rnd=save; }
+  return set;
+}
+function renderDaily(){
+  const el=document.getElementById("dailyBox"); if(!el) return;
+  const sel=document.getElementById("dfil");
+  sel.innerHTML=Object.entries(DFL).map(([k,[l]])=>'<option value="'+k+'"'+(X.dfil===k?" selected":"")+'>'+l+'</option>').join("");
+  const a=dailySet("daily"), j=dailySet("job");
+  const line=(s)=>'<span class="mchips">'+["hair","dress","iris","crownGems"].map(f=>'<i style="background:'+(s.C[f]||"#ccc")+'"></i>').join("")+'</span> '+escH(s.label);
+  el.innerHTML='<div class="lrow">'+line(a)+'<button type="button" class="mini" id="useDaily">Use</button></div><div class="lrow">'+line(j)+'<button type="button" class="mini" id="useJob">Use</button></div><p class="muted">Same picks all day on every device. New ones tomorrow ('+escH(dayKey())+').</p>';
+  document.getElementById("useDaily").addEventListener("click",()=>applySet(dailySet("daily"),"daily"));
+  document.getElementById("useJob").addEventListener("click",()=>applySet(dailySet("job"),"job"));
+}
+
+/* ---- off-screen recolor for thumbnails / batch / GIF ---- */
+function renderColors(colors, sep){ return recolorWith(Object.assign({}, state.colors, colors), sep); }
+function thumbCanvas(out){
+  const c=document.createElement("canvas"); c.width=192; c.height=128;
+  const ctx=c.getContext("2d"); ctx.imageSmoothingEnabled=false;
+  ctx.fillStyle="#2a2034"; ctx.fillRect(0,0,192,128);
+  const m=mirrorFace(out.face0); ctx.drawImage(m,0,0);
+  ctx.drawImage(out.peach,64,0);
+  return c;
+}
+function setColorsFor(set){
+  const sep=document.getElementById("sepShade").checked || (X.opts.trimShade && !!set.C.dressShade);
+  const col={};
+  for(const f of FIELDS){
+    if(state.locked[f.id]) continue;
+    if(set.C[f.id]) col[f.id]=set.C[f.id];
+  }
+  return {col, sep};
+}
+
+/* ---- batch + cherry-picker ---- */
+function doBatch(n){
+  X.batch=[];
+  for(let i=0;i<n;i++){
+    const set=makeRoll(); if(!set) break;
+    const {col,sep}=setColorsFor(set);
+    const merged=Object.assign({}, state.colors, col);
+    const names=Object.assign({}, state.names); for(const k of Object.keys(col)) names[k]=set.N[k]||names[k];
+    X.batch.push({set, colors:merged, names, sep, picked:false});
+  }
+  renderBatch();
+  toast("🧺 "+X.batch.length+" looks — tap to use, tick to keep");
+}
+function batchCode(b){
+  const cols=FIDS.map(id=>(b.colors[id]||"").replace(/^#/,"").toUpperCase());
+  return "DSP3:"+cols.join(".")+"::"+(b.sep?"1":"0")+":"+(b.set.token||"");
+}
+function renderBatch(){
+  const el=document.getElementById("batchGrid"); if(!el) return;
+  el.innerHTML="";
+  X.batch.forEach((b,i)=>{
+    const out=recolorWith(b.colors, b.sep);
+    const card=document.createElement("div"); card.className="bcard"+(b.picked?" picked":"");
+    const tc=thumbCanvas(out); tc.className="bthumb";
+    card.appendChild(tc);
+    const cap=document.createElement("div"); cap.className="bcap"; cap.textContent=(i+1)+". "+(b.set.label||"Roll");
+    card.appendChild(cap);
+    const row=document.createElement("div"); row.className="brow";
+    row.innerHTML='<label class="bpick"><input type="checkbox"'+(b.picked?" checked":"")+'> Keep</label><button type="button" class="mini buse">Use</button><button type="button" class="mini bfav">⭐</button>';
+    row.querySelector("input").addEventListener("change",ev=>{ b.picked=ev.target.checked; card.classList.toggle("picked",b.picked); updBatchCount(); });
+    row.querySelector(".buse").addEventListener("click",()=>{ loadCode(batchCode(b),{label:b.set.label, token:b.set.token}); toast("Using look "+(i+1)); });
+    row.querySelector(".bfav").addEventListener("click",()=>addFav(batchCode(b), b.set.label, b.set.token));
+    tc.addEventListener("click",()=>{ b.picked=!b.picked; row.querySelector("input").checked=b.picked; card.classList.toggle("picked",b.picked); updBatchCount(); });
+    card.appendChild(row);
+    el.appendChild(card);
+  });
+  updBatchCount();
+}
+function updBatchCount(){ const n=X.batch.filter(b=>b.picked).length; const e=document.getElementById("batchCount"); if(e) e.textContent=X.batch.length? (n+" of "+X.batch.length+" kept") : ""; }
+async function zipPicked(){
+  const pk=X.batch.filter(b=>b.picked); if(!pk.length){ toast("Tick Keep on the looks you want"); return; }
+  const files=[];
+  for(let i=0;i<pk.length;i++){
+    const out=recolorWith(pk[i].colors, pk[i].sep);
+    const dir=String(i+1).padStart(2,"0")+"-"+(pk[i].set.label||"look").replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"").slice(0,40)+"/";
+    files.push({name:dir+"peach.png", data:await canvasBytes(out.peach)});
+    files.push({name:dir+"peach_face.0.png", data:await canvasBytes(out.face0)});
+    files.push({name:dir+"peach_face.1.png", data:await canvasBytes(out.face1)});
+  }
+  const blob=zipStore(files);
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="ds-peach-picked-"+pk.length+".zip";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  toast("📦 Zipped "+pk.length+" looks");
+}
+function favPicked(){
+  const pk=X.batch.filter(b=>b.picked); if(!pk.length){ toast("Tick Keep on the looks you want"); return; }
+  pk.forEach(b=>addFav(batchCode(b), b.set.label, b.set.token, true)); toast("⭐ Saved "+pk.length+" favorites");
+}
+
+/* ---- favorites with folders ---- */
+function autoFolder(token){
+  const th=tokenTheme(token);
+  if(th && th.ch) return "Characters";
+  if(th && th.g==="Jobs / Occupations") return "Jobs";
+  if(/^j/.test(token||"")) return "Jobs";
+  const want=document.getElementById("favFolderNew"); const v=want&&want.value;
+  return v && v!=="auto" ? v : "Favorites";
+}
+function addFav(code, label, token, quiet){
+  code=code||encodeRoll(); label=label||X.label; token=token==null?X.token:token;
+  if(X.favs.some(f=>f.code.split(":").slice(0,2).join(":")===code.split(":").slice(0,2).join(":"))){ if(!quiet) toast("Already in favorites"); return; }
+  const folder=autoFolder(token);
+  if(!X.folders.includes(folder)) X.folders.push(folder);
+  X.favs.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), t:Date.now(), code, label:label||"Roll", token:token||"", folder});
+  saveX(); renderFavs(); renderStats();
+  if(!quiet) toast("⭐ Saved to "+folder);
+}
+function renderFavs(){
+  const el=document.getElementById("favList"); if(!el) return;
+  document.getElementById("favCount").textContent=X.favs.length;
+  const ff=document.getElementById("favFilter"), fn=document.getElementById("favFolderNew");
+  const counts={}; X.favs.forEach(f=>counts[f.folder]=(counts[f.folder]||0)+1);
+  ff.innerHTML=['All'].concat(X.folders).map(f=>'<option value="'+escH(f)+'"'+(X.ffil===f?" selected":"")+'>📁 '+escH(f)+' ('+(f==="All"?X.favs.length:(counts[f]||0))+')</option>').join("");
+  const prevNew=fn.value||"auto";
+  fn.innerHTML='<option value="auto">Auto (characters & jobs sort themselves)</option>'+X.folders.map(f=>'<option value="'+escH(f)+'">'+escH(f)+'</option>').join("");
+  fn.value=[...fn.options].some(o=>o.value===prevNew)?prevNew:"auto";
+  document.getElementById("favSort").value=X.fsort;
+  const q=(document.getElementById("favQ").value||"").toLowerCase();
+  let list=X.favs.filter(f=>(X.ffil==="All"||f.folder===X.ffil) && (!q||(f.label+" "+f.folder).toLowerCase().includes(q)));
+  if(X.fsort==="old") list=list.slice().reverse();
+  if(X.fsort==="name") list=list.slice().sort((a,b)=>a.label.localeCompare(b.label));
+  if(!list.length){ el.innerHTML='<p class="muted">'+(X.favs.length?"Nothing in this folder.":"No favorites yet. Tap ⭐ Save after a roll you like.")+'</p>'; return; }
+  el.innerHTML=list.map(f=>'<div class="lrow" data-id="'+f.id+'">'+chipsFor(f.code)+'<span class="lname">'+escH(f.label)+' <span class="muted">📁 '+escH(f.folder)+'</span></span><button type="button" class="mini" data-a="load">Load</button><button type="button" class="mini" data-a="link">🔗</button><select class="mini fmove" aria-label="Move to folder">'+X.folders.map(x=>'<option'+(x===f.folder?" selected":"")+'>'+escH(x)+'</option>').join("")+'</select><button type="button" class="mini danger" data-a="del">×</button></div>').join("");
+  el.querySelectorAll(".lrow").forEach(row=>{
+    const f=X.favs.find(x=>x.id===row.dataset.id);
+    row.querySelector('[data-a=load]').addEventListener("click",()=>loadCode(f.code,f));
+    row.querySelector('[data-a=link]').addEventListener("click",()=>{ const u=new URL(location.href); u.hash=f.code; copyText(u.toString()).then(()=>toast("🔗 Link copied")); });
+    row.querySelector('[data-a=del]').addEventListener("click",()=>{ X.favs=X.favs.filter(x=>x!==f); saveX(); renderFavs(); renderStats(); });
+    row.querySelector('.fmove').addEventListener("change",ev=>{ f.folder=ev.target.value; saveX(); renderFavs(); });
+  });
+}
+function newFolder(){
+  const n=(prompt("New folder name")||"").trim().slice(0,40); if(!n) return;
+  if(!X.folders.includes(n)) X.folders.push(n); X.ffil=n; saveX(); renderFavs();
+}
+function delFolder(){
+  const f=X.ffil; if(f==="All"||f==="Favorites"){ toast("Pick a folder (not All / Favorites) to remove"); return; }
+  if(!confirm("Remove folder "+f+"? Its favorites move to Favorites.")) return;
+  X.favs.forEach(x=>{ if(x.folder===f) x.folder="Favorites"; }); X.folders=X.folders.filter(x=>x!==f); X.ffil="All"; saveX(); renderFavs();
+}
+function exportFavs(){
+  const blob=new Blob([JSON.stringify({v:1, favs:X.favs, folders:X.folders, rate:X.rate, banned:X.banned},null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="ds-peach-favorites.json"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function importFavs(file){
+  const rd=new FileReader(); rd.onload=()=>{ try{ const o=JSON.parse(rd.result); let n=0;
+    (o.favs||[]).forEach(f=>{ if(f&&f.code&&!X.favs.some(x=>x.code===f.code)){ X.favs.push(f); n++; if(f.folder&&!X.folders.includes(f.folder)) X.folders.push(f.folder); } });
+    (o.folders||[]).forEach(f=>{ if(!X.folders.includes(f)) X.folders.push(f); });
+    Object.assign(X.rate, o.rate||{}); (o.banned||[]).forEach(b=>{ if(!X.banned.some(x=>x.hex===b.hex)) X.banned.push(b); });
+    saveX(); renderFavs(); renderBanned(); renderRated(); toast("Imported "+n+" favorites");
+  }catch(e){ toast("Couldn't read that file"); } }; rd.readAsText(file);
+}
+
+/* ---- banned colors ---- */
+function renderBanned(){
+  const el=document.getElementById("banList"); if(!el) return;
+  el.innerHTML=X.banned.length? X.banned.map((b,i)=>'<span class="qchip"><i style="background:'+b.hex+'"></i>'+escH(b.name||b.hex)+' <button type="button" data-i="'+i+'">×</button></span>').join("") : '<span class="muted">No banned colors. Banned colors never come up in rolls (they get swapped for another color).</span>';
+  el.querySelectorAll("button[data-i]").forEach(b=>b.addEventListener("click",()=>{ X.banned.splice(+b.dataset.i,1); saveX(); renderBanned(); }));
+}
+function banAdd(raw){
+  raw=String(raw||"").trim(); if(!raw) return;
+  let hex=hexNorm(raw), name=null;
+  if(!hex){ const c=BASIC.find(x=>x.name.toLowerCase()===raw.toLowerCase()) || COOLORS.find(x=>x.name.toLowerCase()===raw.toLowerCase()); if(c){ hex=c.hex; name=c.name; } else { const h=nameHex(raw.toLowerCase()); if(h){ hex=h; name=raw.toLowerCase(); } } }
+  if(!hex){ toast("Unknown color — use a name from the library or a #hex"); return; }
+  if(!X.banned.some(b=>b.hex===hex)) X.banned.push({hex, name:name||nameOf(hex,"any")});
+  saveX(); renderBanned(); toast("🚫 Banned "+(name||hex));
+}
+
+/* ---- rainbow GIF ---- */
+let rbTimer=null, rbFrames=[];
+function rainbowFrames(){
+  const tgt=document.getElementById("rbTarget").value, n=+document.getElementById("rbFrames").value||12;
+  const sep=document.getElementById("sepShade").checked;
+  const groups={hair:["hair"], dress:sep?["dress","dressShade"]:["dress"], iris:["iris"], gems:["crownGems","broochGem","earring","headJewel"], all:["hair","dress","dressShade","iris","crownGems","broochGem","earring","headJewel"]}[tgt]||["hair"];
+  const frames=[];
+  for(let k=0;k<n;k++){
+    const col={};
+    groups.forEach((fid,gi)=>{
+      const [r,g,b]=parseHex(state.colors[fid]); let [h,s,l]=rgbToHsl(r,g,b);
+      s=Math.max(s,0.55); l=clamp(l,0.35,0.7);
+      const off = tgt==="all"? gi*40 : 0;
+      const [nr,ng,nb]=hslToRgb(h+off+360*k/n, s, l); col[fid]=toHex(nr,ng,nb);
+    });
+    const out=renderColors(col, sep);
+    frames.push(thumbCanvas(out));
+  }
+  return frames;
+}
+function rbPreview(){
+  rbStop(); rbFrames=rainbowFrames();
+  const cv=document.getElementById("rbCanvas"), ctx=cv.getContext("2d"); ctx.imageSmoothingEnabled=false;
+  const ms=+document.getElementById("rbSpeed").value||120; let k=0;
+  const draw=()=>{ ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(rbFrames[k%rbFrames.length],0,0,cv.width,cv.height); k++; };
+  draw(); rbTimer=setInterval(draw, ms);
+}
+function rbStop(){ if(rbTimer){ clearInterval(rbTimer); rbTimer=null; } }
+function gifEncode(frames, delayMs, scale){
+  // minimal GIF89a encoder: global palette from the most common colors, LZW, looped
+  const W=frames[0].width*scale, H=frames[0].height*scale;
+  const datas=frames.map(f=>{ const c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d"); x.imageSmoothingEnabled=false; x.drawImage(f,0,0,W,H); return x.getImageData(0,0,W,H).data; });
+  const count=new Map();
+  datas.forEach(d=>{ for(let i=0;i<d.length;i+=4){ const k=((d[i]>>3)<<10)|((d[i+1]>>3)<<5)|(d[i+2]>>3); count.set(k,(count.get(k)||0)+1); } });
+  const pal=[...count.entries()].sort((a,b)=>b[1]-a[1]).slice(0,256).map(e=>e[0]);
+  while(pal.length<256) pal.push(0);
+  const prgb=pal.map(k=>[((k>>10)&31)*255/31|0, ((k>>5)&31)*255/31|0, (k&31)*255/31|0]);
+  const near=new Map(); pal.forEach((k,i)=>{ if(!near.has(k)) near.set(k,i); });
+  function idxOf(k){ let v=near.get(k); if(v!==undefined) return v; const r=((k>>10)&31)*8, g=((k>>5)&31)*8, b=(k&31)*8; let best=0,bd=1e9;
+    for(let i=0;i<256;i++){ const p=prgb[i]; const dd=(p[0]-r)**2+(p[1]-g)**2+(p[2]-b)**2; if(dd<bd){bd=dd;best=i;} } near.set(k,best); return best; }
+  const out=[]; const w8=b=>out.push(b&255), w16=v=>{ out.push(v&255,(v>>8)&255); };
+  "GIF89a".split("").forEach(ch=>w8(ch.charCodeAt(0)));
+  w16(W); w16(H); w8(0xF7); w8(0); w8(0);
+  prgb.forEach(p=>{ w8(p[0]); w8(p[1]); w8(p[2]); });
+  out.push(0x21,0xFF,0x0B); "NETSCAPE2.0".split("").forEach(ch=>w8(ch.charCodeAt(0))); out.push(3,1,0,0,0);
+  const delay=Math.max(2,Math.round(delayMs/10));
+  datas.forEach(d=>{
+    out.push(0x21,0xF9,4,0); w16(delay); out.push(0,0);
+    out.push(0x2C); w16(0); w16(0); w16(W); w16(H); w8(0);
+    const px=new Uint8Array(W*H); for(let i=0,j=0;i<d.length;i+=4,j++) px[j]=idxOf(((d[i]>>3)<<10)|((d[i+1]>>3)<<5)|(d[i+2]>>3));
+    const minCode=8; w8(minCode);
+    const bytes=lzw(px,minCode);
+    for(let i=0;i<bytes.length;i+=255){ const chunk=bytes.slice(i,i+255); w8(chunk.length); for(const b of chunk) out.push(b); }
+    w8(0);
+  });
+  w8(0x3B);
+  return new Blob([new Uint8Array(out)],{type:"image/gif"});
+}
+function lzw(px, minCode){
+  const clear=1<<minCode, eoi=clear+1; let size=minCode+1, next=eoi+1;
+  let dict=new Map(); const res=[]; let cur=0, bits=0;
+  const emit=c=>{ cur|=c<<bits; bits+=size; while(bits>=8){ res.push(cur&255); cur>>>=8; bits-=8; } };
+  emit(clear);
+  let w=px[0];
+  for(let i=1;i<px.length;i++){
+    const k=px[i], key=w*4096+k;
+    const hit=dict.get(key);
+    if(hit!==undefined){ w=hit; continue; }
+    emit(w);
+    if(next<4096){ dict.set(key,next++); if(next>(1<<size) && size<12) size++; }
+    else { emit(clear); dict=new Map(); size=minCode+1; next=eoi+1; }
+    w=k;
+  }
+  emit(w); emit(eoi); if(bits>0) res.push(cur&255);
+  return res;
+}
+function rbDownload(){
+  const frames=rbFrames.length? rbFrames : rainbowFrames();
+  const blob=gifEncode(frames, +document.getElementById("rbSpeed").value||120, 3);
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="ds-peach-rainbow.gif"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000); toast("🌈 GIF downloaded");
+  window.__dsPeach.lastGif=blob;
+}
+
+/* ---- load a code from favorites / history / batch ---- */
+function loadCode(code, meta){
+  const d=decodeRoll(code); if(!d){ toast("Couldn't read that roll"); return; }
+  pushUndo();
+  applyRoll(d,true);
+  X.token=(meta&&meta.token)||d.token||""; X.label=(meta&&meta.label)||tokenLabel(X.token)||"Saved look";
+  renderResult(); syncHash(); toast("Loaded "+X.label);
+}
+
+/* ---- PWA (add to home screen) + discreet panic ---- */
+function setupPwa(){
+  try{
+    const S=window.__DS_SITE||{};
+    const ic=document.createElement("canvas"); ic.width=ic.height=192; const x=ic.getContext("2d");
+    const hoa=S.variant==="hoa";
+    x.fillStyle=hoa?"#5b6b7a":"#7e57c2"; x.fillRect(0,0,192,192);
+    x.fillStyle=hoa?"#e9eef2":"#ffd6e8"; x.fillRect(36,36,120,120);
+    x.fillStyle=hoa?"#5b6b7a":"#e0b04a"; x.fillRect(60,60,72,72);
+    const icon=ic.toDataURL("image/png");
+    const start=location.href.split("#")[0];
+    const man={name:hoa?"Sheet Recolor":"DS Peach Randomizer", short_name:hoa?"Sheets":"DS Peach", start_url:start, scope:start.replace(/[^/]*$/,""), display:"standalone", background_color:"#fff7fb", theme_color:hoa?"#5b6b7a":"#7e57c2", icons:[{src:icon,sizes:"192x192",type:"image/png"}]};
+    const l=document.createElement("link"); l.rel="manifest"; l.href="data:application/manifest+json,"+encodeURIComponent(JSON.stringify(man)); document.head.appendChild(l);
+    const a=document.createElement("link"); a.rel="apple-touch-icon"; a.href=icon; document.head.appendChild(a);
+    const f=document.createElement("link"); f.rel="icon"; f.href=icon; document.head.appendChild(f);
+    if(hoa){
+      const p=document.getElementById("panic"); p.style.display="block";
+      const go=()=>{ location.href=S.backHref||"../"; };
+      p.addEventListener("click", go);
+      document.addEventListener("keydown", ev=>{ if(ev.key==="Escape") go(); });
+    }
+  }catch(e){ console.warn(e); }
+}
+
+/* ---- keyboard shortcuts ---- */
+function setupKeys(){
+  document.addEventListener("keydown", ev=>{
+    const t=ev.target; if(ev.ctrlKey||ev.metaKey||ev.altKey) return;
+    if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.tagName==="SELECT"||t.isContentEditable)) return;
+    const k=ev.key.toLowerCase();
+    if(k==="r"){ doRoll(); ev.preventDefault(); }
+    else if(k==="z"){ doUndo(); }
+    else if(k==="f"){ addFav(); }
+    else if(k==="b"){ doBatch(8); document.getElementById("batchCard").scrollIntoView({behavior:"smooth"}); }
+    else if(k==="g"){ partialRoll(GIRL,"girl"); }
+    else if(k==="o"){ partialRoll(OUTFIT,"outfit"); }
+    else if(k==="d"){ applySet(dailySet("daily"),"daily"); }
+  });
+}
+
+/* ---- wire up ---- */
+function setupFeatures(){
+  // mode buttons
+  document.querySelectorAll("#modeBtns button").forEach(b=>{
+    b.classList.toggle("on", b.dataset.m===X.mode);
+    b.addEventListener("click",()=>{ X.mode=b.dataset.m; saveX(); document.querySelectorAll("#modeBtns button").forEach(x=>x.classList.toggle("on",x===b)); renderResult(); });
+  });
+  // options
+  [["optGloves","keepGloves"],["optTrim","trimShade"],["optSkin","rollSkin"]].forEach(([id,k])=>{
+    const el=document.getElementById(id); el.checked=!!X.opts[k];
+    el.addEventListener("change",()=>{ X.opts[k]=el.checked; saveX(); });
+  });
+  const on=(id,ev,fn)=>document.getElementById(id).addEventListener(ev,fn);
+  on("btnUndo","click",doUndo);
+  on("btnFav","click",()=>addFav());
+  on("btnGirl","click",()=>partialRoll(GIRL,"girl"));
+  on("btnOutfit","click",()=>partialRoll(OUTFIT,"outfit"));
+  on("btnSwap","click",swapHairDress);
+  on("btnTrim","click",rerollTrim);
+  on("btnCopyAll","click",copyAllColors);
+  on("btnCopyAll2","click",copyAllColors);
+  on("rateUp","click",()=>rate(1));
+  on("rateDn","click",()=>rate(-1));
+  on("tq","input",renderPicker);
+  on("tcat","change",ev=>{ if(ev.target.value) setSel({k:"group",v:ev.target.value}); });
+  on("ccat","change",ev=>{ if(ev.target.value) setSel({k:"fran",v:ev.target.value}); });
+  on("mixUse","click",()=>{ if(!X.mix.length){ toast("Tick at least one category"); return; } setSel({k:"mix"}); toast("🎛️ Rolling from your mix"); });
+  on("mixClear","click",()=>{ X.mix=[]; saveX(); renderMix(); });
+  ["x","y","z"].forEach(k=>on("m"+k+"Go","click",()=>doMash(k)));
+  on("dfil","change",ev=>{ X.dfil=ev.target.value; saveX(); renderDaily(); });
+  document.querySelectorAll("#batchBtns button").forEach(b=>b.addEventListener("click",()=>doBatch(+b.dataset.n)));
+  on("batchZip","click",()=>zipPicked().catch(e=>{console.error(e);toast("ZIP failed");}));
+  on("batchFav","click",favPicked);
+  on("batchAll","click",()=>{ const all=X.batch.every(b=>b.picked); X.batch.forEach(b=>b.picked=!all); renderBatch(); });
+  on("rbGo","click",rbPreview);
+  const rbc=document.getElementById("rbCanvas").closest("details");
+  rbc.addEventListener("toggle",()=>{ if(rbc.open && !rbTimer && state.out.peach){ const cv=document.getElementById("rbCanvas"), x=cv.getContext("2d"); x.imageSmoothingEnabled=false; x.drawImage(thumbCanvas(state.out),0,0,cv.width,cv.height); } else if(!rbc.open) rbStop(); });
+  on("rbStop","click",rbStop);
+  on("rbGif","click",rbDownload);
+  on("favFilter","change",ev=>{ X.ffil=ev.target.value; saveX(); renderFavs(); });
+  on("favSort","change",ev=>{ X.fsort=ev.target.value; saveX(); renderFavs(); });
+  on("favQ","input",renderFavs);
+  on("favNewFolder","click",newFolder);
+  on("favDelFolder","click",delFolder);
+  on("favExport","click",exportFavs);
+  on("favImport","change",ev=>{ const f=ev.target.files&&ev.target.files[0]; if(f) importFavs(f); ev.target.value=""; });
+  on("histClear","click",()=>{ if(confirm("Clear the 7-day history?")){ X.hist=[]; saveX(); renderHistory(); } });
+  on("banGo","click",()=>{ banAdd(document.getElementById("banIn").value); document.getElementById("banIn").value=""; });
+  on("banIn","keydown",ev=>{ if(ev.key==="Enter"){ banAdd(ev.target.value); ev.target.value=""; } });
+  on("banDress","click",()=>banAdd(state.colors.dress));
+  on("banHair","click",()=>banAdd(state.colors.hair));
+  on("statsReset","click",()=>{ if(confirm("Reset stats?")){ X.stats={rolls:0,mode:{},theme:{},hair:{},dress:{},days:{}}; saveX(); renderStats(); } });
+  on("wipeAll","click",()=>{ if(!confirm("Hide everything saved on this device (favorites, history, picks, ratings, bans, stats)?")) return;
+    try{ Object.keys(localStorage).filter(k=>k.startsWith(STORE)).forEach(k=>localStorage.removeItem(k)); }catch(e){}
+    location.href=location.href.split("#")[0]; });
+  // mobile bottom bar
+  on("mbRoll","click",doRoll); on("mbUndo","click",doUndo); on("mbFav","click",()=>addFav());
+  on("mbDl","click",()=>downloadZip().catch(e=>{console.error(e);toast("ZIP failed");}));
+  fillMashSelects(); renderPicker(); renderMix(); renderDaily(); renderFavs(); renderHistory(); renderBanned(); renderStats(); renderRated(); renderResult(); renderUndo();
+  setupPwa(); setupKeys();
+}
+
 async function init(){
   applySite();
   loadStore();
@@ -1163,10 +2203,10 @@ async function init(){
       drawAll(); saveStore();
     });
   });
-  document.getElementById("btnRoll").addEventListener("click", ()=>rollAll(false));
+  document.getElementById("btnRoll").addEventListener("click", doRoll);
   document.getElementById("btnPicks").addEventListener("click", ()=>rollAll(true));
   document.getElementById("btnReset").addEventListener("click", resetAll);
-  document.getElementById("sepShade").addEventListener("change", ()=>{ renderFields(); recolorAll(); saveStore(); });
+  document.getElementById("sepShade").addEventListener("change", ()=>{ renderFields(); recolorAll(); saveStore(); renderResult(); });
   document.getElementById("useCoolors").addEventListener("change", ()=>{ renderLib(); saveStore(); });
   document.getElementById("libSearch").addEventListener("input", renderLib);
   document.getElementById("btnClearPicks").addEventListener("click", ()=>{ state.picks=[]; renderPicks(); saveStore(); });
@@ -1188,8 +2228,10 @@ async function init(){
   document.getElementById("rollCode").addEventListener("keydown", ev=>{ if(ev.key==="Enter") loadRollInput(); });
   window.addEventListener("hashchange", ()=>loadFromHash());
   recolorAll();
+  setupFeatures();
   state.ready=true;
   if(!loadFromHash()) syncHash();
+  renderResult();
 }
 
 window.__dsPeach = {
@@ -1198,6 +2240,7 @@ window.__dsPeach = {
   downloadCanvas, downloadZip, zipStore, canvasBytes, pngFiles,
   encodeRoll, decodeRoll, applyRoll, rollLink, loadFromHash, syncHash,
   getOut: ()=>state.out,
+  X: ()=>X, TT, makeRoll, mashRoll, applySet, doRoll, doUndo, addFav, doBatch, dailySet, gifEncode, rainbowFrames, recolorWith, setSel, banAdd, loadCode, partialRoll, swapHairDress, zipPicked,
   classifyBody, classifyFace
 };
 
