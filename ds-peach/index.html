@@ -212,6 +212,7 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
     <label class="chk"><input type="checkbox" id="optSkin"> 🎨 Theme rolls also change skin &amp; lips</label>
     <label class="chk"><input type="checkbox" id="sepShade"> Separate dress shade / trim (otherwise shadows follow the dress color)</label>
     <label class="chk"><input type="checkbox" id="useCoolors"> 📚 Full color library (~540 shades) for Classic, Matching and Wild rolls. Off by default — rolls use the basic hair / eye / dress list.</label>
+    <label class="chk"><input type="checkbox" id="optRainbowHair"> 🌈 Rainbow hair — hue-cycles the hair on the preview (and in the in-game ROM hack). Dress, skin and crown stay put. Saved in the roll link.</label>
   </div>
 
   <div class="card">
@@ -292,7 +293,7 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
   <div class="card">
     <details class="sec">
       <summary>🌈 Rainbow GIF</summary>
-      <p class="muted">Cycles one part through the rainbow and saves an animated GIF preview (face + body sheet). It's a preview only — the DS still uses one set of PNGs.</p>
+      <p class="muted">Cycles one part through the rainbow and saves an animated GIF preview (face + body sheet). It's a preview only — the DS still uses one set of PNGs. For live hue-cycling hair on the main preview (and in share links), use the 🌈 Rainbow hair toggle above.</p>
       <div class="row">
         <select id="rbTarget" aria-label="Rainbow part"><option value="hair">🌈 Hair</option><option value="dress">👗 Dress</option><option value="iris">👁️ Eyes</option><option value="gems">💎 Gems</option><option value="all">✨ Everything</option></select>
         <select id="rbFrames" aria-label="Frames"><option value="8">8 frames</option><option value="12" selected>12 frames</option><option value="24">24 frames</option></select>
@@ -363,7 +364,12 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
     <button type="button" class="primary" id="dlAll" style="margin-top:10px">⬇️ Download all three</button>
     <button type="button" class="primary" id="dlZip" style="margin-top:8px">📦 Download all as ZIP</button>
     <button type="button" id="btnShare" style="margin-top:8px;width:100%">📤 Share (Drive, email, Discord…)</button>
-    <p class="note">On a phone, ZIP or Share is the easy way to get the three PNGs to your PC (OneDrive, Google Drive, email, or Discord). Or copy the roll link / code, open it on your PC, and download there.</p>
+    <div class="row" style="margin-top:8px">
+      <button type="button" class="copy" id="dlRhGif">🌈 Animated GIF</button>
+      <button type="button" class="copy" id="dlRhApng">🌈 Animated APNG</button>
+      <button type="button" class="copy" id="dlRhFrames">🖼️ Frame PNGs (ZIP)</button>
+    </div>
+    <p class="note">On a phone, ZIP or Share is the easy way to get the three PNGs to your PC (OneDrive, Google Drive, email, or Discord). Or copy the roll link / code, open it on your PC, and download there. 🌈 Rainbow hair keeps the three still PNGs at your current hair color; use the GIF, APNG or frame ZIP for the animation.</p>
     <label for="rollCode" style="margin-top:14px;display:block">Roll code</label>
     <input type="text" id="rollCode" spellcheck="false" autocomplete="off" placeholder="DSP4:…">
     <div class="row" style="margin-top:8px">
@@ -387,6 +393,10 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
   <div class="card">
     <details class="sec">
       <summary>✨ What's new &amp; shortcuts</summary>
+      <h4 style="margin:6px 0;color:var(--purple)">Update 46</h4>
+      <ul class="muted" style="padding-left:20px;line-height:1.5">
+        <li>🌈 New <b>Rainbow hair</b> toggle: the preview canvas hue-cycles the hair (~2.1s loop), just like the in-game ROM hack. Dress, skin and crown stay as they are. It's stored in DSP4 roll links (older DSP3 / DSP4 links still open). Download an animated GIF, APNG, or a ZIP of frame PNGs; the three still textures stay your current hair color.</li>
+      </ul>
       <h4 style="margin:6px 0;color:var(--purple)">Update 45</h4>
       <ul class="muted" style="padding-left:20px;line-height:1.5">
         <li>🥺 New <b>Damsel in Distress</b> theme group (16 themes): Tower Captive, Dungeon Damsel, Locked Tower Rose, Stolen Princess, Airship Captive, Moonlit Rescue, Waiting for Her Hero, Tied-up Teatime, Captured Songbird, Sleeping Spell, Rose Garden Abduction, Haunted Mansion Damsel, Lost in the Dark Forest, Pleading Pastel, Volcano Fortress Captive and Ice Castle Captive. Soft blush, baby blue, lavender, lilac, mint and peach gowns with silver, rose gold, pearl, sapphire and amethyst trims and gems.</li>
@@ -819,6 +829,7 @@ function recolorAll(){
   drawAll();
   updateSummary();
   if(state.orig.peach) syncHash();
+  refreshRainbowHair();
 }
 
 /* ---------- draw ---------- */
@@ -1268,6 +1279,10 @@ async function pngFiles(){
 }
 async function downloadZip(){
   const files=await pngFiles();
+  if(document.getElementById("optRainbowHair")?.checked){
+    const extra=await rainbowHairExportFiles();
+    files.push(...extra);
+  }
   const blob=zipStore(files.map(f=>({name:f.name, data:f.data})));
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
@@ -1312,8 +1327,14 @@ function encodeRoll(){
   const cols=FIDS.map(id=>(state.colors[id]||"").replace(/^#/,"").toUpperCase());
   const locks=FIDS.filter(id=>state.locked[id]).join(",");
   const s=document.getElementById("sepShade").checked?"1":"0";
-  const tok=(typeof X!=="undefined" && X.token)? ":"+X.token : "";
-  return "DSP4:"+cols.join(".")+":"+locks+":"+s+tok;
+  const rh=!!document.getElementById("optRainbowHair")?.checked;
+  const hasTok=typeof X!=="undefined" && X.token;
+  let tail="";
+  if(hasTok || rh){
+    tail=":"+(hasTok?X.token:"");
+    if(rh) tail+=":1";
+  }
+  return "DSP4:"+cols.join(".")+":"+locks+":"+s+tail;
 }
 function decodeRoll(str){
   if(!str) return null;
@@ -1345,7 +1366,8 @@ function decodeRoll(str){
   }
   if(!v4){ colors.sleeves=colors.dress; names.sleeves=names.dress; colors.lace="#FFFFFF"; names.lace="White (stock)"; locked.sleeves=false; locked.lace=false; }
   const token=/^[a-z0-9.]{0,24}$/i.test(parts[4]||"")? (parts[4]||"") : "";
-  return {colors, names, locked, sep, token};
+  const rainbow=parts[5]==="1";
+  return {colors, names, locked, sep, token, rainbow};
 }
 function applyRoll(decoded, silent){
   if(!decoded) return false;
@@ -1354,6 +1376,8 @@ function applyRoll(decoded, silent){
   state.locked=decoded.locked||{};
   const sepEl=document.getElementById("sepShade");
   if(sepEl) sepEl.checked=!!decoded.sep;
+  const rhEl=document.getElementById("optRainbowHair");
+  if(rhEl) rhEl.checked=!!decoded.rainbow;
   if(typeof X!=="undefined"){ X.token=decoded.token||""; X.label=tokenLabel(X.token)||"Shared look"; }
   renderFields();
   recolorAll();
@@ -2098,6 +2122,143 @@ function rbDownload(){
   window.__dsPeach.lastGif=blob;
 }
 
+/* ---- live rainbow hair toggle + GIF/APNG/frame export ---- */
+let rhTimer=null, rhBodyFrames=[], rhIdx=0;
+const RH_N=16, RH_MS=Math.round(2130/16);
+function rainbowHairOn(){ return !!document.getElementById("optRainbowHair")?.checked; }
+function stopRainbowHair(){ if(rhTimer){ clearInterval(rhTimer); rhTimer=null; } }
+function scaleCanvas(src, scale){
+  const c=document.createElement("canvas"); c.width=src.width*scale; c.height=src.height*scale;
+  const x=c.getContext("2d"); x.imageSmoothingEnabled=false; x.drawImage(src,0,0,c.width,c.height); return c;
+}
+function buildRainbowHairBodies(){
+  const n=RH_N, sep=document.getElementById("sepShade").checked;
+  const [r,g,b]=parseHex(state.colors.hair);
+  let [h,s,l]=rgbToHsl(r,g,b);
+  s=Math.max(s,0.45); l=clamp(l,0.28,0.72);
+  const out=[];
+  for(let k=0;k<n;k++){
+    const [nr,ng,nb]=hslToRgb((h+360*k/n)%360, s, l);
+    out.push(recolorWith(Object.assign({}, state.colors, {hair:toHex(nr,ng,nb)}), sep).peach);
+  }
+  return out;
+}
+function refreshRainbowHair(){
+  stopRainbowHair();
+  rhBodyFrames=[]; rhIdx=0;
+  if(!rainbowHairOn() || !state.orig.peach) return;
+  rhBodyFrames=buildRainbowHairBodies();
+  const tick=()=>{
+    if(!rhBodyFrames.length) return;
+    const cv=rhBodyFrames[rhIdx%rhBodyFrames.length];
+    const rb=document.getElementById("rollBody");
+    if(rb) blitNN(cv, rb, 0,0, state.zoom);
+    const hold=document.getElementById("nativePreviews");
+    if(hold){ const ncv=hold.querySelector("canvas"); if(ncv){ const x=ncv.getContext("2d"); x.imageSmoothingEnabled=false; x.clearRect(0,0,ncv.width,ncv.height); x.drawImage(cv,0,0); } }
+    rhIdx++;
+  };
+  tick();
+  rhTimer=setInterval(tick, RH_MS);
+}
+function be32(n){ return new Uint8Array([(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255]); }
+function be16(n){ return new Uint8Array([(n>>>8)&255,n&255]); }
+function pngChunk(typ, data){
+  const t=new Uint8Array([typ.charCodeAt(0),typ.charCodeAt(1),typ.charCodeAt(2),typ.charCodeAt(3)]);
+  const n=data.length, buf=new Uint8Array(12+n);
+  buf.set(be32(n),0); buf.set(t,4); buf.set(data,8);
+  const crc=crc32(buf.subarray(4,8+n));
+  buf.set(be32(crc),8+n);
+  return buf;
+}
+function parsePngChunks(u8){
+  const out=[]; let i=8;
+  while(i+8<=u8.length){
+    const n=(u8[i]<<24)|(u8[i+1]<<16)|(u8[i+2]<<8)|u8[i+3];
+    const typ=String.fromCharCode(u8[i+4],u8[i+5],u8[i+6],u8[i+7]);
+    const data=u8.subarray(i+8,i+8+n);
+    out.push({typ,data:new Uint8Array(data)});
+    i+=12+n;
+  }
+  return out;
+}
+function catU8(arrs){
+  const n=arrs.reduce((s,a)=>s+a.length,0); const o=new Uint8Array(n); let i=0;
+  arrs.forEach(a=>{ o.set(a,i); i+=a.length; }); return o;
+}
+async function apngEncode(frames, delayMs){
+  const pngs=[];
+  for(const f of frames) pngs.push(await canvasBytes(f));
+  const sig=new Uint8Array([0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A]);
+  const first=parsePngChunks(pngs[0]);
+  const ihdr=first.find(c=>c.typ==="IHDR");
+  if(!ihdr) throw new Error("no IHDR");
+  const parts=[sig, pngChunk("IHDR", ihdr.data)];
+  const actl=new Uint8Array(8); actl.set(be32(pngs.length),0); actl.set(be32(0),4);
+  parts.push(pngChunk("acTL", actl));
+  let seq=0;
+  const delay=Math.max(1, delayMs|0);
+  for(let i=0;i<pngs.length;i++){
+    const ch=parsePngChunks(pngs[i]);
+    const idats=ch.filter(c=>c.typ==="IDAT");
+    const fctl=new Uint8Array(26);
+    fctl.set(be32(seq++),0);
+    fctl.set(ihdr.data.subarray(0,8),4); // width, height
+    // x,y already 0
+    fctl.set(be16(delay),20);
+    fctl.set(be16(1000),22);
+    fctl[24]=0; fctl[25]=0; // dispose none, blend source
+    parts.push(pngChunk("fcTL", fctl));
+    if(i===0){
+      idats.forEach(c=>parts.push(pngChunk("IDAT", c.data)));
+    }else{
+      idats.forEach(c=>{
+        const d=new Uint8Array(4+c.data.length);
+        d.set(be32(seq++),0); d.set(c.data,4);
+        parts.push(pngChunk("fdAT", d));
+      });
+    }
+  }
+  parts.push(pngChunk("IEND", new Uint8Array(0)));
+  return new Blob([catU8(parts)],{type:"image/apng"});
+}
+async function rainbowHairExportFiles(scale){
+  scale=scale||4;
+  const bodies=rhBodyFrames.length? rhBodyFrames : buildRainbowHairBodies();
+  const frames=bodies.map(c=>scaleCanvas(c, scale));
+  const files=[];
+  const gif=gifEncode(frames, RH_MS, 1);
+  files.push({name:"rainbow-hair.gif", data:new Uint8Array(await gif.arrayBuffer())});
+  const apng=await apngEncode(frames, RH_MS);
+  files.push({name:"rainbow-hair.apng", data:new Uint8Array(await apng.arrayBuffer())});
+  for(let i=0;i<frames.length;i++){
+    files.push({name:"rainbow-hair-"+String(i+1).padStart(2,"0")+".png", data:await canvasBytes(frames[i])});
+  }
+  return files;
+}
+function downloadBlob(blob, name){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+async function dlRainbowGif(){
+  const files=await rainbowHairExportFiles();
+  const f=files.find(x=>x.name.endsWith(".gif"));
+  downloadBlob(new Blob([f.data],{type:"image/gif"}), f.name);
+  toast("🌈 GIF downloaded");
+}
+async function dlRainbowApng(){
+  const files=await rainbowHairExportFiles();
+  const f=files.find(x=>x.name.endsWith(".apng"));
+  downloadBlob(new Blob([f.data],{type:"image/apng"}), f.name);
+  toast("🌈 APNG downloaded");
+}
+async function dlRainbowFrames(){
+  const files=(await rainbowHairExportFiles()).filter(x=>x.name.endsWith(".png"));
+  const blob=zipStore(files);
+  downloadBlob(blob, "rainbow-hair-frames.zip");
+  toast("🖼️ Frame PNGs ZIP downloaded");
+}
+
 /* ---- load a code from favorites / history / batch ---- */
 function loadCode(code, meta){
   const d=decodeRoll(code); if(!d){ toast("Couldn't read that roll"); return; }
@@ -2187,6 +2348,10 @@ function setupFeatures(){
   rbc.addEventListener("toggle",()=>{ if(rbc.open && !rbTimer && state.out.peach){ const cv=document.getElementById("rbCanvas"), x=cv.getContext("2d"); x.imageSmoothingEnabled=false; x.drawImage(thumbCanvas(state.out),0,0,cv.width,cv.height); } else if(!rbc.open) rbStop(); });
   on("rbStop","click",rbStop);
   on("rbGif","click",rbDownload);
+  on("optRainbowHair","change",()=>{ refreshRainbowHair(); if(state.ready) syncHash(); });
+  on("dlRhGif","click",()=>dlRainbowGif().catch(e=>{console.error(e);toast("GIF failed");}));
+  on("dlRhApng","click",()=>dlRainbowApng().catch(e=>{console.error(e);toast("APNG failed");}));
+  on("dlRhFrames","click",()=>dlRainbowFrames().catch(e=>{console.error(e);toast("Frame ZIP failed");}));
   on("favFilter","change",ev=>{ X.ffil=ev.target.value; saveX(); renderFavs(); });
   on("favSort","change",ev=>{ X.fsort=ev.target.value; saveX(); renderFavs(); });
   on("favQ","input",renderFavs);
