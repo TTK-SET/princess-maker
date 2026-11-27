@@ -206,7 +206,8 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
         <button type="button" id="btnTrim">🎀 New trim &amp; gems</button>
       </div>
     </details>
-    <label class="chk"><input type="checkbox" id="optGloves"> 🧤 Keep gloves white (white stays on the gloves, never the dress)</label>
+    <label class="chk"><input type="checkbox" id="optGloves"> 🧤 Keep gloves &amp; collar lace white (white stays there, never on the dress)</label>
+    <label class="chk"><input type="checkbox" id="optSleeves"> 👗 Puffy sleeves ③ match the dress (untick to color them on their own)</label>
     <label class="chk"><input type="checkbox" id="optTrim"> 🎀 Trim color goes on the dress shade (the darker panels), like a two-tone gown</label>
     <label class="chk"><input type="checkbox" id="optSkin"> 🎨 Theme rolls also change skin &amp; lips</label>
     <label class="chk"><input type="checkbox" id="sepShade"> Separate dress shade / trim (otherwise shadows follow the dress color)</label>
@@ -364,7 +365,7 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
     <button type="button" id="btnShare" style="margin-top:8px;width:100%">📤 Share (Drive, email, Discord…)</button>
     <p class="note">On a phone, ZIP or Share is the easy way to get the three PNGs to your PC (OneDrive, Google Drive, email, or Discord). Or copy the roll link / code, open it on your PC, and download there.</p>
     <label for="rollCode" style="margin-top:14px;display:block">Roll code</label>
-    <input type="text" id="rollCode" spellcheck="false" autocomplete="off" placeholder="DSP3:…">
+    <input type="text" id="rollCode" spellcheck="false" autocomplete="off" placeholder="DSP4:…">
     <div class="row" style="margin-top:8px">
       <button type="button" class="copy" id="btnCopyCode">📋 Copy roll code</button>
       <button type="button" class="copy" id="btnCopyLink">🔗 Copy link to this roll</button>
@@ -395,7 +396,8 @@ kbd{background:#f3eeff;border:1px solid var(--lav);border-radius:6px;padding:1px
         <li>⭐ Favorites with folders (characters and jobs sort themselves), export / import, 🔗 links that open the exact look (theme name included).</li>
         <li>📅 Daily pick and 💼 job of the day, 🕘 7-day history, 📊 stats, 🚫 banned colors.</li>
         <li>🧺 Batch 4 / 8 / 12 / 24 with cherry-pick → ZIP, 🌈 rainbow GIF preview, add-to-home-screen app, and a bottom bar on phones.</li>
-        <li>🧤 Gloves stay white and the dress never rolls white (both can be changed).</li>
+        <li>🗺️ Color slots follow the region chart (①–⑫ in the field names): dress ①② stay synced, new 👗 puffy sleeves ③ slot (matches the dress unless you untick it) and new collar lace ⑤ slot, plus gloves ④, dress jewel ⑥, earring ⑦, crown ⑨, head jewel ⑩ and hair ⑪⑫, each with its own 🔒 lock. Old roll links still open.</li>
+        <li>🧤 Gloves and lace stay white and the dress never rolls white (both can be changed).</li>
       </ul>
       <p class="muted">Keys on PC: <kbd>R</kbd> roll · <kbd>Z</kbd> undo · <kbd>F</kbd> save favorite · <kbd>G</kbd> same girl · <kbd>O</kbd> same outfit · <kbd>B</kbd> batch of 8 · <kbd>D</kbd> daily pick</p>
       <button type="button" class="mini danger" id="wipeAll">🙈 Hide everything saved on this device</button>
@@ -440,19 +442,25 @@ window.__BASE_FACE1 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAACACAY
 "use strict";
 
 const FIELDS = [
-  {id:"hair", label:"Hair", ref:"#F7DE08", palette:"hair", def:"#F7DE08", defName:"Blonde (stock)"},
-  {id:"dress", label:"Dress", ref:"#FC83AB", palette:"dress", def:"#FC83AB", defName:"Peach pink (stock)"},
+  {id:"hair", label:"Hair ⑪⑫", ref:"#F7DE08", palette:"hair", def:"#F7DE08", defName:"Blonde (stock)"},
+  {id:"dress", label:"Dress ①②", ref:"#FC83AB", palette:"dress", def:"#FC83AB", defName:"Peach pink (stock)"},
   {id:"dressShade", label:"Dress shade / trim", ref:"#DE4A7B", palette:"dress", def:"#DE4A7B", defName:"Dress shadow (stock)", optional:true},
-  {id:"gloves", label:"Gloves & petticoat", ref:"#FFFFFF", palette:"any", def:"#FFFFFF", defName:"White (stock)"},
-  {id:"skin", label:"Skin", ref:"#FFD0BE", palette:"skin", def:"#FFD0BE", defName:"Peach (stock)"},
-  {id:"crownMetal", label:"Crown metal", ref:"#F7A521", palette:"metal", def:"#F7A521", defName:"Gold (stock)"},
-  {id:"crownGems", label:"Crown gems", ref:"#0084F7", palette:"gem", def:"#0084F7", defName:"Blue / red (stock maps to one color)"},
-  {id:"broochGem", label:"Brooch gem", ref:"#0894FF", palette:"gem", def:"#0894FF", defName:"Blue (stock)"},
-  {id:"earring", label:"Earring", ref:"#0894FF", palette:"gem", def:"#0894FF", defName:"Blue (stock)"},
-  {id:"headJewel", label:"Head jewel", ref:"#FF0031", palette:"gem", def:"#FF0031", defName:"Red (stock)"},
+  {id:"gloves", label:"Gloves & petticoat ④", ref:"#FFFFFF", palette:"any", def:"#FFFFFF", defName:"White (stock)"},
+  {id:"skin", label:"Skin (neck ⑤ + face)", ref:"#FFD0BE", palette:"skin", def:"#FFD0BE", defName:"Peach (stock)"},
+  {id:"crownMetal", label:"Crown metal ⑨ + brooch rim ⑥", ref:"#F7A521", palette:"metal", def:"#F7A521", defName:"Gold (stock)"},
+  {id:"crownGems", label:"Crown gems ⑨", ref:"#0084F7", palette:"gem", def:"#0084F7", defName:"Blue / red (stock maps to one color)"},
+  {id:"broochGem", label:"Dress jewel ⑥", ref:"#0894FF", palette:"gem", def:"#0894FF", defName:"Blue (stock)"},
+  {id:"earring", label:"Earring ⑦", ref:"#0894FF", palette:"gem", def:"#0894FF", defName:"Blue (stock)"},
+  {id:"headJewel", label:"Head jewel ⑩ (+ red ⑧)", ref:"#FF0031", palette:"gem", def:"#FF0031", defName:"Red (stock)"},
   {id:"iris", label:"Eyes", ref:"#21A5FF", palette:"eye", def:"#21A5FF", defName:"Blue (stock)"},
-  {id:"lips", label:"Lips", ref:"#EF737B", palette:"lips", def:"#EF737B", defName:"Rose (stock)"}
+  {id:"lips", label:"Lips", ref:"#EF737B", palette:"lips", def:"#EF737B", defName:"Rose (stock)"},
+  {id:"sleeves", label:"Puffy sleeves ③", ref:"#FC83AB", palette:"dress", def:"#FC83AB", defName:"Peach pink (stock)", sleeve:true},
+  {id:"lace", label:"Collar / chest lace ⑤", ref:"#FFFFFF", palette:"any", def:"#FFFFFF", defName:"White (stock)"}
 ];
+// Field order of the 12-slot DSP3 codes (before sleeves + lace were split out)
+const OLD_FIDS = ["hair","dress","dressShade","gloves","skin","crownMetal","crownGems","broochGem","earring","headJewel","iris","lips"];
+function sleevesMatch(){ return !(typeof X!=="undefined" && X.opts && X.opts.sleevesMatch===false); }
+function fieldHidden(f){ const sep=document.getElementById("sepShade").checked; return (f.optional && !sep) || (f.sleeve && sleevesMatch()); }
 
 const SKIN_PAL = [
   ["Peach (stock)","#FFD0BE"],["Porcelain","#FFE6DC"],["Fair","#F8D5C4"],["Light","#E8B89A"],
@@ -597,7 +605,9 @@ const BOX = {
   hair:[[32,0,63,15],[80,16,95,31],[48,32,111,63],[96,0,111,31],[38,32,47,63]],
   iris:[[6,34,30,74]],
   pupil:[[14,48,24,68]],
-  lips:[[0,80,31,118]]
+  lips:[[0,80,31,118]],
+  // ③ puffy sleeves: the chart's region [0,32]-[31,55], widened to the whole sleeve blob (both lobes + tip)
+  sleeves:[[0,32,39,55],[16,28,39,31],[16,56,39,61]]
 };
 
 function classifyBody(x,y,r,g,b,a){
@@ -615,6 +625,9 @@ function classifyBody(x,y,r,g,b,a){
   if(inBox(x,y,BOX.collar) && f.white) return "collarLace";
   if(inBox(x,y,BOX.collar) && f.skin) return "skin";
   if(inBox(x,y,BOX.hair) && (f.hair || (inHue(f.h,38,70)&&f.s>0.3&&f.v>0.3))) return "hair";
+  if(f.pink && inBox(x,y,BOX.sleeves) && !inBox(x,y,BOX.gloves)){
+    return f.L < lum(0xFC,0x83,0xAB)*0.82 ? "sleevesShade" : "sleeves";
+  }
   if(f.pink && (inBox(x,y,BOX.dress) || inBox(x,y,BOX.brooch))){
     return f.L < lum(0xFC,0x83,0xAB)*0.82 ? "dressShade" : "dress";
   }
@@ -722,7 +735,8 @@ function recolorWith(colors, sep){
         else if(lab==="dress"){ tgt=dressT; ref=dressRef; }
         else if(lab==="dressShade"){ tgt=shadeT; ref=shadeRef; }
         else if(lab==="gloves"){ tgt=T.gloves; ref=parseHex("#FFFFFF"); }
-        else if(lab==="collarLace"){ continue; }
+        else if(lab==="collarLace"){ tgt=T.lace; ref=parseHex("#FFFFFF"); }
+        else if(lab==="sleeves"||lab==="sleevesShade"){ tgt=sleevesMatch()?dressT:T.sleeves; ref=dressRef; }
         else if(lab==="skin"){ tgt=T.skin; ref=parseHex("#FFD0BE"); }
         else if(lab==="crownMetal"||lab==="broochRim"){ tgt=metalT; ref=parseHex("#F7A521"); }
         else if(lab==="crownGems"){ tgt=T.crownGems; ref=parseHex("#0084F7"); }
@@ -738,7 +752,8 @@ function recolorWith(colors, sep){
           gloves:"#FFFFFF", skin:"#FFD0BE",
           crownMetal:"#F7A521", broochRim:"#F7A521",
           crownGems:"#0084F7", broochGem:"#0894FF", earring:"#0894FF",
-          headJewel:"#FF0031", uncertainRed:"#FF0031", jewelCenter:"#FF0031"
+          headJewel:"#FF0031", uncertainRed:"#FF0031", jewelCenter:"#FF0031",
+          collarLace:"#FFFFFF", sleeves:"#FC83AB", sleevesShade:"#FC83AB"
         };
         const stockHex = lab==="dressShade" ? (sep?"#DE4A7B":"#FC83AB") : stock[lab];
         if(stockHex && tgtHex===stockHex && !highlight) continue;
@@ -956,7 +971,7 @@ function renderFields(){
   root.innerHTML="";
   const sep=document.getElementById("sepShade").checked;
   for(const f of FIELDS){
-    if(f.optional && !sep) continue;
+    if(fieldHidden(f)) continue;
     const d=document.createElement("div");
     d.className="field"; d.id="f-"+f.id;
     d.innerHTML=`
@@ -1024,7 +1039,7 @@ function randOf(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function rollOne(id, fromPicks){
   const f=fieldById(id);
   if(!f || state.locked[id]) return false;
-  if(f.optional && !document.getElementById("sepShade").checked) return false;
+  if(fieldHidden(f)) return false;
   let pool;
   if(fromPicks){
     if(!state.picks.length) return false;
@@ -1066,10 +1081,11 @@ function updateSummary(){
   const lines=["DS Peach Randomizer roll","New Super Mario Bros. DS (USA)"];
   if(typeof X!=="undefined" && X.label) lines.push("Look: "+X.label);
   for(const f of FIELDS){
-    if(f.optional && !sep) continue;
+    if(fieldHidden(f)) continue;
     lines.push((state.locked[f.id]?"[locked] ":"")+f.label+": "+state.colors[f.id]+"  "+(state.names[f.id]||""));
   }
   lines.push("Separate dress shade: "+(sep?"yes":"no"));
+  lines.push("Sleeves match dress: "+(sleevesMatch()?"yes":"no"));
   lines.push("Coolors library in rolls: "+(document.getElementById("useCoolors").checked?"yes":"no"));
   lines.push("Files: peach.png (128x64), peach_face.0.png (32x128), peach_face.1.png (32x128)");
   lines.push("Re-inject into enemy/peach.nsbmd and map/cursor_peach.nsbmd via NSMBe.");
@@ -1292,7 +1308,7 @@ function encodeRoll(){
   const locks=FIDS.filter(id=>state.locked[id]).join(",");
   const s=document.getElementById("sepShade").checked?"1":"0";
   const tok=(typeof X!=="undefined" && X.token)? ":"+X.token : "";
-  return "DSP3:"+cols.join(".")+":"+locks+":"+s+tok;
+  return "DSP4:"+cols.join(".")+":"+locks+":"+s+tok;
 }
 function decodeRoll(str){
   if(!str) return null;
@@ -1302,24 +1318,27 @@ function decodeRoll(str){
   if(hashIdx>=0) str=str.slice(hashIdx+1);
   if(str.startsWith("r=")) str=str.slice(2);
   str=decodeURIComponent(str);
-  if(!str.startsWith("DSP3:")) return null;
+  const v4=str.startsWith("DSP4:");
+  if(!v4 && !str.startsWith("DSP3:")) return null;
   const parts=str.split(":");
   // DSP3 : colors : locks : shade   — colors contain no colons
   if(parts.length<3) return null;
   const cols=parts[1].split(".");
-  if(cols.length!==FIDS.length) return null;
+  const ids = v4 ? FIDS : OLD_FIDS;
+  if(cols.length!==ids.length) return null;
   const locks=new Set((parts[2]||"").split(",").filter(Boolean));
   const sep=parts[3]==="1";
   const colors={}; const names={}; const locked={};
-  for(let i=0;i<FIDS.length;i++){
+  for(let i=0;i<ids.length;i++){
     const hex=hexNorm("#"+cols[i]);
     if(!hex) return null;
-    const id=FIDS[i];
+    const id=ids[i];
     const f=fieldById(id);
     colors[id]=hex;
     names[id]=nameOf(hex, f.palette);
     locked[id]=locks.has(id);
   }
+  if(!v4){ colors.sleeves=colors.dress; names.sleeves=names.dress; colors.lace="#FFFFFF"; names.lace="White (stock)"; locked.sleeves=false; locked.lace=false; }
   const token=/^[a-z0-9.]{0,24}$/i.test(parts[4]||"")? (parts[4]||"") : "";
   return {colors, names, locked, sep, token};
 }
@@ -1419,7 +1438,7 @@ const X = {
   banned: lsGet("banned",[]),       // [{hex,name}]
   stats: lsGet("stats",{rolls:0,mode:{},theme:{},hair:{},dress:{},days:{}}),
   dfil: lsGet("dfil","all"),
-  opts: Object.assign({keepGloves:true, trimShade:true, rollSkin:false}, lsGet("opts",{})),
+  opts: Object.assign({keepGloves:true, trimShade:true, rollSkin:false, sleevesMatch:true}, lsGet("opts",{})),
   label: "Original colors", token: "",
   undo: [], batch: []
 };
@@ -1508,8 +1527,9 @@ function libReplace(set){ // Full color library: slots roll from the ~540 Coolor
 function finishSet(set, opts){
   opts=opts||{};
   const o=X.opts;
-  if(o.keepGloves){ set.C.gloves="#FFFFFF"; set.N.gloves="White"; }
-  else if(!set.C.gloves){ const c=freshFrom("gloves"); if(c){ set.C.gloves=c.hex; set.N.gloves=c.name; } }
+  if(o.keepGloves){ set.C.gloves="#FFFFFF"; set.N.gloves="White"; set.C.lace="#FFFFFF"; set.N.lace="White"; }
+  else { ["gloves","lace"].forEach(fid=>{ if(!set.C[fid]){ const c=freshFrom(fid); if(c){ set.C[fid]=c.hex; set.N[fid]=c.name; } } }); }
+  if(set.C.dress && !set.C.sleeves){ set.C.sleeves=set.C.dress; set.N.sleeves=set.N.dress; }
   if(opts.themed && o.rollSkin){
     ["skin","lips"].forEach(fid=>{ const c=freshFrom(fid); if(c){ set.C[fid]=c.hex; set.N[fid]=c.name; } });
   }
@@ -1620,6 +1640,7 @@ function applySet(set, how){
   for(const fid of Object.keys(set.C)){
     if(state.locked[fid]) continue;
     if(fid==="dressShade" && !sepEl.checked) continue;
+    if(fid==="sleeves" && sleevesMatch()) { state.colors.sleeves=set.C.dress||state.colors.dress; state.names.sleeves=set.N.dress||state.names.dress; continue; }
     state.colors[fid]=set.C[fid]; state.names[fid]=set.N[fid]||nameOf(set.C[fid], fieldById(fid).palette);
   }
   X.label=set.label||"Custom"; X.token=set.token||"";
@@ -1645,7 +1666,7 @@ function doUndo(){
 function renderUndo(){ const b=document.getElementById("btnUndo"); if(b) b.textContent="⏪ Undo ("+X.undo.length+")"; }
 
 /* ---- same girl / same outfit / swap ---- */
-const GIRL=["hair","iris","skin","lips"], OUTFIT=["dress","dressShade","gloves","crownMetal","crownGems","broochGem","earring","headJewel"];
+const GIRL=["hair","iris","skin","lips"], OUTFIT=["dress","dressShade","sleeves","lace","gloves","crownMetal","crownGems","broochGem","earring","headJewel"];
 function partialRoll(keep, label){
   const set=makeRoll(); if(!set) return;
   keep.forEach(fid=>{ delete set.C[fid]; });
@@ -1721,7 +1742,7 @@ function renderResult(){
     document.getElementById("rateName").textContent=th.ch?"this character":"this theme";
   } else rb.style.display="none";
   const sep=document.getElementById("sepShade").checked;
-  document.getElementById("resChips").innerHTML=FIELDS.filter(f=>!f.optional||sep).map(f=>'<span class="rchip" title="'+escH(state.colors[f.id])+'"><i style="background:'+state.colors[f.id]+'"></i>'+escH(f.label)+': <b>'+escH(state.names[f.id]||state.colors[f.id])+'</b>'+(state.locked[f.id]?" 🔒":"")+'</span>').join("");
+  document.getElementById("resChips").innerHTML=FIELDS.filter(f=>!fieldHidden(f)).map(f=>'<span class="rchip" title="'+escH(state.colors[f.id])+'"><i style="background:'+state.colors[f.id]+'"></i>'+escH(f.label)+': <b>'+escH(state.names[f.id]||state.colors[f.id])+'</b>'+(state.locked[f.id]?" 🔒":"")+'</span>').join("");
   document.getElementById("selCur").textContent=selLabel();
 }
 function rate(v){
@@ -1738,7 +1759,7 @@ function renderRated(){
 }
 function copyAllColors(){
   const sep=document.getElementById("sepShade").checked;
-  const lines=[X.label||"Roll"].concat(FIELDS.filter(f=>!f.optional||sep).map(f=>f.label+": "+(state.names[f.id]||"")+" "+state.colors[f.id]));
+  const lines=[X.label||"Roll"].concat(FIELDS.filter(f=>!fieldHidden(f)).map(f=>f.label+": "+(state.names[f.id]||"")+" "+state.colors[f.id]));
   lines.push(rollLink());
   copyText(lines.join("\n")).then(()=>toast("📋 Copied all colors + link"));
 }
@@ -1864,7 +1885,7 @@ function doBatch(n){
 }
 function batchCode(b){
   const cols=FIDS.map(id=>(b.colors[id]||"").replace(/^#/,"").toUpperCase());
-  return "DSP3:"+cols.join(".")+"::"+(b.sep?"1":"0")+":"+(b.set.token||"");
+  return "DSP4:"+cols.join(".")+"::"+(b.sep?"1":"0")+":"+(b.set.token||"");
 }
 function renderBatch(){
   const el=document.getElementById("batchGrid"); if(!el) return;
@@ -1993,7 +2014,7 @@ let rbTimer=null, rbFrames=[];
 function rainbowFrames(){
   const tgt=document.getElementById("rbTarget").value, n=+document.getElementById("rbFrames").value||12;
   const sep=document.getElementById("sepShade").checked;
-  const groups={hair:["hair"], dress:sep?["dress","dressShade"]:["dress"], iris:["iris"], gems:["crownGems","broochGem","earring","headJewel"], all:["hair","dress","dressShade","iris","crownGems","broochGem","earring","headJewel"]}[tgt]||["hair"];
+  const groups={hair:["hair"], dress:sep?["dress","dressShade","sleeves"]:["dress","sleeves"], iris:["iris"], gems:["crownGems","broochGem","earring","headJewel"], all:["hair","dress","dressShade","sleeves","iris","crownGems","broochGem","earring","headJewel"]}[tgt]||["hair"];
   const frames=[];
   for(let k=0;k<n;k++){
     const col={};
@@ -2129,9 +2150,10 @@ function setupFeatures(){
     b.addEventListener("click",()=>{ X.mode=b.dataset.m; saveX(); document.querySelectorAll("#modeBtns button").forEach(x=>x.classList.toggle("on",x===b)); renderResult(); });
   });
   // options
-  [["optGloves","keepGloves"],["optTrim","trimShade"],["optSkin","rollSkin"]].forEach(([id,k])=>{
+  [["optGloves","keepGloves"],["optTrim","trimShade"],["optSkin","rollSkin"],["optSleeves","sleevesMatch"]].forEach(([id,k])=>{
     const el=document.getElementById(id); el.checked=!!X.opts[k];
-    el.addEventListener("change",()=>{ X.opts[k]=el.checked; saveX(); });
+    el.addEventListener("change",()=>{ X.opts[k]=el.checked; saveX();
+      if(k==="sleevesMatch"){ if(!el.checked && state.colors.sleeves==="#FC83AB" && state.colors.dress!=="#FC83AB"){ state.colors.sleeves=state.colors.dress; state.names.sleeves=state.names.dress; } renderFields(); recolorAll(); renderResult(); } });
   });
   const on=(id,ev,fn)=>document.getElementById(id).addEventListener(ev,fn);
   on("btnUndo","click",doUndo);
